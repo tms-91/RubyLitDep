@@ -1,0 +1,682 @@
+<p>Acknowledgment: The step-to-to development section is entirely based on the Django documentation https://docs.djangoproject.com and specifically the tutorial &ldquo;Writing your first Django app&rdquo; (https://docs.djangoproject.com/en/1.6/intro/tutorial01/). The point of this document is to describe the development of the app in a concise manner, while also showing exactly what file edits need to be performed. This document does not, in any way, replace or compete with the Django documenation. In fact, you are much more likely to understand what you are doing, if you follow the original documentation. However, if you just want to really quickly get going and reproduce the file system of (some version of) the app, then this document may be helpful.</p>
+
+<h2>I. Preamble Let's develop a polls application for polls like this:</h2>
+
+<p><img alt="executorPoll" src="executorPoll.png" /></p>
+
+<p>Users would be participating in the poll and see the number of votes eventually.</p>
+
+<p><img alt="executorPollResult" src="executorPollResult.png" /></p>
+
+<p><br />
+Administrators (admins) would be setting up and editing up polls like this</p>
+
+<p><img alt="AdminOverview" src="AdminOverview.png" /></p>
+
+<p>&nbsp;</p>
+
+<h2>II. Conventions</h2>
+
+<ul>
+	<li>Scripts, which can be executed are displayed with ...</li>
+	<li>Edited file content is shown in ...</li>
+	<li>Output has ...</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<h2>III. Step-by-step development At the command line, you run these commands:</h2>
+
+<h3>1. Create a src-folder for your django project</h3>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;">
+<!--""LDS BeginRootFile section="1" filename="createsrc.bat" id="create source folder" platform="WINDOWS" executor="cmd /c" -->
+mkdir src 
+<!--""LDS EndRootFile -->
+</div>
+
+<h3>2. Test Django installation At the command line, you run these commands:</h3>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;">
+<!--""LDS BeginRootFile section="1" filename="testDjangoInstallation.bat" id="Test Django Installation0" platform="WINDOWS" executor="cmd /c" -->
+python --version 
+<!--""LDS EndRootFile --> 
+</div>
+<br/>
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;">
+Python 2.7.5 
+</div>
+<br/>
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;">
+<!--""LDS BeginContinueFile section="2" id="Test Django Installation1" filename="testDjangoInstallation.bat" --> 
+python -c "import django; 
+print(django.get_version())" 
+<!--""LDS EndContinueFile--> 
+</div>
+<br/>
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;">
+1.6.2
+</div>
+
+<h3>3. Create a project You are sitting in the src directory and run this command</h3>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginRootFile section="1" filename="createProject.bat" id="Create Project" platform="WINDOWS" executor="cmd /c" -->
+cd src 
+django-admin.py startproject mysite 
+<!--""LDS EndRootFile--></pre>
+</div>
+
+
+<h3>4. Start server</h3>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"> <pre>
+<!--""LDS BeginRootFile section="1" filename="startServer.bat" id="Start Server" platform="WINDOWS" executor="start" -->
+cd src\mysite 
+python manage.py runserver 
+<!--""LDS EndRootFile--> </pre></div>
+
+This server runs in another shell, if this file is executed as an LDS-file. </p>
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"> <pre>
+Validating models... 
+0 errors found February 12, 2014 - 22:39:06 
+Django version 1.6.2, using settings 'mysite.settings' 
+Starting development server at http://127.0.0.1:8000/ 
+Quit the server with CONTROL-C.</pre> </div>
+
+
+<h3>5. Prepare the database</h3>
+
+<p>At the command line, you run this command:</p>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"> <pre>
+<!--""LDS BeginRootFile section="1" filename="Preparethedatabase.bat" id="Prepare the database" platform="WINDOWS" executor="start" -->
+cd src\mysite 
+python manage.py syncdb
+<!--""LDS EndRootFile--></pre> 
+</div>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;">
+Creating tables ...<br />
+Creating table django_admin_log<br />
+Creating table auth_permission<br />
+Creating table auth_group_permissions<br />
+Creating table auth_group<br />
+Creating table auth_user_groups<br />
+Creating table auth_user_user_permissions<br />
+Creating table auth_user<br />
+Creating table django_content_type<br />
+Creating table django_session<br />
+You just installed Django's auth system, which means you don't have any superusers defned.<br />
+<!--Some form fields have to be filled in here. We probably can't do that for a user --> Would you like to create one now? (yes/no): yes<br />
+Username (leave blank to use 'laemmel'):<br />
+Email address: rlaemmel@gmail.com<br />
+Password:<br />
+Password (again):<br />
+Superuser created successfully.<br />
+Installing custom SQL ...<br />
+Installing indexes ...<br />
+Installed 0 object(s) from 0 fxture(s)</p>
+</div>
+
+<h3>6. Create an app</h3>
+
+<p>At the command line, you run this command</p>
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginRootFile section="1" filename="Createanapp.bat" id="Create an app" platform="WINDOWS" executor="cmd /c" -->
+cd src\mysite
+python manage.py startapp polls
+<!--""LDS EndRootFile--></pre>
+</div>
+
+<h3>7. Edit the model</h3>
+
+<p>Put the following content into file polls/models.py</p>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginInsertIntoFile filename="src\mysite\polls\models.py" line="1" id="put content in models.py"-->
+
+class Poll(models.Model):
+  question = models.CharField(max_length=200)
+  pub_date = models.DateTimeField('date published')
+
+class Choice(models.Model):
+  poll = models.ForeignKey(Poll)
+  choice_text = models.CharField(max_length=200)
+  votes = models.IntegerField(default=0)
+<!--""LDS EndInsertIntoFile--></pre>
+</div>
+<p>These are class fields describing the data model. Add a method as well:</p>
+
+<p><div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+from django.db 
+import models
+<!--""LDS BeginInsertIntoFile filename="src\mysite\polls\models.py" line="1" id="Insertion datetime"-->
+import datetime
+from django.utils import timezone
+
+<!--""LDS EndInsertIntoFile-->
+class Poll(models.Model):
+  question = models.CharField(max_length=200)
+  pub_date = models.DateTimeField('date published')
+<!--""LDS BeginInsertIntoFile filename="src\mysite\polls\models.py" line="7" id="Insertion was published return statement"-->
+
+  def was_published_recently(self):
+    return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+
+<!--""LDS EndInsertIntoFile--></pre>
+</div>
+...
+</p>
+
+<h3>8. Install the app</h3>
+
+<p>Add 'polls' to INSTALLED_APPS in mysite/settings.py.</p>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+INSTALLED_APPS = ( 
+  'django.contrib.admin', 
+  'django.contrib.auth', 
+  'django.contrib.contenttypes', 
+  'django.contrib.sessions', 
+  'django.contrib.messages', 
+  'django.contrib.staticfles', 
+<!--""LDS BeginInsertIntoFile filename="src\mysite\settings.py" line="38" id="Add polls to installed apps"--> 
+  'polls', 
+<!--""LDS EndInsertIntoFile--> 
+) </pre>
+</div>
+
+<h3>9. Examine SQL schema for model</h3>
+
+<p>At the command line, you run this command:</p>
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginRootFile section="1" filename="Examinesqlschema.bat" id="Examine SQL schema for model" platform="WINDOWS" executor="start" -->
+cd src\mysite 
+python manage.py sql polls
+<!--""LDS EndRootFile--> </pre>
+</div>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+BEGIN;
+CREATE TABLE "polls_poll" (
+&nbsp;&nbsp; &nbsp;"id" integer NOT NULL PRIMARY KEY,
+&nbsp;&nbsp; &nbsp;"question" varchar(200) NOT NULL,
+&nbsp;&nbsp; &nbsp;"pub_date" datetime NOT NULL
+)
+;
+CREATE TABLE "polls_choice" (
+&nbsp;&nbsp; &nbsp;"id" integer NOT NULL PRIMARY KEY,
+&nbsp;&nbsp; &nbsp;"poll_id" integer NOT NULL REFERENCES "polls_poll" ("id"),
+&nbsp;&nbsp; &nbsp;"choice_text" varchar(200) NOT NULL,
+&nbsp;&nbsp; &nbsp;"votes" integer NOT NULL
+)
+;
+COMMIT;
+</pre></div>
+
+<h3>11. Upgrade the database</h3>
+
+<p>At the command line, you run this command</p>
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginRootFile section="1" filename="UpgradeDatabase.bat" id="Upgrade the database" platform="WINDOWS" executor="start" -->
+cd src\mysite 
+python manage.py syncdb
+<!--""LDS EndRootFile--></pre></div>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+Creating tables ...
+Creating table polls_poll
+Creating table polls_choice
+Installing custom SQL ...
+Installing indexes ...
+Installed 0 object(s) from 0 fixture(s)
+</pre></div>
+
+<h3>12. Play with the API</h3>
+
+<p>Run the following command and enter Python code as shown:</p>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginRootFile section="1" filename="PlaywiththeAPI.bat" id="Play with the API" platform="WINDOWS" executor="start" -->
+cd src\mysite 
+python manage.py shell
+<!--""LDS EndRootFile--> 
+</pre></div>
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+Python 2.7.5 (default, Aug 25 2013, 00:04:04)
+[GCC 4.2.1 Compatible Apple LLVM 5.0 (clang-500.0.68)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+&gt;&gt;&gt; from polls.models import Poll, Choice
+&gt;&gt;&gt; Poll.objects.all()
+[]
+&gt;&gt;&gt; from django.utils import timezone
+&gt;&gt;&gt; p = Poll(question="What's new?", pub_date=timezone.now())
+&gt;&gt;&gt; p.save()
+&gt;&gt;&gt; p.id
+1
+&gt;&gt;&gt; p.question
+"What's new?"
+&gt;&gt;&gt; p.pub_date
+datetime.datetime(2014, 2, 12, 23, 11, 42, 979360, tzinfo=UTC)
+&gt;&gt;&gt; p.question = "What's up?"
+&gt;&gt;&gt; p.save()
+&gt;&gt;&gt; Poll.objects.all()
+[&lt;Poll: Poll object&gt;<poll: object="" poll="">]
+</pre></div>
+
+<h3>13. Improve data representation</h3>
+
+<p>Edit file polls/models.py as shown</p>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+from django.db 
+import models 
+... 
+
+class Poll(models.Model): 
+    ... 
+<!--""LDS BeginInsertIntoFile filename="src\mysite\polls\models.py" line="9" id="Adding unicode function in models.py"--> 
+    def __unicode__(self): # Python 3: def __str__(self): 
+        return self.question 
+<!--""LDS EndInsertIntoFile--> 
+class Choice(models.Model): 
+    # ... 
+<!--""LDS BeginInsertIntoFile filename="src\mysite\polls\models.py" line="16" id="Insertion of unicode function for choice in models.py" --> 
+    def __unicode__(self): # Python 3: def __str__(self): 
+        return self.choice_text
+<!--""LDS EndInsertIntoFile--> </pre></div>
+
+<p>Accordingly, the data representation has changed:</p>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginRootFile section="1" filename="Improvedatarepresentation.bat" id="Improve data representation" platform="WINDOWS" executor="start" -->
+cd src\mysite 
+python manage.py shell
+<!--""LDS EndRootFile--></pre></div>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+Python 2.7.5 (default, Aug 25 2013, 00:04:04)
+[GCC 4.2.1 Compatible Apple LLVM 5.0 (clang-500.0.68)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)<br />
+&gt;&gt;&gt; from polls.models import Poll, Choice
+&gt;&gt;&gt; Poll.objects.all()
+[&lt;Poll: What's up?&gt;]
+</pre></div>
+
+<h3>14. Register model with admin</h3>
+
+<p>Put the following content into file polls/admin.py</p>
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+from django.contrib import admin
+<!--""LDS BeginInsertIntoFile filename="src\mysite\polls\admin.py" line="1" id="Registering model in admin.py" -->
+from polls.models import Poll, Choice
+
+admin.site.register(Poll)
+admin.site.register(Choice)
+<!--""LDS EndInsertIntoFile--></pre></div>
+
+Run the admin in the browser again. Polls and choices can be edited now
+
+<h3>15. Customize admin</h3>
+Put the following content into file polls/admin.py:
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+from django.contrib import admin
+from polls.models import Poll, Choice
+<!--""LDS BeginChangeFileLines filename="src\mysite\polls\admin.py" startline="2" endline="4" id="Customizing admin.py" -->
+
+class ChoiceInline(admin.TabularInline):
+  model = Choice
+  extra = 2
+  
+class PollAdmin(admin.ModelAdmin):
+  fieldsets = [
+    (None, {'fields': ['question']}),
+    ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
+  ]
+  inlines = [ChoiceInline]
+  list_display = ('question', 'pub_date', 'was_published_recently')
+  list_filter = ['pub_date']
+  search_fields = ['question']
+
+admin.site.register(Poll, PollAdmin)
+admin.site.register(Choice)
+<!--""LDS EndChangeFileLines --></pre></div>
+
+Add a few attributes to polls/models.py:
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+class Poll(models.Model):
+# ...
+<!--""LDS BeginInsertIntoFile filename="src\mysite\polls\models.py" line="11" id="Adding a few attributes to models.py"-->
+  was_published_recently.admin_order_feld = 'pub_date'
+  was_published_recently.boolean = True
+  was_published_recently.short_description = 'Published recently?'	
+<!--""LDS EndInsertIntoFile--></pre></div>
+
+<p>Try out the admin: http://127.0.0.1:8000/admin/ </p>
+
+<h3>16. Customize templates of admin</h3>
+
+Create a templates directory:
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginRootFile section="1" filename="Customizetemplatesofadmin.bat" id="Customize templates of admin" platform="WINDOWS" executor="cmd /c" -->
+cd src\mysite
+mkdir templates
+<!--""LDS EndRootFile--></pre></div>
+
+Create a templates/admin directory
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginContinueFile section="2" id="Customize templates of admin2" filename="Customizetemplatesofadmin.bat" -->
+cd templates
+mkdir admin
+<!--""LDS EndContinueFile--></pre></div>
+
+Edit mysite/settings.pyto register the directory:
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginInsertIntoFile filename="src\mysite\settings.py" line="83" id="Edit settings.py to register directory"-->
+
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
+<!--""LDS EndInsertIntoFile--></pre></div>
+
+Figure out the location of the Django source files with a script containing the following lines:
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginRootFile section="1" filename="getDjangoLocation1.py" id="getDjangoLocation1" platform="WINDOWS" executor="python" -->
+import sys
+sys.path = sys.path[1:]
+import django
+print(django.__path__)
+<!--""LDS EndRootFile--></pre></div>
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+['/Library/Python/2.7/site-packages/django']
+</pre></div>
+
+<p>Now enter your django's location instead of the correspondent variable. </p>
+<!--""LDS DeclareVariables variables="djangoLocation" -->
+
+Copy base_site.html to the local templates/admin directory:
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginRootFile section="1" filename="copyBaseSite.bat" id="copyBaseSite" platform="WINDOWS" executor="cmd /c" -->
+cd src\mysite
+copy $.$-djangoLocation-$.$\contrib\admin\templates\admin\base_site.html templates\admin\
+copy $.$-djangoLocation-$.$\contrib\admin\templates\admin\index.html templates\admin\
+<!--""LDS EndRootFile--></pre></div>
+
+Edit file templates/admin/base_site.html:
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+{% extends "admin/base.html" %}
+{% load i18n %}
+{% block title %}{{ title }} | {% trans 'Django site admin' %}{% endblock %}
+{% block branding %}
+<!--""LDS BeginChangeFileLines filename="src\mysite\templates\admin\base_site.html" startline="6" endline="6" id="edit base_site.html" -->
+&lt;h1 id="site-name"&gt;{% trans 'The Polls admin' %}&lt;/h1&gt;
+<!--""LDS EndChangeFileLines -->
+{% endblock %}
+{% block nav-global %}{% endblock %}
+</pre></div>
+(We could also edit file templates/admin/index.html.)
+
+<h3>17. Create a trivial view</h3>
+
+<p>Edit file polls/views.py:</p>
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginInsertIntoFile filename="src\mysite\polls\views.py" line="1" id="Create a trivial view in views.py" -->
+from django.http import HttpResponse 
+
+def index(request): 
+    return HttpResponse("Hello, world. You're at the poll index.")
+<!--""LDS EndInsertIntoFile--></pre></div>
+
+<p>Edit file polls/urls.py</p>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginInsertIntoFile filename="src\mysite\polls\urls.py" line="0" id="edit urls.py" -->
+from django.conf.urls import patterns, url 
+from polls import views 
+
+urlpatterns = patterns(", 
+    # ex: /polls/ 
+    url(r'^$', views.index, name='index') 
+)
+<!--""LDS EndInsertIntoFile --></pre></div>
+
+<p>Edit file mysite/urls.py:</p>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+from django.conf.urls import patterns, include, url 
+from django.contrib import admin 
+
+admin.autodiscover() 
+
+urlpatterns = patterns('', 
+    # Examples: 
+    # url(r'^$', 'mysite.views.home', name='home'), 
+    # url(r'^blog/', include('blog.urls')), 
+
+    url(r'^admin/', include(admin.site.urls)) 
+<!--""LDS BeginInsertIntoFile filename="src\mysite\mysite\urls.py" line="11" id="Insertion include edit mysite urls.py" --> 
+    url(r'^polls/', include('polls.urls')), 
+<!--""LDS EndInsertIntoFile--> )
+</pre></div>
+
+<p>Try out the view: http://localhost:8000/polls/</p>
+
+<h3>18.Organize all the views of the app</h3>
+
+<p>Add this code to polls/views.py</p>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginInsertIntoFile filename="src\mysite\polls\views.py" line="5" id="InsertingViews" -->
+def detail(request, poll_id): 
+    return HttpResponse("You're looking at poll %s." % poll_id) 
+
+def results(request, poll_id): 
+    return HttpResponse("You're looking at the results of poll %s." % poll_id) 
+
+def vote(request, poll_id): 
+    return HttpResponse("You're voting on poll %s." % poll_id)
+<!--""LDS EndInsertIntoFile--></pre></div>
+
+<p>Revise polls/urls.py as follows:</p>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+from django.conf.urls import patterns, url
+from polls import views
+urlpatterns = patterns('',
+# ex: /polls/
+url(r'^$', views.index, name='index'),
+<!--""LDS BeginInsertIntoFile filename="src\mysite\polls\urls.py" line="6" id="Inserting In Urls.py" -->
+# ex: /polls/5/
+url(r'^(?P<poll_id>\d+)/$', views.detail, name='detail'),
+# ex: /polls/5/results/
+url(r'^(?P<poll_id>\d+)/results/$', views.results, name='results'),
+# ex: /polls/5/vote/
+url(r'^(?P<poll_id>\d+)/vote/$', views.vote, name='vote'),
+<!--""LDS EndInsertIntoFile --></pre></div>
+
+<h3>19. Implement a View</h3>
+
+<p>Replace the content of polls/views.py with the following content:</p>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginChangeFileLines filename="src\mysite\polls\views.py" startline="0" endline="4" id="Implement a view" -->
+from django.http import HttpResponse
+from polls.models import Poll
+
+def index(request):
+  latest_poll_list = Poll.objects.order_by('-pub_date')[:5]
+  output = ', '.join([p.question for p in latest_poll_list])
+  return HttpResponse(output)
+<!--""LDS EndChangeFileLines -->
+...
+</pre></div>
+
+<p>Arguably the view is rendered poorly; consider this: Who are you?, What's new?</p>
+
+<h3>20. Implement a view with a template</h3>
+
+<p>We are going to reimplement the index view. Create a directory for the templates of the app. 
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginRootFile section="1" filename="createTemplateDirectory.bat" id="create Template Directory" platform="WINDOWS" executor="cmd /c" -->
+cd src\mysite
+mkdir templates\polls
+<!--""LDS EndRootFile --></pre></div>
+
+<p> Put the following text into file templates/polls/index.html </p>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginInsertIntoFile filename="src\mysite\templates\polls\index.html" line="0" id="recreate Index HTML" -->
+{% if latest_poll_list %}
+  <ul>
+  {% for poll in latest_poll_list %}
+    <li><a href="/polls/{{ poll.id }}/">{{ poll.question }}</a></li>
+  {% endfor %}
+  </ul>
+{% else %}
+  <p>No polls are available.</p>
+{% endif %}
+<!--""LDS EndInsertIntoFile -->
+</pre></div>
+
+<p> Edit file polls/views.py to revise the definition of index specifically: </p> 
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginChangeFileLines filename="src\mysite\polls\views.py" startline="5" endline="7" id="Edit views.py to revise index definition" -->
+from django.http import HttpResponse
+from polls.models import Poll
+from django.shortcuts import render
+
+def index(request):
+  latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
+  context = {'latest_poll_list': latest_poll_list}
+  return render(request, 'polls/index.html', context)
+<!--""LDS EndChangeFileLines -->
+...
+</pre></div>
+
+<h3>21. Implement a view with a 404 error</h3>
+
+<p>Put the following text into file templates/polls/detail.html: </p>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginInsertIntoFile filename="src\mysite\templates\polls\detail.html" line="0" id="create view with 404 error" platform="WINDOWS" -->
+<h1>{{ poll.question }}</h1>
+<ul>
+	<li>{% for choice in poll.choice_set.all %}</li>
+	<li>{{ choice.choice_text }}</li>
+	<li>{% endfor %}</li>
+</ul>
+<!--""LDS EndInsertIntoFile --> </pre></div>
+
+<p>Edit file polls/views.py to revise the definition of detail specifically ... </p>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+...
+<!--""LDS BeginInsertIntoFile filename="src\mysite\polls\views.py" line="3" id="Insert import for 404 error"-->
+from django.http import Http404
+<!--""LDS EndInsertIntoFile-->
+
+def index(request):
+...
+
+<!--""LDS BeginChangeFileLines filename="src\mysite\polls\views.py" startline="10" endline="11" id="Insert 404 error raise" -->
+def detail(request, poll_id):
+  try:
+    poll = Poll.objects.get(pk=poll_id)
+  except Poll.DoesNotExist:
+    raise Http404
+  return render(request, 'polls/detail.html', {'poll': poll})
+<!--""LDS EndChangeFileLines --></pre></div>
+ 
+<p>You are ready to render a question: http://localhost:8000/polls/2/. 
+Here is how a missing poll is rendered:</p>
+
+<p><img alt="RenderedPage1" src="RenderedPage1.png" /></p>
+
+<h3>22. Implement a view with a form</h3>
+
+<p>Put the following text into file templates/polls/detail.html: </p>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginChangeFileLines filename="src\mysite\templates\polls\detail.html" startline="0" endline="5" id="Implement view with form in detail.html" -->
+<h1>{{ poll.question }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'vote' poll.id %}" method="post">
+{% csrf_token %}
+{% for choice in poll.choice_set.all %}
+<input type="radio" name="choice" id="choice{{ forloop.counter }}" 
+value="{{ choice.id }}" />
+<label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
+{% endfor %}
+<p/>
+<input type="submit" value="Vote" />
+</form>
+<!--""LDS EndChangeFileLines -->
+</pre></div>
+
+<p>Participation in the poll is rendered as it was shown in the preamble of this document</p>
+
+<h3>23. Implement a view as a handler</h3>
+
+<p>Edit file polls/views.py to revise the definition of vote specifically:</p>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginChangeFileLines filename="src\mysite\polls\views.py" startline="0" endline="3" id="Refine imports in polls views.py"-->
+from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponseRedirect, HttpResponse
+from django.core.urlresolvers import reverse
+from polls.models import Choice, Poll
+<!--""LDS EndChangeFileLines -->
+...
+<!--""LDS BeginChangeFileLines filename="src\mysite\polls\views.py" startline="20" endline="21" id="Refine vote in polls views.py"-->
+def vote(request, poll_id):
+  p = get_object_or_404(Poll, pk=poll_id)
+  try:
+    selected_choice = p.choice_set.get(pk=request.POST['choice'])
+  except (KeyError, Choice.DoesNotExist):
+    # Redisplay the poll voting form.
+    return render(request, 'polls/detail.html', {
+      'poll': p,
+      'error_message': "You didn't select a choice.",
+    })
+  else:
+    selected_choice.votes += 1
+    selected_choice.save()
+    # Always return an HttpResponseRedirect after successfully dealing
+    # with POST data. This prevents data from being posted twice if a
+    # user hits the Back button.
+    return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
+<!--""LDS EndChangeFileLines --></pre></div>
+
+<p>Put the following text into file templates/polls/results.html </p>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginInsertIntoFile filename="src\mysite\templates\polls\results.html" line="0" id="Creating Results file" -->
+<h1>{{ poll.question }}</h1>
+
+<ul>
+{% for choice in poll.choice_set.all %}
+  <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|
+pluralize }}</li>
+{% endfor %}
+</ul>
+
+<a href="{% url 'detail' poll.id %}">Vote again?</a>
+<!--""LDS EndInsertIntoFile --></pre></div>
+
+<p>Edit file polls/views.py to revise the definition of results specifically:</p>
+
+<div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
+<!--""LDS BeginChangeFileLines filename="src\mysite\polls\views.py" startline="17" endline="18" id="edit polls views.py to revise definition of results"-->
+def results(request, poll_id):
+  poll = get_object_or_404(Poll, pk=poll_id)
+  return render(request, 'polls/results.html', {'poll': poll})
+<!--""LDS EndChangeFileLines --></pre></div>
+
+<p>The result of the vote is rendered as it was shown in the preamble of this document</p>
+</body>
+</html>

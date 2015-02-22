@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body, .wrapper, .note, .info, code, #topNav, .L, .R, #frame, #container, #header, #navigation, #footer, #feature, #mainCol, #subCol, #extraCol, .content {
+    background: none repeat scroll 0 0 White;
+    border-color: Black;
+    color: Black;
+    display: block;
+    float: none;
+    height: auto;
+    margin: 0;
+    min-height: 0;
+    padding: 0;
+    position: static;
+    text-align: left;
+    text-indent: 0;
+    width: auto;
+}
+
+.info {
+    background: url("tab_info.gif") no-repeat scroll left top #d5e9f6;
+    border: medium none;
+    margin: 0.25em 0 1.5em;
+    padding: 1em 1em 0.25em 48px;
+}
+div.code_container {
+    background: url("tab_grey.gif") no-repeat scroll left top #eee;
+    padding: 0.25em 1em 0.5em 48px;
+}
+.note code, .info code, .todo code {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: medium none;
+    padding: 0;
+}
+
+.sitecontainer {
+        margin: 0.25em 0 1.5em;
+        padding: 0.25em 1em 0.5em 48px;
+}
+</style>
+</head>
+<body><div class="sitecontainer">
+<h1> Installing Ruby on Rails</h1>
+<h3 id="guide-assumptions">1 Guide Assumptions</h3>
+<p>This guide is designed for beginners who want to get Rails installed on their machine. It does not assume that you have any prior experience with Rails. However, to get the most out of it, you need to have some prerequisites installed:</p>
+<ul>
+<li>
+The
+<a href="http://www.ruby-lang.org/en/downloads">Ruby</a>
+language version 1.9.3 or newer.
+</li>
+<li>
+The
+<a href="http://rubygems.org">RubyGems</a>
+packaging system, which is installed with Ruby versions 1.9 and later. To learn more about RubyGems, please read the
+<a href="http://guides.rubygems.org">RubyGems Guides</a>
+.
+</li>
+<li>
+A working installation of the
+<a href="http://www.sqlite.org">SQLite3 Database</a>
+.
+</li>
+</ul>
+<p>Rails is a web application framework running on the Ruby programming language. If you have no prior experience with Ruby, you will find a very steep learning curve diving straight into Rails. There are several curated lists of online resources for learning Ruby:</p>
+<ul>
+<li>
+<a href="https://www.ruby-lang.org/en/documentation/">Official Ruby Programming Language website</a>
+</li>
+<li>
+<a href="http://resrc.io/list/10/list-of-free-programming-books/#ruby">reSRC's List of Free Programming Books</a>
+</li>
+</ul>
+<p>Be aware that some resources, while still excellent, cover versions of Ruby as old as 1.6, and commonly 1.8, and will not include some syntax that you will see in day-to-day development with Rails.</p>
+<h3 id="what-is-rails-questionmark">2 What is Rails?</h3>
+<p>Rails is a web application development framework written in the Ruby language. It is designed to make programming web applications easier by making assumptions about what every developer needs to get started. It allows you to write less code while accomplishing more than many other languages and frameworks. Experienced Rails developers also report that it makes web application development more fun.</p>
+<p>Rails is opinionated software. It makes the assumption that there is the "best" way to do things, and it's designed to encourage that way - and in some cases to discourage alternatives. If you learn "The Rails Way" you'll probably discover a tremendous increase in productivity. If you persist in bringing old habits from other languages to your Rails development, and trying to use patterns you learned elsewhere, you may have a less happy experience.</p>
+<p>The Rails philosophy includes two major guiding principles:</p>
+<ul>
+<li>
+<strong>Don't Repeat Yourself:</strong>
+DRY is a principle of software development which states that "Every piece of knowledge must have a single, unambiguous, authoritative representation within a system." By not writing the same information over and over again, our code is more maintainable, more extensible, and less buggy.
+</li>
+<li>
+<strong>Convention Over Configuration:</strong>
+Rails has opinions about the best way to do many things in a web application, and defaults to this set of conventions, rather than require that you specify every minutiae through endless configuration files.
+</li>
+</ul>
+<h3 id="creating-a-new-rails-project">3 Creating a New Rails Project</h3>
+<p>The best way to use this guide is to follow each step as it happens, no code or step needed to make this example application has been left out, so you can literally follow along step by step.</p>
+<p>
+By following along with this guide, you'll create a Rails project called
+<code>blog</code>
+, a (very) simple weblog. Before you can start building the application, you need to make sure that you have Rails itself installed.
+</p>
+<div class="info">
+<p>
+The examples below use
+<code>$</code>
+to represent your terminal prompt in a UNIX-like OS, though it may have been customized to appear differently. If you are using Windows, your prompt will look something like
+<code>c:\source_code></code>
+</p>
+</div>
+<h4 id="installing-rails">3.1 Installing Rails</h4>
+<p>
+Open up a command line prompt. On Mac OS X open Terminal.app, on Windows choose "Run" from your Start menu and type 'cmd.exe'. Any commands prefaced with a dollar sign
+<code>$</code>
+should be run in the command line. Verify that you have a current version of Ruby installed:
+</p>
+<div class="info">
+<p>
+A number of tools exist to help you quickly install Ruby and Ruby on Rails on your system. Windows users can use
+<a href="http://railsinstaller.org">Rails Installer</a>
+, while Mac OS X users can use
+<a href="https://github.com/tokaido/tokaidoapp">Tokaido</a>
+.
+</p>
+</div>
+<div class="code_container"><pre>
+<!-- What about rootfiles for multiple platforms?-->
+<!--""LDS BeginRootFile section="1" filename="checkrubyversion.bat" id="Check Ruby Version" platform="WINDOWS" executor="cmd /c"-->
+ruby -v
+<!--""LDS EndRootFile-->
+ruby 2.0.0p353
+
+
+
+</pre></div>
+<p>
+If you don't have Ruby installed have a look at
+<a href="https://www.ruby-lang.org/en/downloads/">ruby-lang.org</a>
+for possible ways to install Ruby on your platform.
+</p>
+<p>
+Many popular UNIX-like OSes ship with an acceptable version of SQLite3. Windows users and others can find installation instructions at
+<a href="http://www.sqlite.org">the SQLite3 website</a>
+. Verify that it is correctly installed and in your PATH:
+</p>
+<div class="code_container"><pre>
+<!--""LDS BeginRootFile section="1" filename="checksqliteversion.bat" id="Check SQLite Version" platform="WINDOWS" executor="cmd /c"-->
+sqlite3 --version
+<!--""LDS EndRootFile-->
+
+
+</pre></div>
+<p>The program should report its version.</p>
+<p>
+To install Rails, use the
+<code>gem install</code>
+command provided by RubyGems:
+</p>
+<div class="code_container"><pre>
+<!--""LDS BeginRootFile section="1" filename="installrails.bat" id="Install Rails" platform="WINDOWS" executor="cmd /c"-->
+gem install rails
+<!--""LDS EndRootFile-->
+
+
+</pre></div>
+<p>To verify that you have everything installed correctly, you should be able to run the following:</p>
+<div class="code_container"><pre>
+<!--""LDS BeginRootFile section="1" filename="checkrailsversion.bat" id="Check Rails Version" platform="WINDOWS" executor="cmd /c"-->
+bin/rails --version
+<!--""LDS EndRootFile-->
+
+
+</pre></div>
+<p>If it says something like "Rails 4.1.1", you are ready to continue.</p>
+<h4 id="creating-the-blog-application">3.2 Creating the Blog Application</h4>
+<p>Rails comes with a number of scripts called generators that are designed to make your development life easier by creating everything that's necessary to start working on a particular task. One of these is the new application generator, which will provide you with the foundation of a fresh Rails application so that you don't have to write it yourself.</p>
+<p>To use this generator, open a terminal, navigate to a directory where you have rights to create files, and type:</p>
+<div class="code_container"><pre>
+<!--""LDS BeginRootFile section="1" filename="createproject.bat" id="Create Project" platform="WINDOWS" executor="cmd /c"-->
+rails new blog
+<!--""LDS EndRootFile-->
+
+
+</pre></div>
+<p>
+This will create a Rails application called Blog in a
+<code>blog</code>
+directory and install the gem dependencies that are already mentioned in
+<code>Gemfile</code>
+using
+<code>bundle install</code>
+.
+</p>
+<div class="info">
+<p>
+You can see all of the command line options that the Rails application builder accepts by running
+<code>rails new -h</code>
+.
+</p>
+</div>
+<p>After you create the blog application, switch to its folder:</p>
+<div class="code_container"><pre>
+<!--""LDS BeginDeclareReference id="changeDirectoryToNewBase"-->
+cd blog
+<!--""LDS EndDeclareReference-->
+
+
+</pre></div>
+<p>
+The
+<code>blog</code>
+directory has a number of auto-generated files and folders that make up the structure of a Rails application. Most of the work in this tutorial will happen in the
+<code>app</code>
+folder, but here's a basic rundown on the function of each of the files and folders that Rails created by default:
+</p>
+<table class="responsive">
+<thead>
+<tr>
+<th>File/Folder</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app/</td>
+<td>Contains the controllers, models, views, helpers, mailers and assets for your application. You'll focus on this folder for the remainder of this guide.</td>
+</tr>
+<tr>
+<td>bin/</td>
+<td>Contains the rails script that starts your app and can contain other scripts you use to deploy or run your application.</td>
+</tr>
+<tr>
+<td>config/</td>
+<td>
+Configure your application's routes, database, and more. This is covered in more detail in
+<a href="configuring.html">Configuring Rails Applications</a>
+.
+</td>
+</tr>
+<tr>
+<td>config.ru</td>
+<td>Rack configuration for Rack based servers used to start the application.</td>
+</tr>
+<tr>
+<td>db/</td>
+<td>Contains your current database schema, as well as the database migrations.</td>
+</tr>
+<tr>
+<td>
+Gemfile
+<br>
+Gemfile.lock
+</td>
+<td>
+These files allow you to specify what gem dependencies are needed for your Rails application. These files are used by the Bundler gem. For more information about Bundler, see
+<a href="http://gembundler.com">the Bundler website</a>
+.
+</td>
+</tr>
+<tr>
+<td>lib/</td>
+<td>Extended modules for your application.</td>
+</tr>
+<tr>
+<td>log/</td>
+<td>Application log files.</td>
+</tr>
+<tr>
+<td>public/</td>
+<td>The only folder seen by the world as-is. Contains static files and compiled assets.</td>
+</tr>
+<tr>
+<td>Rakefile</td>
+<td>This file locates and loads tasks that can be run from the command line. The task definitions are defined throughout the components of Rails. Rather than changing Rakefile, you should add your own tasks by adding files to the lib/tasks directory of your application.</td>
+</tr>
+<tr>
+<td>README.rdoc</td>
+<td>This is a brief instruction manual for your application. You should edit this file to tell others what your application does, how to set it up, and so on.</td>
+</tr>
+<tr>
+<td>test/</td>
+<td>
+Unit tests, fixtures, and other test apparatus. These are covered in
+<a href="testing.html">Testing Rails Applications</a>
+.
+</td>
+</tr>
+<tr>
+<td>tmp/</td>
+<td>Temporary files (like cache, pid, and session files).</td>
+</tr>
+<tr>
+<td>vendor/</td>
+<td>A place for all third-party code. In a typical Rails application this includes vendored gems.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="hello-rails-bang">4 Hello, Rails!</h3>
+<p>To begin with, let's get some text up on screen quickly. To do this, you need to get your Rails application server running.</p>
+<h4 id="starting-up-the-web-server">4.1 Starting up the Web Server</h4>
+<p>
+You actually have a functional Rails application already. To see it, you need to start a web server on your development machine. You can do this by running the following in the
+<code>blog</code>
+directory:
+</p>
+<div class="code_container"><pre>
+<!--""LDS BeginRootFile section="1" filename="startServer.bat" id="Start Server1" platform="WINDOWS" executor="cmd /c"-->
+<!--""LDS BeginCodeReference id="changeDirectoryToNewBase"-->
+<!--""LDS EndCodeReference-->
+bin/rails server
+<!--""LDS EndRootFile-->
+
+
+</pre></div>
+<div class="info">
+<p>
+Compiling CoffeeScript to JavaScript requires a JavaScript runtime and the absence of a runtime will give you an
+<code>execjs</code>
+error. Usually Mac OS X and Windows come with a JavaScript runtime installed. Rails adds the
+<code>therubyracer</code>
+gem to the generated
+<code>Gemfile</code>
+in a commented line for new apps and you can uncomment if you need it.
+<code>therubyrhino</code>
+is the recommended runtime for JRuby users and is added by default to the
+<code>Gemfile</code>
+in apps generated under JRuby. You can investigate about all the supported runtimes at
+<a href="https://github.com/sstephenson/execjs#readme">ExecJS</a>
+.
+</p>
+</div>
+<p>
+This will fire up WEBrick, a web server distributed with Ruby by default. To see your application in action, open a browser window and navigate to
+<a href="http://localhost:3000">http://localhost:3000</a>
+. You should see the Rails default information page:
+</p>
+<p>
+<img alt="Welcome aboard screenshot" src="rails_welcome.png">
+</p>
+<div class="info">
+<p>
+To stop the web server, hit Ctrl+C in the terminal window where it's running. To verify the server has stopped you should see your command prompt cursor again. For most UNIX-like systems including Mac OS X this will be a dollar sign
+<code>$</code>
+. In development mode, Rails does not generally require you to restart the server; changes you make in files will be automatically picked up by the server.
+</p>
+</div>
+<p>
+The "Welcome aboard" page is the
+<em>smoke test</em>
+for a new Rails application: it makes sure that you have your software configured correctly enough to serve a page. You can also click on the
+<em>About your application's environment</em>
+link to see a summary of your application's environment.
+</p>
+<h4 id="say-hello-rails">4.2 Say "Hello", Rails</h4>
+<p>
+To get Rails saying "Hello", you need to create at minimum a
+<em>controller</em>
+and a
+<em>view</em>
+.
+</p>
+<p>
+A controller's purpose is to receive specific requests for the application.
+<em>Routing</em>
+decides which controller receives which requests. Often, there is more than one route to each controller, and different routes can be served by different
+<em>actions</em>
+. Each action's purpose is to collect information to provide it to a view.
+</p>
+<p>
+A view's purpose is to display this information in a human readable format. An important distinction to make is that it is the
+<em>controller</em>
+, not the view, where information is collected. The view should just display that information. By default, view templates are written in a language called eRuby (Embedded Ruby) which is processed by the request cycle in Rails before being sent to the user.
+</p>
+<p>To create a new controller, you will need to run the "controller" generator and tell it you want a controller called "welcome" with an action called "index", just like this:</p>
+<div class="code_container"><pre>
+<!--""LDS BeginRootFile section="1" filename="generateControllers.bat" id="Generate Controller" platform="WINDOWS" executor="cmd /c"-->
+<!--""LDS BeginCodeReference id="changeDirectoryToNewBase"-->
+<!--""LDS EndCodeReference-->
+bin/rails generate controller welcome index
+<!--""LDS EndRootFile-->
+
+
+</pre></div>
+<p>Rails will create several files and a route for you.</p>
+<div class="code_container"><pre>
+create  app/controllers/welcome_controller.rb
+ route  get 'welcome/index'
+invoke  erb
+create    app/views/welcome
+create    app/views/welcome/index.html.erb
+invoke  test_unit
+create    test/controllers/welcome_controller_test.rb
+invoke  helper
+create    app/helpers/welcome_helper.rb
+invoke    test_unit
+create      test/helpers/welcome_helper_test.rb
+invoke  assets
+invoke    coffee
+create      app/assets/javascripts/welcome.js.coffee
+invoke    scss
+create      app/assets/stylesheets/welcome.css.scss
+
+
+
+</pre></div>
+<p>
+Most important of these are of course the controller, located at
+<code>app/controllers/welcome_controller.rb</code>
+and the view, located at
+<code>app/views/welcome/index.html.erb</code>
+.
+</p>
+<p>
+Open the
+<code>app/views/welcome/index.html.erb</code>
+file in your text editor. Delete all of the existing code in the file, and replace it with the following single line of code:
+</p>
+<div class="code_container"><pre>
+<!--""LDS BeginDeclareReference id="eraseFileAndInsertHelloWorld"-->
+<!--""LDS BeginCodeReference id="changeDirectoryToNewBase"-->
+<!--""LDS EndCodeReference
+
+rm app/views/welcome/index.html.erb
+echo ^<h1^>Hello, Rails!^</h1^> > rm app/views/welcome/index.html.erb
+
+<!--""LDS EndDeclareReference-->
+
+<!--""LDS BeginRootFile section="1" filename="changeDisplayedPage.bat" id="Change Displayed Page" platform="WINDOWS" executor="cmd /c"-->
+<!--""LDS BeginCodeReference id="eraseFileAndInsertHelloWorld"-->
+<h1>Hello, Rails!</h1>
+<!--""LDS EndCodeReference-->
+<!--""LDS EndRootFile-->
+
+
+
+</pre></div>
+<h4 id="setting-the-application-home-page">4.3 Setting the Application Home Page</h4>
+<p>
+Now that we have made the controller and view, we need to tell Rails when we want "Hello, Rails!" to show up. In our case, we want it to show up when we navigate to the root URL of our site,
+<a href="http://localhost:3000">http://localhost:3000</a>
+. At the moment, "Welcome aboard" is occupying that spot.
+</p>
+<p>Next, you have to tell Rails where your actual home page is located.</p>
+<p>
+Open the file
+<code>config/routes.rb</code>
+in your editor.
+</p>
+<div class="code_container"><pre>
+Rails.application.routes.draw do
+  get 'welcome/index'
+
+  # The priority is based upon order of creation:
+  # first created -> highest priority.
+  #
+  # You can have the root of your site routed with "root"
+  # root 'welcome#index'
+  #
+  # ...
+
+
+
+</pre></div>
+<p>
+This is your application's
+<em>routing file</em>
+which holds entries in a special DSL (domain-specific language) that tells Rails how to connect incoming requests to controllers and actions. This file contains many sample routes on commented lines, and one of them actually shows you how to connect the root of your site to a specific controller and action. Find the line beginning with
+<code>root</code>
+and uncomment it. It should look something like the following:
+</p>
+<div class="code_container"><pre>
+<!--""LDS BeginChangeFileRegex filename="blog/config/routes.rb" regex="# root 'welcome#index'" id="Change Routing To Lead to new homepage"-->
+root 'welcome#index'
+<!--""LDS EndChangeFileRegex-->
+
+
+
+</pre></div>
+<p>
+<code>root 'welcome#index'</code>
+tells Rails to map requests to the root of the application to the welcome controller's index action and
+<code>get 'welcome/index'</code>
+tells Rails to map requests to
+<a href="http://localhost:3000/welcome/index">http://localhost:3000/welcome/index</a>
+to the welcome controller's index action. This was created earlier when you ran the controller generator (
+<code>rails generate controller welcome index</code>
+).
+</p>
+<p>
+Launch the web server again if you stopped it to generate the controller (
+<code>rails server</code>
+) and navigate to
+<a href="http://localhost:3000">http://localhost:3000</a>
+in your browser. You'll see the "Hello, Rails!" message you put into
+<code>app/views/welcome/index.html.erb</code>
+, indicating that this new route is indeed going to
+<code>WelcomeController</code>
+'s
+<code>index</code>
+action and is rendering the view correctly.
+</p>
+<div class="info">
+<p>
+For more information about routing, refer to
+<a href="routing.html">Rails Routing from the Outside In</a>
+.
+</p>
+</div>
+
+</div>
+<br><br><br>HTML taken from: <a href="http://guides.rubyonrails.org/getting_started.html">http://guides.rubyonrails.org/getting_started.html</a>. Adapted to use LDS
+</body>
+</html>

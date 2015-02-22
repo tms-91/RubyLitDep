@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require 'RubyLitDep'
+
+app = Qt::Application.new(ARGV)
+
+mg = Minigui.new()
+mg.resize(800, 600)
+
+mg.show()
+app.exec()
+puts "fini"
