@@ -79,7 +79,7 @@ class FileIO < Object
 
 	def output_mainfile(basepath)
 		
-		FileUtils.cp("lib/fileio/filefunctions.rb",basepath+"/filefunctions.rb")
+		#FileUtils.cp("fileio/filefunctions.rb",basepath+"/filefunctions.rb")
 		file=self.create_file(basepath,"main.rb")
 		puts("Writing main File")
 

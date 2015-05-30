@@ -1,3 +1,5 @@
+require 'pipeline/pipeline'
+
 class Minigui < Qt::Widget
 	slots 'comboitem(int)', 'basepathclicked()', 'tanglepathclicked()', 'starttangleclicked()', 'runbuttonclicked()', 'startsingleclicked()'
 
@@ -106,7 +108,7 @@ class Minigui < Qt::Widget
 	def starttangleclicked()
 		@runbutton.setEnabled true
 		@startsingle.setEnabled true
-    pipeline = Pipeline.new
+    pipeline = ::Pipeline.new
 		runelements = pipeline.tangle(@basepathstring,@htmlpathstring,@platformstring)
     slmodel = Qt::StringListModel.new;
     slmodel.setStringList(runelements);
@@ -142,7 +144,7 @@ class Minigui < Qt::Widget
 	def runbuttonclicked()
 		FileUtils.cd(@basepathstring) do  # chdir
       begin
-        Pipeline.new.run_file(@runpathstring, self)
+        ::Pipeline.new.run_file(@runpathstring, self)
       rescue => e
         puts e.message
         puts e.backtrace
@@ -169,7 +171,7 @@ class Minigui < Qt::Widget
     #execute selected lines
     FileUtils.cd(@runpathstring) do
       begin
-        Pipeline.new.run_lines(@runpathstring, linenumbers, self)
+        ::Pipeline.new.run_lines(@runpathstring, linenumbers, self)
       rescue => e
         puts e.message
         puts e.backtrace

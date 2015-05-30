@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Marcel Heinz","Philipp Helsper","Tobias M. Schmidt"]
   s.email       = 'tmschmidt@uni-koblenz.de'
   s.files       = %w(LICENSE README Rakefile Gemfile) + Dir.glob("{bin,lib,spec,showcases}/**/*")
-  s.homepage    = ''
+  s.homepage    = 'https://github.com/tms-91/RubyLitDep'
   s.add_runtime_dependency 'qtbindings', '~>4.8'
   s.license       = 'GPL'
 end

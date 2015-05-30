@@ -1,4 +1,4 @@
-
+require 'modelwork/modelworkerregistry'
 class ModelWorkerDispatcher
   
   def initialize

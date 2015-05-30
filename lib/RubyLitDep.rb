@@ -9,28 +9,28 @@ require 'minigui/minigui.rb'
 
 #FileIO
 require 'fileutils.rb'
-Dir["lib/fileio/*.rb"].each { |file| 
+Dir["fileio/*.rb"].each { |file| 
   rfile = file.sub!("lib/","")
   require rfile }
 
 
 #Pipeline
-Dir["lib/pipeline/*.rb"].each { |file| 
+Dir["pipeline/*.rb"].each { |file| 
   rfile = file.sub!("lib/","")
   require rfile }
 
 
 #Model
-Dir["lib/model/*.rb"].each { |file| 
+Dir["model/*.rb"].each { |file| 
   rfile = file.sub!("lib/","")
   require rfile }
 
 #modelworker
-Dir["lib/modelwork/*.rb"].each { |file| 
+Dir["modelwork/*.rb"].each { |file| 
   rfile = file.sub!("lib/","")
   require rfile }
   
 #Parser
-Dir["lib/parser/*.rb"].each { |file| 
+Dir["parser/*.rb"].each { |file| 
   rfile = file.sub!("lib/","")
   require rfile }

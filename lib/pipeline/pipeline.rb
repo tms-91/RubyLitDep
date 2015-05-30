@@ -1,3 +1,31 @@
+require 'parser/parserdispatcher'
+require 'modelwork/modelworkerdispatcher'
+require 'modelwork/codereferenceresolver'
+require 'modelwork/continuefileresolver'
+
+require 'fileio/fileio'
+require 'fileio/fileiohandler'
+require 'fileio/fileiohandlerregistry'
+require 'fileio/fileiochangefilelineshandler'
+require 'fileio/fileiochangefileregexhandler'
+require 'fileio/fileiocodereferencehandler'
+require 'fileio/fileiocontinuefilehandler'
+require 'fileio/fileiodeclarevariableshandler'
+require 'fileio/fileiodeletefilelineshandler'
+require 'fileio/fileioinsertintofilehandler'
+require 'fileio/fileiorootfilehandler'
+require 'fileio/filefunctions'
+
+require 'parser/changefilelinesparser'
+require 'parser/changefileregexparser'
+require 'parser/codereferenceparser'
+require 'parser/continuefileparser'
+require 'parser/declarereferenceparser'
+require 'parser/declarevariablesparser'
+require 'parser/deletefilelinesparser'
+require 'parser/insertintofileparser'
+require 'parser/rootfileparser'
+
 
 class Pipeline
   
@@ -101,7 +129,7 @@ class Pipeline
   end
   
   def run_file(runpath, widget)
-    lines = File.readlines(runpath+'\\main.rb')
+    lines = File.readlines(runpath+'/main.rb')
     lines.each do |item| 
       if item.include?('#Variable')
         variables = item.split(':')[1].strip
@@ -131,7 +159,7 @@ class Pipeline
       variables = name.split('=')[1].strip.gsub('"', '')
       name = "#Variable: "+variables
     end
-    lines = File.readlines(runpath+'\\main.rb')
+    lines = File.readlines(runpath+'/main.rb')
     regex = /.*#{name}.*/
     lines.each { |line|  
       match = line.match(regex)
@@ -159,7 +187,7 @@ class Pipeline
   end
   
   def run_lines(runpath, linenumbers, widget)
-    lines = File.readlines(runpath+'\\main.rb')
+    lines = File.readlines(runpath+'/main.rb')
     linenumbers.each { |number| 
       
       item = lines[number]

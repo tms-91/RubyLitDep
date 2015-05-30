@@ -15,7 +15,7 @@ class FileIORootFileHandler < FileIOHandler
 				puts "Executor: "+command.get_executor()
 			end
 			if(self.get_platform()==command.get_platform())
-				out = File.new(basepath+"\\"+command.get_filename(),"w+")
+				out = File.new(basepath+"/"+command.get_filename(),"w+")
 					
 				out.puts(command.get_codesnippet())
 				out.close()

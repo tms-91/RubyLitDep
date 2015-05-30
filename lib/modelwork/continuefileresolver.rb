@@ -1,3 +1,17 @@
+
+require 'modelwork/modelworker.rb'
+
+require 'model/block'
+require 'model/command'
+require 'model/changefilelines'
+require 'model/changefileregex'
+require 'model/codereference'
+require 'model/continuefile'
+require 'model/declarereference'
+require 'model/declarevariables'
+require 'model/deletefilelines'
+require 'model/insertintofile'
+require 'model/rootfile'
 class Continuefileresolver < ModelWorker
   
   def refine(script)

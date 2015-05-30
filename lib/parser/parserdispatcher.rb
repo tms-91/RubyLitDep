@@ -4,6 +4,7 @@
 
 require 'io/console'
 require 'model/script'
+require 'parser/parserregistry'
 #require 'parser/blockparser'
 #require 'parser/changefilelinesparser'
 #require 'parser/changefileregexparser'

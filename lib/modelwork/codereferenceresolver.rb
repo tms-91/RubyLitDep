@@ -1,6 +1,18 @@
 
 require 'modelwork/modelworker.rb'
 
+require 'model/block'
+require 'model/command'
+require 'model/changefilelines'
+require 'model/changefileregex'
+require 'model/codereference'
+require 'model/continuefile'
+require 'model/declarereference'
+require 'model/declarevariables'
+require 'model/deletefilelines'
+require 'model/insertintofile'
+require 'model/rootfile'
+
 class Codereferenceresolver < ModelWorker
   
   def refine(script)
@@ -27,10 +39,12 @@ class Codereferenceresolver < ModelWorker
           cmdline = snippet.match('<!--\"\"LDS BeginCodeReference id=\"([^\"])+\"').to_s
           match = cmdline.match('id=\"([^\"])+\"').to_s
           refid = match.split('=')[1].delete('\"').to_s
+          
+          puts "trying to resolve reference "+refid
           referenced = map[refid]
           replacingtext = referenced.get_codesnippet
    
-          regexstring = '<!--\"\"LDS BeginCodeReference id=\"([^\"])+\".*<!--\"\"LDS EndCodeReference(-->)?'
+          regexstring = '<!--\"\"LDS BeginCodeReference id=\"'+refid+'\".*<!--\"\"LDS EndCodeReference( )?(-->)?'
           regex = Regexp.new(regexstring, Regexp::MULTILINE)
           snippet.sub!(regex, replacingtext)
           
