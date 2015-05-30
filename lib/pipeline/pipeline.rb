@@ -35,17 +35,17 @@ class Pipeline
     
     @modelworkerdispatcher.register_modelworker(Codereferenceresolver.new)
     @modelworkerdispatcher.register_modelworker(Continuefileresolver.new)
-    script = @modelworkerdispatcher.resolve(script)
+    script = @modelworkerdispatcher.refine(script)
 
-    @fio.add_command_handler(FileIOCodeReferenceHandler.new("CodeReference",platform))
-    @fio.add_command_handler(FileIORootFileHandler.new("RootFile",platform))
-  	@fio.add_command_handler(FileIOChangeFileLinesHandler.new("ChangeFileLines",platform))
-  	@fio.add_command_handler(FileIOChangeFileRegexHandler.new("ChangeFileRegex",platform))
-   	@fio.add_command_handler(FileIOContinueFileHandler.new("ContinueFile",platform))
-  	@fio.add_command_handler(FileIODeleteFileLinesHandler.new("DeleteFileLines",platform))
-  	@fio.add_command_handler(FileIOInsertIntoFileHandler.new("InsertIntoFile",platform))
-  	@fio.add_command_handler(FileIODeclareVariablesHandler.new("DeclareVariables",platform))
-    @fio.start_file_output(script, basepath)
+    @fileio.add_command_handler(FileIOCodeReferenceHandler.new("CodeReference",platform))
+    @fileio.add_command_handler(FileIORootFileHandler.new("RootFile",platform))
+  	@fileio.add_command_handler(FileIOChangeFileLinesHandler.new("ChangeFileLines",platform))
+  	@fileio.add_command_handler(FileIOChangeFileRegexHandler.new("ChangeFileRegex",platform))
+   	@fileio.add_command_handler(FileIOContinueFileHandler.new("ContinueFile",platform))
+  	@fileio.add_command_handler(FileIODeleteFileLinesHandler.new("DeleteFileLines",platform))
+  	@fileio.add_command_handler(FileIOInsertIntoFileHandler.new("InsertIntoFile",platform))
+  	@fileio.add_command_handler(FileIODeclareVariablesHandler.new("DeclareVariables",platform))
+    @fileio.start_file_output(script, basepath)
     
     return declare_runelementstrings(script, platform)
   end
@@ -82,8 +82,12 @@ class Pipeline
     runelements.each { |runelement| 
       match = htmlcontent.match(/<!--""LDS.*#{runelement}.*/)
       
-      unless match==nil
-        htmlcontent.sub!(match.to_s, '<a href="'+runelement+'">Execute this</a>'+match.to_s)
+      unless match==nil 
+        if match.to_s.include?("DeclareVariables")
+          htmlcontent.sub!(match.to_s, "<a href='"+runelement+"'>Replace Variable</a></br>"+match.to_s)
+        else
+          htmlcontent.sub!(match.to_s, '<a href="'+runelement+'">Execute this</a></br>'+match.to_s)
+        end
       else
         puts "Not Working:"+runelement
       end
@@ -103,8 +107,12 @@ class Pipeline
         variables = item.split(':')[1].strip
         variables.split(',').each { |var| 
           value = QWidget.new.get_value(widget, var+' = ')
+          if(value.nil?)
+            return
+          end
+          value = value.to_s
           Dir.foreach(runpath) do |file|
-            next if file == '.' or file == '..'
+            next if file == '.' or file == '..' or File.directory?(file)
             # do work on real items
             puts file
             changefileregex(file,'\$.\$-'+var+'-\$.\$',value)
@@ -118,16 +126,25 @@ class Pipeline
   end
   
   def run_singlecmd(runpath, name, widget)
+    puts name+"moep"
+    if name.include?("variables=")
+      variables = name.split('=')[1].strip.gsub('"', '')
+      name = "#Variable: "+variables
+    end
     lines = File.readlines(runpath+'\\main.rb')
     regex = /.*#{name}.*/
     lines.each { |line|  
       match = line.match(regex)
       unless match==nil
-        if(match.to_s.include?('variable'))
-          variables = match.to_s.split('=')[1].strip
+        if(match.to_s.include?('Variable'))
+          variables = match.to_s.split(':')[1].strip
           variables = variables.gsub('"',"")
           variables.split(',').each { |var| 
             value = QWidget.new.get_value(widget, var+' = ')
+            if(value.nil?)
+              return
+            end
+            value = value.to_s
             Dir.foreach(runpath) do |file|
               next if file == '.' or file == '..'
               # do work on real items
@@ -135,7 +152,6 @@ class Pipeline
             end
           }
         else
-          puts line
           eval(line)
         end
       end
@@ -152,6 +168,10 @@ class Pipeline
         variables = item.split(':')[1].strip
         variables.split(',').each { |var| 
           value = QWidget.new.get_value(widget, var+' = ')
+          if(value.nil?)
+            return
+          end
+          value = value.to_s
           Dir.foreach(runpath) do |file|
             next if file == '.' or file == '..'
             # do work on real items

@@ -1,5 +1,9 @@
 <p>Acknowledgment: The step-to-to development section is entirely based on the Django documentation https://docs.djangoproject.com and specifically the tutorial &ldquo;Writing your first Django app&rdquo; (https://docs.djangoproject.com/en/1.6/intro/tutorial01/). The point of this document is to describe the development of the app in a concise manner, while also showing exactly what file edits need to be performed. This document does not, in any way, replace or compete with the Django documenation. In fact, you are much more likely to understand what you are doing, if you follow the original documentation. However, if you just want to really quickly get going and reproduce the file system of (some version of) the app, then this document may be helpful.</p>
 
+<h2>0. Software Requirements: </h2>
+You need to install Python 2.7.5 and Django 1.6.2. After installing
+Python and pip you may simply execute 'pip install Django==1.6.2' in the shell.
+
 <h2>I. Preamble Let's develop a polls application for polls like this:</h2>
 
 <p><img alt="executorPoll" src="executorPoll.png" /></p>
@@ -49,8 +53,7 @@ Python 2.7.5
 <br/>
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;">
 <!--""LDS BeginContinueFile section="2" id="Test Django Installation1" filename="testDjangoInstallation.bat" --> 
-python -c "import django; 
-print(django.get_version())" 
+python -c "import django; print(django.get_version())" 
 <!--""LDS EndContinueFile--> 
 </div>
 <br/>

@@ -26,6 +26,7 @@
 <!--""LDS DeclareVariables variables="password" -->
 <!--""LDS BeginRootFile section="1" filename="passwd.sh" id="change password" platform="UNIX" executor="sh" -->
 passwd pi
+$.$-password-$.$
 <!--""LDS EndRootFile -->
 </ul>
 
@@ -109,8 +110,11 @@ sudo touch phpinfo.php
 
 <ul>
 <li>Install MySQL</li>
+<!--""LDS DeclareVariables variables="usernamemysql,passwordmysql" -->
 <!--""LDS BeginRootFile section="1" filename="installmysql.sh" id="install mysql" platform="UNIX" executor="sh" -->
 sudo apt-get install mysql-server mysql-client php5-mysql
+$.$-usernamemysql-$.$
+$.$-passwordmysql-$.$
 <!--""LDS EndRootFile -->
 <li>When the command pops up type a password of your choice.</li>
 <li>When the installation is finished restart the raspberry.</li>
@@ -163,14 +167,15 @@ sudo nano /etc/proftpd/proftpd.conf
 <li>Safe the file with Strg+O and Strg+X</li>
 </ul>
 <li>Generate a virtual user</li>
+<!--""LDS DeclareVariables variables="usernameftp,passwordftp" -->
 <!--""LDS BeginRootFile section="1" filename="virtualuser.sh" id="virtual user" platform="UNIX" executor="sh" -->
 cd /etc/proftpd/
-sudo ftpasswd --passwd --name ftpuser --uid 33 --gid 33 --home /var/www/ --shell /bin/false
+sudo ftpasswd --passwd --name $.$-usernameftp-$.$ --uid 33 --gid 33 --home /var/www/ --shell /bin/false
+$.$-passwordftp-$.$
 <!--""LDS EndRootFile -->
 
 Type the fptuser password of your choice.
 
-<!--""LDS DeclareVariables variables="username,password2,name,var3" -->
 <!--""LDS BeginContinueFile id="virtualuser part2" section="2" filename="virtualuser.sh" -->
 sudo /etc/init.d/proftpd restart
 chmod g+s /var/www

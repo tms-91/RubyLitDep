@@ -11,7 +11,7 @@ class ModelWorkerDispatcher
   
   def refine(script)
     @registry.get_entries.each { |modelworker|  
-      script = modelworker.resolve(script)
+      script = modelworker.refine(script)
     }
     
     return script

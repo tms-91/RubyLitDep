@@ -185,17 +185,17 @@ class Minigui < Qt::Widget
 	    @listview.spacing = 10
 	    @listview.setSelectionMode(Qt::AbstractItemView::ExtendedSelection);
 	  #movement snap activates drag and drop. By dropping an item, the item
-    #is copied at the placed it's dropped at.  
+    #is copied at the placed it's dropped at.
     #@listview.movement = Qt::ListView::Snap
 	    @listview.acceptDrops = false
 	    @listview.dropIndicatorShown = false
     slmodel = Qt::StringListModel.new;
-    slmodel.setStringList(['test1','test2','test3']);
+    slmodel.setStringList([]);
     #items = MyModel.new()
     @listview.model = slmodel
-    
-    
-    
+
+
+
 	    #start all files
 	    connect(@runbutton, SIGNAL('clicked()'), self, SLOT('runbuttonclicked()'))
 		@runbutton.setEnabled false
