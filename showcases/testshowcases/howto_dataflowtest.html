@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>HowTo: Write Hello Worlds!</title>
+</head>
+<body>
+<center>
+<h1>How to write Hello World Scripts for command prompt</h1>
+<h2>The basic scripts</h2>
+Windows:
+<!--""LDS DeclareVariables variables="name" -->
+<!--""LDS BeginDataRootFile section="1" filename="helloworld.bat" id="hello world win" platform="WINDOWS" executor="cmd /c" varname="reecho" -->
+@echo off
+echo Hello $.$-name-$.$!
+<!--""LDS EndDataRootFile -->
+
+<!--""LDS BeginRootFile section="1" filename="reecho.bat" id="repeat echo" platform="WINDOWS" executor="cmd /c" -->
+@echo off
+echo $.$-reecho-$.$
+<!--""LDS EndRootFile -->
+
+</center>
+</body>
+</html>

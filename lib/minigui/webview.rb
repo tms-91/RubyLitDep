@@ -22,7 +22,7 @@ class MyWebView < Qt::Widget
     puts id
 		FileUtils.cd(@minigui.get_basepathstring) do  # chdir
       begin
-        Pipeline.new.run_singlecmd(@minigui.get_basepathstring, id, @minigui)
+        RunStage.new.run_singlecmd(@minigui.get_basepathstring, id, @minigui)
       rescue => e
         puts e.message
         puts e.backtrace

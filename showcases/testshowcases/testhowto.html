@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>HowTo: Write Hello Worlds!</title>
+</head>
+<body>
+<center>
+<h1>How to write Hello World Scripts for command prompt</h1>
+<h2>The basic scripts</h2>
+Windows:
+<div style="width:800px;height:150px;line-height:3em;overflow:scroll;padding:5px;background-color:#FCFADD;color:#714D03;scrollbar-base-color:#DEBB07;">
+<pre>
+<!--""LDS DeclareVariables variables="name" -->
+<!--""LDS BeginRootFile section="1" filename="helloworld.bat" id="hello world win" platform="WINDOWS" executor="cmd /c" -->
+@echo off
+echo Hello $.$-name-$.$!
+<!--""LDS EndRootFile -->
+</pre>
+</div>
+Unix:
+<!--""LDS BeginRootFile section="1" filename="helloworld.sh" id="hello world unix" platform="UNIX" executor="sh" -->
+#!/bin/sh
+echo Hello $.$-name-$.$!
+<!--""LDS EndRootFile -->
+
+<!--""LDS BeginDeclareReference id="pause" -->
+pause
+<!--""LDS EndDeclareReference -->
+
+<!--""LDS BeginRootFile section="1" filename="echopause.bat" id="echo plus pause" platform="WINDOWS" executor="cmd /c" -->
+<!--""LDS BeginCodeReference id="hello world win" -->
+print hello world
+<!--""LDS EndCodeReference -->
+echo mytest
+<!--""LDS BeginCodeReference id="pause" -->
+hold the console open
+<!--""LDS EndCodeReference -->
+<!--""LDS EndRootFile -->
+
+</center>
+</body>
+</html>

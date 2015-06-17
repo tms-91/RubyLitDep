@@ -49,7 +49,8 @@ class ParserDispatcher
         #of the exact class.
         unless cmdparser.is_a?(CommandParser)
           puts cmdparser.class.to_s
-           raise 'Something went wrong in the dispatching process' 
+           raise 'Something went wrong in the dispatching process
+           while trying to parse with parserclass:'+cmdparser.class.to_s 
         end
         
         

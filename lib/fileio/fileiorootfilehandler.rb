@@ -3,18 +3,18 @@ require "model/rootfile"
 
 class FileIORootFileHandler < FileIOHandler
 
-	def initialize(handler_for,platform)
-		super(handler_for,platform)
+	def initialize(handler_for)
+		super(handler_for)
 	end
 	
-	def process_command(command,basepath)
+	def process_command(command,basepath,platform)
 		if(command.kind_of?(RootFile))
 			puts "File: "+command.get_filename()
 			puts "Platform: "+command.get_platform()
 			unless command.get_executor().nil?
 				puts "Executor: "+command.get_executor()
 			end
-			if(self.get_platform()==command.get_platform())
+			if(platform==command.get_platform())
 				out = File.new(basepath+"/"+command.get_filename(),"w+")
 					
 				out.puts(command.get_codesnippet())

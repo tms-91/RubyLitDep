@@ -35,7 +35,7 @@ class FileIO < Object
 		end
 	end
 
-	def dispatch_io_operation(command,basepath)
+	def dispatch_io_operation(command,basepath,platform)
 
 		if(!basepath.is_a?(String))
 			return nil;
@@ -48,7 +48,7 @@ class FileIO < Object
 
 			handler = @handler_registry.get_handler(command.class.to_s)
 
-			return_hash = handler.process_command(command,basepath)
+			return_hash = handler.process_command(command,basepath,platform)
 			if((return_hash!=nil)&&(return_hash.kind_of?(Hash)))
 				@written_files.push(return_hash)
 			end
@@ -57,7 +57,7 @@ class FileIO < Object
 		end
 	end
 
-	def start_file_output(script,basepath)
+	def start_file_output(script,basepath, platform)
 		if(!script.is_a?(Script))
 			return nil
 
@@ -71,7 +71,7 @@ class FileIO < Object
 			command=script.get_command_at(command_index)
 
 			puts "Dispatching command "+command_index.to_s
-			self.dispatch_io_operation(command,basepath)
+			self.dispatch_io_operation(command,basepath,platform)
 
 		end
 		self.output_mainfile(basepath)
@@ -89,10 +89,9 @@ class FileIO < Object
 			if(main_command[:executor]!=nil)
 				if((main_command[:type]==="execute"))
 					if((main_command[:executor]===""))
-						
 						file.puts("system('"+main_command[:filename]+"')"+"\t#"+main_command[:id])
 					else
-						#using ruby's system()-method
+						#using ruby's system-method
 						file.puts("system('"+main_command[:executor]+" "+main_command[:filename]+"')"+"\t#"+main_command[:id])
 					end
 				elsif((main_command[:type]==="fileop"))
@@ -103,7 +102,21 @@ class FileIO < Object
 					end
 				elsif((main_command[:type]==="varOp"))
 					file.puts(main_command[:executor])
-				end
+        elsif((main_command[:type]=="dataFlow"))
+          if((main_command[:executor]===""))
+						file.puts("Open3.popen2e('"+main_command[:filename]+"') \{|i,o,t| replacevariable('"+basepath+"','"+main_command[:var]+"',o.read) \}"+"\t#"+main_command[:id])
+					else
+						#using ruby's system-method
+						file.puts("Open3.popen2e('"+main_command[:executor]+" "+main_command[:filename]+"') \{|i,o,t| replacevariable('"+basepath+"','"+main_command[:var]+"',o.read) \} \t#"+main_command[:id])
+					end
+        elsif((main_command[:type]=="constraint"))
+          if((main_command[:executor]===""))
+						file.puts("puts eval(\"Open3.popen2e('"+main_command[:filename]+"') \{|i,o,t| if o.read.include?('"+main_command[:value]+"') then 'Test success:"+main_command[:id]+"' else 'Test failed:"+main_command[:id]+"' end \}\") ")
+					else
+						#using ruby's system-method
+						file.puts("puts eval(\"Open3.popen2e('"+main_command[:executor]+" "+main_command[:filename]+"') \{|i,o,t| if o.read.include?('"+main_command[:value]+"') then 'Test success:"+main_command[:id]+"' else 'Test failed:"+main_command[:id]+"' end \}\") ")
+					end
+        end
 			end
 		end
 		file.close()

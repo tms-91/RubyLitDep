@@ -37,10 +37,14 @@ def changefilelines(filename,from,to,substitute)
 	infile.close()
   FileUtils.remove_file(infile, true)
 	outfile.close()
-
-
 end
 
+def replacevariable(runpath, var, value)
+  Dir.foreach(runpath) do |file|
+    next if file == '.' or file == '..' or File.directory?(file)
+    changefileregex(file,'\$.\$-'+var+'-\$.\$',value)
+  end
+end
 
 def changefileregex(filename,regex,substitute)
 	if(substitute.nil?)
@@ -100,9 +104,15 @@ def insertintofile(filename,at_line,substitute)
 		while line=infile.gets
 			if(readcount==at_line)
 				outfile.puts(substitute)
+				written=true
 			end
 			readcount=readcount+1
 			outfile.puts(line)
+		end
+		if(!written)
+			blanks=at_line - readcount + 1
+			blanks.times {outfile.puts("\n")}
+			outfile.puts(substitute)
 		end
 
 

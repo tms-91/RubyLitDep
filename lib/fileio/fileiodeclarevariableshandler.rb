@@ -2,11 +2,11 @@ require "fileio/fileiohandler"
 
 class FileIODeclareVariablesHandler < FileIOHandler
 
-	def initialize(handler_for,platform)
-		super(handler_for,platform)
+	def initialize(handler_for)
+		super(handler_for)
 	end
 	
-	def process_command(command,platform)
+	def process_command(command,basepath,platform)
 		variables = command.get_variables()
 		
 		return_string =""

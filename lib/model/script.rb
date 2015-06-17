@@ -22,10 +22,10 @@ class Script
   end
   
   def get_number_commands
-	return @commands.length
+    return @commands.length
   end
   
   def get_command_at(position)
-	return @commands.at(position)
+    return @commands.at(position)
   end
 end

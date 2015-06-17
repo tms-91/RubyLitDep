@@ -16,7 +16,7 @@ require 'model/rootfile'
 class Codereferenceresolver < ModelWorker
   
   def refine(script)
-    puts "resolving references in script"
+    #puts "resolving references in script"
     #alle Block ids speichern
     #in allen Blocks CodeReference ersetzen durch Blöcke mit entsprechender Id
     map = {}
@@ -33,22 +33,22 @@ class Codereferenceresolver < ModelWorker
     script.get_commands.each { |cmd| 
       if cmd.is_a?(Block)
         snippet = cmd.get_codesnippet
-        puts cmd.get_id
+        #puts cmd.get_id
         while(snippet.include?("<!--\"\"LDS BeginCodeReference"))
-          puts "trying to resolve reference"
+          #puts "trying to resolve reference"
           cmdline = snippet.match('<!--\"\"LDS BeginCodeReference id=\"([^\"])+\"').to_s
           match = cmdline.match('id=\"([^\"])+\"').to_s
           refid = match.split('=')[1].delete('\"').to_s
           
-          puts "trying to resolve reference "+refid
+          #puts "trying to resolve reference "+refid
           referenced = map[refid]
           replacingtext = referenced.get_codesnippet
    
-          regexstring = '<!--\"\"LDS BeginCodeReference id=\"'+refid+'\".*<!--\"\"LDS EndCodeReference( )?(-->)?'
+          regexstring = '<!--\"\"LDS BeginCodeReference id=\"'+refid+'\".*?<!--\"\"LDS EndCodeReference( )?(-->)?'
           regex = Regexp.new(regexstring, Regexp::MULTILINE)
           snippet.sub!(regex, replacingtext)
-          
-          puts snippet
+          snippet.strip!
+          #puts snippet
         end
         cmd.set_codesnippet(snippet)
       end

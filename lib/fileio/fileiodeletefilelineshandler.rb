@@ -2,12 +2,12 @@ require "fileio/fileiohandler"
 
 class FileIODeleteFileLinesHandler < FileIOHandler
 
-	def initialize(handler_for,platform)
-		super(handler_for,platform)
+	def initialize(handler_for)
+		super(handler_for)
 	end
 		
-	def process_command(command,platform)
-		if(self.get_platform()==command.get_platform())
+	def process_command(command,basepath,platform)
+		if(platform==command.get_platform())
 				
 			filename="'"+command.get_filename+"'"
 			from=command.get_startline

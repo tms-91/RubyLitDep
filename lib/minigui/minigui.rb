@@ -1,4 +1,5 @@
-require 'pipeline/pipeline'
+require 'pipeline/tanglestage'
+require 'pipeline/runstage'
 
 class Minigui < Qt::Widget
 	slots 'comboitem(int)', 'basepathclicked()', 'tanglepathclicked()', 'starttangleclicked()', 'runbuttonclicked()', 'startsingleclicked()'
@@ -35,8 +36,8 @@ class Minigui < Qt::Widget
 
 		# define layout handling
 		vbox = Qt::VBoxLayout.new
-		vbox.addLayout generateLineOne()
-		vbox.addLayout generateLineTwo()
+		vbox.addWidget generateLineOne()
+		vbox.addWidget generateLineTwo()
 		vbox.addWidget @webkit
 
 		# general layout
@@ -71,8 +72,6 @@ class Minigui < Qt::Widget
 
 	def generateLineOne()
 		vbox = Qt::VBoxLayout.new
-		label = Qt::Label.new('<big>Select your System and Filepath</big>')
-		vbox.addWidget label
 
 		hbox = Qt::HBoxLayout.new
 		@combo.addItem "WINDOWS"
@@ -85,9 +84,13 @@ class Minigui < Qt::Widget
 
 		@basepathlabel.setReadOnly(true)
 		hbox.addWidget @basepathlabel
-
 		vbox.addLayout hbox
-		return vbox
+
+		groupbox = Qt::GroupBox.new(tr("Select your System and Filepath"))
+		groupbox.setSizePolicy(Qt::SizePolicy::Preferred, Qt::SizePolicy::Fixed)
+		groupbox.setLayout vbox
+		
+		return groupbox
 	end
 
 	def tanglepathclicked()
@@ -108,20 +111,20 @@ class Minigui < Qt::Widget
 	def starttangleclicked()
 		@runbutton.setEnabled true
 		@startsingle.setEnabled true
-    pipeline = ::Pipeline.new
-		runelements = pipeline.tangle(@basepathstring,@htmlpathstring,@platformstring)
+    tanglestage = TangleStage.new
+		runelements = tanglestage.tangle(@basepathstring,@htmlpathstring,@platformstring)
     slmodel = Qt::StringListModel.new;
     slmodel.setStringList(runelements);
     #items = MyModel.new(runelements)
     @listview.model = slmodel
-    newhtmlpath = pipeline.pushexeclinks(runelements, @htmlpathstring)
+    newhtmlpath = tanglestage.pushexeclinks(runelements, @htmlpathstring)
     loadWebPage(newhtmlpath)
 	end
 
 	def generateLineTwo()
 		vbox = Qt::VBoxLayout.new
-		label = Qt::Label.new('<big>Select the path to tangle your file to</big>')
-		vbox.addWidget label
+		#label = Qt::Label.new('<big>Select the path to tangle your file to</big>')
+		#vbox.addWidget label
 
 		hbox = Qt::HBoxLayout.new
 
@@ -137,14 +140,19 @@ class Minigui < Qt::Widget
 		hbox.addWidget @starttangle
 
 		vbox.addLayout hbox
-		return vbox
+
+		groupbox = Qt::GroupBox.new(tr("Select the path to tangle your file to"))
+		groupbox.setSizePolicy(Qt::SizePolicy::Preferred, Qt::SizePolicy::Fixed)
+		groupbox.setLayout vbox
+
+		return groupbox
 	end
 
 	# execute all files
 	def runbuttonclicked()
 		FileUtils.cd(@basepathstring) do  # chdir
       begin
-        ::Pipeline.new.run_file(@runpathstring, self)
+        RunStage.new.run_file(@runpathstring, self)
       rescue => e
         puts e.message
         puts e.backtrace
@@ -160,7 +168,6 @@ class Minigui < Qt::Widget
     @listview.selectionModel.selectedIndexes.each { |index|
       linenumbers.push(index.row)
     }
-    #NEW
     #if only one element is selected this automatically switches
     #selection to the next element
     if linenumbers.size == 1
@@ -171,7 +178,7 @@ class Minigui < Qt::Widget
     #execute selected lines
     FileUtils.cd(@runpathstring) do
       begin
-        ::Pipeline.new.run_lines(@runpathstring, linenumbers, self)
+        RunStage.new.run_lines(@runpathstring, linenumbers, self)
       rescue => e
         puts e.message
         puts e.backtrace
