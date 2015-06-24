@@ -78,7 +78,7 @@ class FileIO < Object
 	end
 
 	def output_mainfile(basepath)
-		
+
 		#FileUtils.cp("fileio/filefunctions.rb",basepath+"/filefunctions.rb")
 		file=self.create_file(basepath,"main.rb")
 		puts("Writing main File")
@@ -90,6 +90,10 @@ class FileIO < Object
 				if((main_command[:type]==="execute"))
 					if((main_command[:executor]===""))
 						file.puts("system('"+main_command[:filename]+"')"+"\t#"+main_command[:id])
+					elsif((main_command[:executor].include? "$.$-f-$.$"))
+						#using ruby's system-method
+						merged_executor=main_command[:executor].gsub("$.$-f-$.$",main_command[:filename])
+						file.puts("system('"+merged_executor+"')"+"\t#"+main_command[:id])
 					else
 						#using ruby's system-method
 						file.puts("system('"+main_command[:executor]+" "+main_command[:filename]+"')"+"\t#"+main_command[:id])
@@ -105,6 +109,10 @@ class FileIO < Object
         elsif((main_command[:type]=="dataFlow"))
           if((main_command[:executor]===""))
 						file.puts("Open3.popen2e('"+main_command[:filename]+"') \{|i,o,t| replacevariable('"+basepath+"','"+main_command[:var]+"',o.read) \}"+"\t#"+main_command[:id])
+					elsif((main_command[:executor].include? "$.$-f-$.$"))
+
+						merged_executor=main_command[:executor].gsub("$.$-f-$.$",main_command[:filename])
+						file.puts("Open3.popen2e('"+merged_executor+"') \{|i,o,t| replacevariable('"+basepath+"','"+main_command[:var]+"',o.read) \} \t#"+main_command[:id])
 					else
 						#using ruby's system-method
 						file.puts("Open3.popen2e('"+main_command[:executor]+" "+main_command[:filename]+"') \{|i,o,t| replacevariable('"+basepath+"','"+main_command[:var]+"',o.read) \} \t#"+main_command[:id])
@@ -112,6 +120,10 @@ class FileIO < Object
         elsif((main_command[:type]=="constraint"))
           if((main_command[:executor]===""))
 						file.puts("puts eval(\"Open3.popen2e('"+main_command[:filename]+"') \{|i,o,t| if o.read.include?('"+main_command[:value]+"') then 'Test success:"+main_command[:id]+"' else 'Test failed:"+main_command[:id]+"' end \}\") ")
+					elsif((main_command[:executor].include? "$.$-f-$.$"))
+
+						merged_executor=main_command[:executor].gsub("$.$-f-$.$",main_command[:filename])
+						file.puts("puts eval(\"Open3.popen2e('"+merged_executor+"') \{|i,o,t| if o.read.include?('"+main_command[:value]+"') then 'Test success:"+main_command[:id]+"' else 'Test failed:"+main_command[:id]+"' end \}\") ")
 					else
 						#using ruby's system-method
 						file.puts("puts eval(\"Open3.popen2e('"+main_command[:executor]+" "+main_command[:filename]+"') \{|i,o,t| if o.read.include?('"+main_command[:value]+"') then 'Test success:"+main_command[:id]+"' else 'Test failed:"+main_command[:id]+"' end \}\") ")
