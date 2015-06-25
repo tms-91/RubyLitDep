@@ -105,6 +105,7 @@ class TangleStage
         variables = cmd.get_variables.to_s
         variables = variables.gsub("[","")
         variables = variables.gsub("]","")
+        variables = variables.gsub('", "',",")
         runelements.push("variables="+variables)
       end
       
