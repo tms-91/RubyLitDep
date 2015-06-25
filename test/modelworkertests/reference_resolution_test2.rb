@@ -17,8 +17,7 @@ Dir["model/*.rb"].each { |file|
   #rfile = file.sub!("lib/","")
   require file }
 
-
-class Modelworkertest < Test::Unit::TestCase
+class ReferenceResolutionTest2 < Test::Unit::TestCase
   def setup
     parserdispatcher = ParserDispatcher.new
     parserdispatcher.register_parser(ChangeFileLinesParser.new("ChangeFileLines"))
@@ -30,32 +29,36 @@ class Modelworkertest < Test::Unit::TestCase
     parserdispatcher.register_parser(DeleteFileLinesParser.new("DeleteFileLines"))
     parserdispatcher.register_parser(InsertIntoFileParser.new("InsertIntoFile"))
     parserdispatcher.register_parser(RootFileParser.new("RootFile"))
-    @script = parserdispatcher.parse("../showcases/testshowcases/testhowto.html")
+    puts "registered parsers"
+    @script = parserdispatcher.parse("../showcases/testshowcases/howto_referencewithpre.html")
+    puts "parsed"
     modelworkerdispatcher = ModelWorkerDispatcher.new
     modelworkerdispatcher.register_modelworker(Codereferenceresolver.new)
     modelworkerdispatcher.register_modelworker(Continuefileresolver.new)
+    puts "refine"
     @script = modelworkerdispatcher.refine(@script)
+    puts "refined"
   end
   
   def test_cmdcount
     #TODO: Write test
-    assert_equal(4, @script.get_number_commands())
+    assert_equal(1, @script.get_number_commands())
     # assert_equal("foo", bar)
   end
   
   def test_referenceresolution
-    assert_instance_of(RootFile, @script.get_command_at(3))
-    bf = @script.get_command_at(3)
+    assert_instance_of(RootFile, @script.get_command_at(0))
+    rf = @script.get_command_at(0)
     
-    assert_equal('1', bf.get_section)
-    assert_equal('echopause.bat', bf.get_filename)
-    assert_equal('echo plus pause', bf.get_id)
-    assert_equal('WINDOWS', bf.get_platform)
-    assert_equal('cmd /c', bf.get_executor)
+    assert_equal('1', rf.get_section)
+    assert_equal('cloneRepo.sh', rf.get_filename)
+    assert_equal('clone repository', rf.get_id)
+    assert_equal('UNIX', rf.get_platform)
+    assert_equal('sh', rf.get_executor)
     
-    text = bf.get_codesnippet
+    text = rf.get_codesnippet
     text.strip!
-    expected = "@echo off\necho Hello $.$-name-$.$!\n\necho mytest\npause"
+    expected = "cd ~/Code\n\n\n\ngit clone git://github.com/intercity/chef-repo.git chef_repo"
     assert_equal(expected, text)
   end
 end

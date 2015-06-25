@@ -115,28 +115,4 @@ class TangleStage
     return runelements
   end
   
-  def pushexeclinks(runelements, htmlpath)
-    htmlcontent = File.read(htmlpath)
-    runelements.each { |runelement| 
-      match = htmlcontent.match(/<!--""LDS.*#{runelement}.*/)
-      
-      unless match==nil 
-        if match.to_s.include?("DeclareVariables")
-          htmlcontent.sub!(match.to_s, "<a href='"+runelement+"'>Replace Variable</a></br>"+match.to_s)
-        else
-          htmlcontent.sub!(match.to_s, '</br><a style="text-decoration: none; background-color: #EEEEEE; color: #333333; padding: 2px 6px 2px 6px;  border-top: 1px solid #CCCCCC;  border-right: 1px solid #333333;  border-bottom: 1px solid #333333;  border-left: 1px solid #CCCCCC;" href="'+runelement+'">Execute</a></br></br>'+match.to_s)
-        end
-      else
-        puts "Not Working:"+runelement
-      end
-    }
-    newhtmlpath = htmlpath.sub(".html","executable.html")
-    file = File.new(newhtmlpath,"w+")
-    file.puts(htmlcontent)
-    file.close
-    
-    return newhtmlpath
-  end
-  
-  
 end

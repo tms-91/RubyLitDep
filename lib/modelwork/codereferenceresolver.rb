@@ -44,7 +44,7 @@ class Codereferenceresolver < ModelWorker
           referenced = map[refid]
           replacingtext = referenced.get_codesnippet
    
-          regexstring = '<!--\"\"LDS BeginCodeReference id=\"'+refid+'\".*?<!--\"\"LDS EndCodeReference( )?(-->)?'
+          regexstring = '<!--\"\"LDS BeginCodeReference id=\"'+refid+'\".*?<!--\"\"LDS EndCodeReference( )?(-->)?(<pre>)?( )*<code>'
           regex = Regexp.new(regexstring, Regexp::MULTILINE)
           snippet.sub!(regex, replacingtext)
           snippet.strip!

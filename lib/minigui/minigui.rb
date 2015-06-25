@@ -1,5 +1,6 @@
 require 'pipeline/tanglestage'
 require 'pipeline/runstage'
+require 'pipeline/htmltransformer'
 
 class Minigui < Qt::Widget
 	slots 'comboitem(int)', 'basepathclicked()', 'tanglepathclicked()', 'starttangleclicked()', 'runbuttonclicked()', 'startsingleclicked()'
@@ -117,7 +118,7 @@ class Minigui < Qt::Widget
     slmodel.setStringList(runelements);
     #items = MyModel.new(runelements)
     @listview.model = slmodel
-    newhtmlpath = tanglestage.pushexeclinks(runelements, @htmlpathstring)
+    newhtmlpath = HTMLTransformer.new.pushexeclinks(runelements, @htmlpathstring)
     loadWebPage(newhtmlpath)
 	end
 
