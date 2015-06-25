@@ -6,17 +6,17 @@ def changefilelines(filename,from,to,substitute)
 		return
 	end
 
-	if(File.directory? filename)
+	if(File.directory? File.expand_path(filename))
 		return
 	end
 
 	date = DateTime.now()
 	filename_rand = filename+"."+date.year.to_s+"_"+date.month.to_s+"_"+date.day.to_s+"_"+date.hour.to_s+"_"+date.minute.to_s+"_"+date.second.to_s
 
-	FileUtils.mv(filename,filename_rand)
+	FileUtils.mv(File.expand_path(filename),File.expand_path(filename_rand))
 
-	infile=File.new(filename_rand,"r")
-	outfile=File.new(filename,"w+")
+	infile=File.new(File.expand_path(filename_rand),"r")
+	outfile=File.new(File.expand_path(filename),"w+")
 	readcount=0
 	written=false
 
@@ -51,7 +51,7 @@ def changefileregex(filename,regex,substitute)
 		return
 	end
 
-	if(File.directory? filename)
+	if(File.directory? File.expand_path(filename))
 		return
 	end
 
@@ -59,11 +59,11 @@ def changefileregex(filename,regex,substitute)
 	date = DateTime.now()
 	filename_rand = filename+"."+date.year.to_s+"_"+date.month.to_s+"_"+date.day.to_s+"_"+date.hour.to_s+"_"+date.minute.to_s+"_"+date.second.to_s
 
-	FileUtils.mv(filename,filename_rand)
+	FileUtils.mv(File.expand_path(filename),File.expand_path(filename_rand))
 
 	regex_object=/#{regex}/
-	infile=File.new(filename_rand,"r")
-	outfile=File.new(filename,"w+")
+	infile=File.new(File.expand_path(filename_rand),"r")
+	outfile=File.new(File.expand_path(filename),"w+")
 
 	read=""
 
@@ -90,14 +90,14 @@ def insertintofile(filename,at_line,substitute)
 	if(substitute.nil?)
 		return
 	end
-	if(File.exists?(filename))
+	if(File.exists?(File.expand_path(filename)))
 		date = DateTime.now()
 		filename_rand = filename+"."+date.year.to_s+"_"+date.month.to_s+"_"+date.day.to_s+"_"+date.hour.to_s+"_"+date.minute.to_s+"_"+date.second.to_s
 
-		FileUtils.mv(filename,filename_rand)
+		FileUtils.mv(File.expand_path(filename),File.expand_path(filename_rand))
 
-		infile=File.new(filename_rand,"r")
-		outfile=File.new(filename,"w+")
+		infile=File.new(File.expand_path(filename_rand),"r")
+		outfile=File.new(File.expand_path(filename),"w+")
 		readcount=0
 		written=false
 
@@ -121,7 +121,7 @@ def insertintofile(filename,at_line,substitute)
 		outfile.close()
 
 	else
-		outfile=File.new(filename,"w+")
+		outfile=File.new(File.expand_path(filename),"w+")
 		at_line.times {outfile.puts("\n")}
 		outfile.puts(substitute)
 		outfile.close
