@@ -12,9 +12,17 @@ class HTMLTransformer
       unless match==nil 
         #TODO: Add specific button labels for each cmd 
         if match.to_s.include?("DeclareVariables")
-          htmlcontent.sub!(match.to_s, buttontemplate.sub('?Caption','Enter data') +match.to_s)
+          htmlcontent.sub!(match.to_s, buttontemplate.sub('?Caption','Specify input data') +match.to_s)
         elsif match.to_s.include?("RootFile")
           htmlcontent.sub!(match.to_s, buttontemplate.sub('?Caption','Execute script') +match.to_s)
+        elsif match.to_s.include?("InsertIntoFile")
+          htmlcontent.sub(match.to_s, buttontemplate.sub('?Caption','Insert content into file') +match.to_s)
+        elsif match.to_s.include?("ChangeFile")
+          htmlcontent.sub(match.to_s, buttontemplate.sub('?Caption','Replace content in file') +match.to_s)
+        elsif match.to_s.include?("Constraint")
+          htmlcontent.sub(match.to_s, buttontemplate.sub('?Caption','Test specified constraint') +match.to_s)
+        elsif match.to_s.include?("DeleteFileLines")
+          htmlcontent.sub(match.to_s, buttontemplate.sub('?Caption','Remove content in file') +match.to_s)
         end
       else
         puts "Not Working:"+runelement
