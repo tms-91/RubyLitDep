@@ -42,7 +42,7 @@ mkdir src
 <h3>2. Test Django installation At the command line, you run these commands:</h3>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;">
-<!--""LDS BeginRootFile section="1" filename="testDjangoInstallation.sh" id="Test Django Installation0" platform="UNIX" executor="sh" -->
+<!--""LDS BeginInclusionConstraintFile section="1" filename="testPythonInstallation.sh" id="Test Python Installation" platform="UNIX" executor="sh" value="2.7.5" -->
 python --version 
 <!--""LDS EndRootFile --> 
 </div>
@@ -54,7 +54,7 @@ Python 2.7.5
 </div>
 <br/>
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;">
-<!--""LDS BeginContinueFile section="2" id="Test Django Installation1" filename="testDjangoInstallation.sh" --> 
+<!--""LDS BeginInclusionConstraintFile section="1" filename="testDjangoInstallation.sh" id="Test Django Installation" platform="UNIX" executor="sh" value="1.6.2" -->
 python -c "import django; print(django.get_version())" 
 <!--""LDS EndContinueFile--> 
 </div>
@@ -84,7 +84,7 @@ django-admin.py startproject mysite
 <!--""LDS BeginDeclareReference id="changeDirectoryMySite"
 cd src/mysite
 <!--""LDS EndDeclareReference -->
-<!--""LDS BeginRootFile section="1" filename="startServer.sh" id="Start Server" platform="UNIX" executor="xterm -e sh" -->
+<!--""LDS BeginRootFile section="1" filename="startServer.sh" id="Start Server" platform="UNIX" executor="xterm -e sh $.$-f-$.$ &" -->
 <!--""LDS BeginCodeReference id="changeDirectoryMySite"-->
 cd mysite
 <!--""LDS EndCodeReference -->

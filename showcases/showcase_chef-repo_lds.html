@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <meta charset="utf-8">
+        <title>Intercity Chef Recipes</title>
+        <style>
+                /* Code Samples */
+                pre {
+                 white-space: pre-wrap;
+                 white-space: -moz-pre-wrap;
+                 white-space: -o-pre-wrap;
+                 background: #faf8f0;
+                }
+                #content #pre-stylish code {
+                 display: block;
+                 padding: 0.5em 1em;
+                 border: 1px solid #bebab0;
+                }
+        </style>
+</head>
+<body>
+<h1>Intercity Chef Recipes</h1>
+<hr>
+
+This Chef repository aims at being the easiest way set up and configure your own Rails server
+to host one or more Ruby on Rails applications using best
+practices from our community.
+
+The configuration is heavily inspired by blog posts and chef recipes
+from <a href="http://37signals.com">37signals</a> and the
+<a href="http://community.opscode.com">Opscode Community Cookbooks</a>.
+
+<h2>Features</h2>
+<hr>
+
+Takes care of automatic installation and configuration of the following software
+on a single server or multiple servers:
+
+<ul>
+<li>nginx webserver
+<li>Passenger or Unicorn for running Ruby on Rails
+<li>Multiple apps on one server
+<li>Database creation and password generation
+<li>Easy SSL configuration
+<li>Deployment with Capistrano
+<li>Configure ENV variables
+<li>Easy backup scheduling
+</ul>
+
+<h3>Supported OSes</h3>
+<ul>
+<li>Ubuntu 12.04 LTS
+<li>Ubuntu 14.04 LTS
+</ul>
+
+<h3>Databases</h3>
+
+<ul>
+<li>MySQL
+<li>PostgreSQL
+</ul>
+
+<h2>Getting started</h2>
+<hr>
+
+The following paragraphs will guide you to set up your own server to host Ruby on Rails applications.
+
+<h3>1. Set up this repository</h3>
+
+Clone the repository onto your own workstation. For example in your `~/Code` directory:
+
+
+<!--""LDS BeginRootFile section="1" filename="cloneRepo.sh" id="clone repository" platform="UNIX" executor="sh" --><code><pre>
+git clone git://github.com/intercity/chef-repo.git ~/Code 
+</code></pre><!--""LDS EndRootFile -->
+
+Run bundle:
+<!--""LDS BeginDeclareReference id="change to working folder" --><pre><code>
+cd ~/Code
+</code></pre><!--""LDS EndDeclareReference -->
+<!--""LDS BeginRootFile section="1" filename="runBundle.sh" id="run bundle" platform="UNIX" executor="sh" -->
+<!--""LDS BeginCodeReference id="change to working folder"-->
+<!--""LDS EndCodeReference --><pre><code>
+bundle install
+</code></pre><!--""LDS EndRootFile -->
+
+Run Librarian install:
+
+<!--""LDS BeginRootFile section="1" filename="runLibrarian.sh" id="run librarian chef" platform="UNIX" executor="sh" -->
+<!--""LDS BeginCodeReference id="change to working folder"-->
+<!--""LDS EndCodeReference --><pre><code>
+librarian-chef install
+</code></pre><!--""LDS EndRootFile -->
+
+<h3>2. Install your server</h3>
+
+Use the following command to install Chef on your server and prepare it to be installed by these cookbooks:
+
+<!--""LDS DeclareVariables variables="username,host" -->
+<!--""LDS BeginRootFile section="1" filename="installServer.sh" id="install server" platform="UNIX" executor="sh" -->
+<!--""LDS BeginCodeReference id="change to working folder"-->
+<!--""LDS EndCodeReference --><pre><code>
+bundle exec knife solo prepare $.$-username-$.$@$.$-host-$.$
+</code></pre><!--""LDS EndRootFile -->
+
+This will create a file
+
+<pre><code>
+nodes/<your host/ip>.json
+</code></pre>
+
+Now copy the the contents from the `nodes/sample_host.json` from this repository into this new file. Replace the sample values between `< >` with the values for your server and applications.
+
+<!--""LDS BeginRootFile section="1" filename="editconfiguration.sh" id="edit server configuration" platform="UNIX" executor="sh" 
+cp ~/Code/nodes/sample_host.json ~/Code/nodes/$.$-host-$.$.json
+xdg-open ~/Code/nodes/$.$-host-$.$.json
+<!--""LDS EndRootFile -->
+
+When this is done. Run the following command to start the full installation of your server:
+
+<!--""LDS BeginRootFile section="1" filename="installServerFull.sh" id="install server Step2" platform="UNIX" executor="sh" -->
+<!--""LDS BeginCodeReference id="change to working folder"-->
+<!--""LDS EndCodeReference --><pre><code>
+bundle exec knife solo cook $.$-username-$.$@$.$-host-$.$
+</code></pre><!--""LDS EndRootFile -->
+
+<h3>3. Deploy your application</h3>
+
+You can deploy your applications with Capistrano.
+
+Add the Capistrano gem to your Gemfile:
+
+<!--""LDS BeginInsertIntoFile filename="~/Code/Gemfile" line="13" id="Add capistrano to the Gemfile"--><pre><code>
+# your other gems..
+
+gem 'capistrano', '~> 3.2.1'
+gem 'capistrano-rails', '~> 1.1'
+</code></pre><!--""LDS EndInsertIntoFile-->
+
+
+And run bundle to install it:
+
+<!--""LDS BeginRootFile section="1" filename="bundleCapistrano.sh" id="Bundle Capistrano" platform="UNIX" executor="sh" -->
+<!--""LDS BeginCodeReference id="change to working folder"-->
+<!--""LDS EndCodeReference --><pre><code>
+bundle
+</code></pre><!--""LDS EndRootFile -->
+
+Now generate configuration files for Capistrano:
+
+<!--""LDS BeginRootFile section="1" filename="configureCapistrano.sh" id="Configure Capistrano" platform="UNIX" executor="sh" -->
+<!--""LDS BeginCodeReference id="change to working folder"-->
+<!--""LDS EndCodeReference --><pre><code>
+bundle exec cap install
+</code></pre><!--""LDS EndRootFile -->
+
+This command will generate the following files in your application:
+
+<pre><code>
+Capfile
+config/deploy.rb
+config/deploy/production.rb
+config/deploy/staging.rb
+</code></pre>
+
+Edit the file `Capfile` and change it's contents to:
+
+<!--""LDS BeginChangeFileLines filename="~/Code/Capfile" id="Edit Capistrano configuration" startline="0" endline="25" --><pre><code>
+# Load DSL and Setup Up Stages
+require 'capistrano/setup'
+
+# Includes default deployment tasks
+require 'capistrano/deploy'
+
+require 'capistrano/rails'
+
+# Loads custom tasks from `lib/capistrano/tasks' if you have any defined.
+Dir.glob('lib/capistrano/tasks/*.cap').each { |r| import r }
+</code></pre><!--""LDS EndChangeFileLines -->
+
+Then edit `config/deploy.rb` and change it to the sample below.
+Replace `$.$-git_repo_url-$.$` with the SSH clone URL of your repository:
+
+<!--""LDS DeclareVariables variables="git_repo_url,application_name" -->
+<!--""LDS BeginChangeFileLines filename="~/Code/config/deploy.rb" id="Edit Capistrano deployment configuration" startline="0" endline="59" --><pre><code>ruby
+# config valid only for Capistrano 3.2.1
+lock '3.2.1'
+
+set :application, '$.$-application_name-$.$'
+set :repo_url, '$.$-git_repo_url-$.$'
+
+# Default branch is :master
+# Uncomment the following line to have Capistrano ask which branch to deploy.
+# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+
+# Replace the sample value with the name of your application here:
+set :deploy_to, '/u/apps/>> your_application_name <<_production'
+
+# Use agent forwarding for SSH so you can deploy with the SSH key on your workstation.
+set :ssh_options, {
+  forward_agent: true
+}
+
+# Default value for :pty is false
+set :pty, true
+
+set :linked_files, %w{config/database.yml .rbenv-vars .ruby-version}
+set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+
+set :default_env, { path: "/opt/rbenv/shims:$PATH" }
+
+set :keep_releases, 5
+
+namespace :deploy do
+
+  desc 'Restart application'
+  task :restart do
+    on roles(:app), in: :sequence, wait: 5 do
+      execute :touch, release_path.join('tmp/restart.txt')
+    end
+  end
+
+  after :publishing, :restart
+
+end
+</code></pre><!--""LDS EndChangeFileLines -->
+
+Replace the contents of `config/deploy/production.rb` with
+
+<!--""LDS DeclareVariables variables="server_address" -->
+<!--""LDS BeginChangeFileLines filename="~/Code/config/deploy/production.rb" id="Edit Capistrano server configuration" startline="0" endline="46" --><pre><code>ruby
+server '$.$-server_address-$.$', user: 'deploy', roles: %w{web app db}
+</code></pre><!--""LDS EndChangeFileLines -->
+
+Replace `$.$-server_address-$.$` with the domain name or ip address of your server.
+
+To verify that everything is set up correctly run:
+
+<!--""LDS BeginRootFile section="1" filename="checkCapistranoConfiguration.sh" id="Check Capistrano Configuration" platform="UNIX" executor="sh" -->
+<!--""LDS BeginCodeReference id="change to working folder"-->
+<!--""LDS EndCodeReference --><pre><code>sh
+bundle exec cap production deploy:check
+</code></pre><!--""LDS EndRootFile -->
+
+Finally to deploy, run:
+
+<!--""LDS BeginRootFile section="1" filename="deployCapistrano.sh" id="Deploy Capistrano" platform="UNIX" executor="sh" -->
+<!--""LDS BeginCodeReference id="change to working folder"-->
+<!--""LDS EndCodeReference --><pre><code>sh
+bundle exec cap production deploy
+</code></pre><!--""LDS EndRootFile -->
+
+
+This will deploy your app and run your database migrations.
+<br>
+<b>Congratulations!</b> You've now deployed your application. Browse to your application in your webbrowser and everything should work!
+
+<h2>Try these cookbooks with Vagrant</h2>
+<hr>
+
+You can use Vagrant to experience how easy it is to install your servers with this repository.
+
+First, install Vagrant from <a href="http://vagrantup.com">http://vagrantup.com</a>. Then install the following two Vagrant plugins:
+
+Make sure you have Vagrant version 1.6.5 or higher installed.
+
+<!--""LDS BeginRootFile section="1" filename="installVagrantPlugins.sh" id="Install Vagrant plugins" platform="UNIX" executor="sh" --><pre><code>
+vagrant plugin install vagrant-librarian-chef
+vagrant plugin install vagrant-omnibus
+</code></pre><!--""LDS EndRootFile -->
+
+Finally, start a Vagrant machine with a sample server configuration:
+
+<!--""LDS BeginRootFile section="1" filename="startVagrant.sh" id="Start Vagrant" platform="UNIX" executor="xterm -e sh $.$-f-$.$ &" --><pre><code>
+vagrant up mysql
+</code></pre><!--""LDS EndRootFile -->
+
+This will boot a local Ubuntu virtual machine and install it so you can deploy Ruby on Rails applications that use MySQL as the database.
+
+You can check out the sample configuration in file `Vagrantfile`
+
+<h2>When you run into problems:</h2>
+<hr>
+
+These steps should let you **set up or test your own Rails infrastructure
+in 5 - 10 minutes**. If something doesn't work or you need more instructions:
+<br>
+<b>Please!</b> <a href="https://github.com/intercity/chef-repo/issues">Open an issue</a> or email <a href="mailto:hello@intercityup.com">hello@intercityup.com</a>.
+
+<h2>Testing with test-kitchen</h2>
+<hr>
+
+<h3>CI testing</h3>
+
+Test-kitchen is a tool where you can automatically provision a server with these cookbooks and run the tests for them. The configuration in `.kitchen.yml` works with DigitalOcean.
+
+First you need to obtain a DigitalOcean access token here: <a href="https://cloud.digitalocean.com/settings/applications">https://cloud.digitalocean.com/settings/applications</a>. Then you need to find IDs of the SSH keys you added to your account: <a href="https://cloud.digitalocean.com/ssh_keys">https://cloud.digitalocean.com/ssh_keys</a>. You can obtain these IDs with the following command:
+
+<!--""LDS DeclareVariables variables="Your_Digital_Ocean_Access_Token" -->
+<!--""LDS BeginRootFile section="1" filename="getDigitalOceanIDs.sh" id="Get DigitalOcean IDs" platform="UNIX" executor="sh" -->
+<!--""LDS BeginCodeReference id="change to working folder"-->
+<!--""LDS EndCodeReference --><pre><code>
+curl -X GET https://api.digitalocean.com/v2/account/keys -H "Authorization: Bearer $.$-Your_Digital_Ocean_Access_Token-$.$"
+</code></pre><!--""LDS EndRootFile -->
+
+When you've obtained both your access token and your key IDs you can run the tests like this:
+
+<!--""LDS DeclareVariables variables="Your_Digital_Ocean_SSH_Key_ID" -->
+<!--""LDS BeginRootFile section="1" filename="runDigitalOceanTest.sh" id="Run Digital Ocean Tests" platform="UNIX" executor="sh" -->
+<!--""LDS BeginCodeReference id="change to working folder"-->
+<!--""LDS EndCodeReference --><pre><code>
+export DIGITALOCEAN_ACCESS_TOKEN=$.$-Your_Digital_Ocean_Access_Token-$.$
+export DIGITALOCEAN_SSH_KEY_IDS=$.$-Your_Digital_Ocean_SSH_Key_ID-$.$
+bin/kitchen test
+</code></pre><!--""LDS EndRootFile -->
+
+This command boots up a Droplet in your DigitalOcean account, provisions it with Chef, runs the tests and destroys the Droplet.
+
+<h3>Testing while developing</h3>
+
+If you want to keep the Droplet running and do testing while making changes you can use the `kitchen verify` command instead of the `kitchen test` command to verify your changes:
+
+<!--""LDS BeginRootFile section="1" filename="runDigitalOceanVerify.sh" id="Run Digital Ocean Verify" platform="UNIX" executor="sh" -->
+<!--""LDS BeginCodeReference id="change to working folder"-->
+<!--""LDS EndCodeReference --><pre><code>
+$ bin/kitchen verify
+</code></pre><!--""LDS EndRootFile -->
+
+<h2>Resources and original authors</h2>
+<hr>
+
+<UL>
+<LI> Most of the cookbooks that are used in this repository are installed from the <a href="http://community.opscode.com">Opscode Community Cookbooks</a>.
+<LI> The `rails` and `bluepill` configuration is based off the cookbooks by <a href="https://github.com/jsierles">jsierles</a> at <a href="https://github.com/jsierles/chef_cookbooks">https://github.com/jsierles/chef_cookbooks</a>
+</UL>
+
+</body>
+</html>
