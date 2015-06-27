@@ -4,9 +4,10 @@
 
 require 'parser/blockparser'
 require 'model/datarootfile'
+require 'model/inclusionconstraintfile'
 
 class InclusionConstraintFileParser < BlockParser
-  
+
   #Stub object einspeisen?
   def parse(lines,nr)
     cmdline = lines[nr]
