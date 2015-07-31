@@ -7,30 +7,32 @@ class FileIOInclusionConstraintFileHandler < FileIOHandler
     super(handler_for)
   end
   
-  def process_command(command, basepath,platform)
+  def compute_mainline(command, basepath, platform)
+    mainline = ""
     if(platform==command.get_platform())
+      filename = command.get_filename
       out = File.new(basepath+"/"+command.get_filename(),"w+")
 					
       out.puts(command.get_codesnippet())
       out.close()
 				
-      id=command.get_id
-				
-      return_hash = Hash.new()
-				
-      return_hash[:filename]=command.get_filename()
-      unless command.get_executor().nil?
-        return_hash[:executor]=command.get_executor()
-      end
-      return_hash[:type]="constraint"
-	
-      return_hash[:id]=id
+      id=command.get_id()
+			exec = command.get_executor()
+      value = command.get_value()
       
-      return_hash[:value]=command.get_value
-				
-      return return_hash
-    else
-      return nil
+      part2 = "\{|i,o,t| if o.read.include?('"+value+"') "
+      part2+= "then 'Test success:"+id+"' else 'Test failed:"+id+"' end \}\") "
+      
+      if(exec=="")
+        mainline = "puts eval(\"Open3.popen2e('"+filename+"') "
+      elsif(exec.include?("$.$-f-$.$"))
+        execplus = exec.gsub("$.$-f-$.$",filename)
+        mainline = "puts eval(\"Open3.popen2e('"+execplus+"') "
+      else
+        mainline = "puts eval(\"Open3.popen2e('"+exec+" "+filename+"') "
+      end
+      mainline+=part2
     end
+    return mainline
   end
 end

@@ -5,9 +5,10 @@ class FileIODeclareReferenceHandler < FileIOHandler
 	def initialize(handler_for)
 		super(handler_for)
 	end
-	
-	def process_command(command, basepath,platform)
-		puts "default handler does nothing"
-	end
+  
+  def compute_mainline(command, basepath, platform)
+    raise "A DeclareFragment should not be here"
+		return nil
+  end
 	
 end

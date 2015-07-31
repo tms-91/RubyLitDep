@@ -7,7 +7,8 @@ class FileIODataRootFileHandler < FileIOHandler
     super(handler_for)
   end
   
-  def process_command(command, basepath, platform)
+  def compute_mainline(command, basepath, platform)
+    mainline = ""
     if(platform==command.get_platform())
       out = File.new(basepath+"/"+command.get_filename(),"w+")
 					
@@ -15,22 +16,24 @@ class FileIODataRootFileHandler < FileIOHandler
       out.close()
 				
       id=command.get_id
-				
-      return_hash = Hash.new()
-				
-      return_hash[:filename]=command.get_filename()
-      unless command.get_executor().nil?
-        return_hash[:executor]=command.get_executor()
-      end
-      return_hash[:type]="dataFlow"
-	
-      return_hash[:id]=id
+      filename = command.get_filename
+      exec = command.get_executor
+      var = command.get_varname
+			
+      part2="\{|i,o,t| replacevariable('"+basepath+"','"+var+"',o.read)\}"
+      part2+="\t#"+id
       
-      return_hash[:var]=command.get_varname
+      if(exec=="")
+        mainline = "Open3.popen2e('"+filename+"') "
+      elsif(exec.include?("$.$-f-$.$"))
+        execplus = exec.gsub("$.$-f-$.$",filename)
+        mainline = "Open3.popen2e('"+execplus+"') "
+      else
+        mainline = "Open3.popen2e('"+exec+" "+filename+"') "
+      end
 				
-      return return_hash
-    else
-      return nil
+      mainline += part2
     end
+    return mainline
   end
 end
