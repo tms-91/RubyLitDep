@@ -2,10 +2,10 @@
 # To change this template file, choose Tools | Templates
 # and open the template in the editor.
 
-require 'parser/blockparser'
+require 'parser/blockcommandparser'
 require 'model/changefilelines'
 
-class ChangeFileLinesParser < BlockParser
+class ChangeFileLinesParser < BlockCommandParser
   def parse(lines,nr)
     cmdline = lines[nr]
     id = getattributevalue(cmdline, 'id')

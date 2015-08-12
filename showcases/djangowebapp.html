@@ -34,17 +34,17 @@ Administrators (admins) would be setting up and editing up polls like this</p>
 <h3>1. Create a src-folder for your django project</h3>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;">
-<!--""LDS BeginRootFile section="1" filename="createsrc.sh" id="create source folder" platform="UNIX" executor="sh" -->
+<!--""LDS BeginRunOutputScript section="1" filename="createsrc.sh" id="create source folder" platform="UNIX" executor="sh" -->
 mkdir src
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 </div>
 
 <h3>2. Test Django installation At the command line, you run these commands:</h3>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;">
-<!--""LDS BeginInclusionConstraintFile section="1" filename="testPythonInstallation.sh" id="Test Python Installation" platform="UNIX" executor="sh" value="2.7.5" -->
+<!--""LDS EndRunCheckScript section="1" filename="testPythonInstallation.sh" id="Test Python Installation" platform="UNIX" executor="sh" value="2.7.5" -->
 python --version 
-<!--""LDS EndRootFile --> 
+<!--""LDS EndRunCheckScript --> 
 </div>
 <br/>
 The output should look like this for the first command:
@@ -54,9 +54,9 @@ Python 2.7.5
 </div>
 <br/>
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;">
-<!--""LDS BeginInclusionConstraintFile section="1" filename="testDjangoInstallation.sh" id="Test Django Installation" platform="UNIX" executor="sh" value="1.6.2" -->
+<!--""LDS EndRunCheckScript section="1" filename="testDjangoInstallation.sh" id="Test Django Installation" platform="UNIX" executor="sh" value="1.6.2" -->
 python -c "import django; print(django.get_version())" 
-<!--""LDS EndContinueFile--> 
+<!--""LDS EndRunCheckScript--> 
 </div>
 <br/>
 And like this for the second command:
@@ -67,29 +67,29 @@ And like this for the second command:
 <h3>3. Create a project You are sitting in the src directory and run this command</h3>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginDeclareReference id="changeDirectorySrc" -->
+<!--""LDS BeginDeclareFragment id="changeDirectorySrc" -->
 cd src
-<!--""LDS EndDeclareReference -->
-<!--""LDS BeginRootFile section="1" filename="createProject.sh" id="Create Project" platform="UNIX" executor="sh" -->
-<!--""LDS BeginCodeReference id="changeDirectorySrc" -->
-<!--""LDS EndCodeReference -->
+<!--""LDS EndDeclareFragment -->
+<!--""LDS BeginRunOutputScript section="1" filename="createProject.sh" id="Create Project" platform="UNIX" executor="sh" -->
+<!--""LDS BeginReuseFragment id="changeDirectorySrc" -->
+<!--""LDS EndReuseFragment -->
 django-admin.py startproject mysite 
-<!--""LDS EndRootFile--></pre>
+<!--""LDS EndRunOutputScript--></pre>
 </div>
 
 
 <h3>4. Start server</h3>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"> <pre>
-<!--""LDS BeginDeclareReference id="changeDirectoryMySite"
+<!--""LDS BeginDeclareFragment id="changeDirectoryMySite"
 cd src/mysite
-<!--""LDS EndDeclareReference -->
-<!--""LDS BeginRootFile section="1" filename="startServer.sh" id="Start Server" platform="UNIX" executor="xterm -e sh $.$-f-$.$ &" -->
-<!--""LDS BeginCodeReference id="changeDirectoryMySite"-->
+<!--""LDS EndDeclareFragment -->
+<!--""LDS BeginRunOutputScript section="1" filename="startServer.sh" id="Start Server" platform="UNIX" executor="xterm -e sh $.$-f-$.$ &" -->
+<!--""LDS BeginReuseFragment id="changeDirectoryMySite"-->
 cd mysite
-<!--""LDS EndCodeReference -->
+<!--""LDS EndReuseFragment -->
 python manage.py runserver 
-<!--""LDS EndRootFile--> </pre></div>
+<!--""LDS EndRunOutputScript--> </pre></div>
 
 This server runs in another shell, if this file is executed as an LDS-file. </p>
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"> <pre>
@@ -105,11 +105,11 @@ Quit the server with CONTROL-C.</pre> </div>
 <p>At the command line, you run this command:</p>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"> <pre>
-<!--""LDS BeginRootFile section="1" filename="Preparethedatabase.sh" id="Prepare the database" platform="UNIX" executor="sh" -->
-<!--""LDS BeginCodeReference id="changeDirectoryMySite"-->
-<!--""LDS EndCodeReference -->
+<!--""LDS BeginRunOutputScript section="1" filename="Preparethedatabase.sh" id="Prepare the database" platform="UNIX" executor="sh" -->
+<!--""LDS BeginReuseFragment id="changeDirectoryMySite"-->
+<!--""LDS EndReuseFragment -->
 python manage.py syncdb
-<!--""LDS EndRootFile--></pre> 
+<!--""LDS EndRunOutputScript--></pre> 
 </div>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;">
@@ -139,11 +139,11 @@ Installed 0 object(s) from 0 fxture(s)</p>
 
 <p>At the command line, you run this command</p>
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginRootFile section="1" filename="Createanapp.sh" id="Create an app" platform="UNIX" executor="sh" -->
-<!--""LDS BeginCodeReference id="changeDirectoryMySite"-->
-<!--""LDS EndCodeReference -->
+<!--""LDS BeginRunOutputScript section="1" filename="Createanapp.sh" id="Create an app" platform="UNIX" executor="sh" -->
+<!--""LDS BeginReuseFragment id="changeDirectoryMySite"-->
+<!--""LDS EndReuseFragment -->
 python manage.py startapp polls
-<!--""LDS EndRootFile--></pre>
+<!--""LDS EndRunOutputScript--></pre>
 </div>
 
 <h3>7. Edit the model</h3>
@@ -151,7 +151,7 @@ python manage.py startapp polls
 <p>Put the following content into file polls/models.py</p>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginInsertIntoFile filename="src/mysite/polls/models.py" line="1" id="put content in models.py"-->
+<!--""LDS BeginAddFileContent filename="src/mysite/polls/models.py" line="1" id="put content in models.py"-->
 
 class Poll(models.Model):
   question = models.CharField(max_length=200)
@@ -161,28 +161,28 @@ class Choice(models.Model):
   poll = models.ForeignKey(Poll)
   choice_text = models.CharField(max_length=200)
   votes = models.IntegerField(default=0)
-<!--""LDS EndInsertIntoFile--></pre>
+<!--""LDS EndAddFileContent--></pre>
 </div>
 <p>These are class fields describing the data model. Add a method as well:</p>
 
 <p><div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginInsertIntoFile filename="src/mysite/polls/models.py" line="1" id="Insertion datetime"-->
+<!--""LDS BeginAddFileContent filename="src/mysite/polls/models.py" line="1" id="Insertion datetime"-->
 import datetime
 from django.utils import timezone
 
-<!--""LDS EndInsertIntoFile-->
+<!--""LDS EndAddFileContent-->
 </pre>
 </div>
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
 class Poll(models.Model):
   question = models.CharField(max_length=200)
   pub_date = models.DateTimeField('date published')
-<!--""LDS BeginInsertIntoFile filename="src/mysite/polls/models.py" line="8" id="Insertion was published return statement"-->
+<!--""LDS BeginAddFileContent filename="src/mysite/polls/models.py" line="8" id="Insertion was published return statement"-->
 
   def was_published_recently(self):
     return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
 
-<!--""LDS EndInsertIntoFile--></pre>
+<!--""LDS EndAddFileContent--></pre>
 </div>
 ...
 </p>
@@ -199,9 +199,9 @@ INSTALLED_APPS = (
   'django.contrib.sessions', 
   'django.contrib.messages', 
   'django.contrib.staticfles', 
-<!--""LDS BeginInsertIntoFile filename="src/mysite/mysite/settings.py" line="38" id="Add polls to installed apps"--> 
+<!--""LDS BeginAddFileContent filename="src/mysite/mysite/settings.py" line="38" id="Add polls to installed apps"--> 
   'polls', 
-<!--""LDS EndInsertIntoFile--> 
+<!--""LDS EndAddFileContent--> 
 ) </pre>
 </div>
 
@@ -209,11 +209,11 @@ INSTALLED_APPS = (
 
 <p>At the command line, you run this command:</p>
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginRootFile section="1" filename="Examinesqlschema.sh" id="Examine SQL schema for model" platform="UNIX" executor="sh" -->
-<!--""LDS BeginCodeReference id="changeDirectoryMySite"-->
-<!--""LDS EndCodeReference -->
+<!--""LDS BeginRunOutputScript section="1" filename="Examinesqlschema.sh" id="Examine SQL schema for model" platform="UNIX" executor="sh" -->
+<!--""LDS BeginReuseFragment id="changeDirectoryMySite"-->
+<!--""LDS EndReuseFragment -->
 python manage.py sql polls
-<!--""LDS EndRootFile--> </pre>
+<!--""LDS EndRunOutputScript--> </pre>
 </div>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
@@ -238,11 +238,11 @@ COMMIT;
 
 <p>At the command line, you run this command</p>
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginRootFile section="1" filename="UpgradeDatabase.sh" id="Upgrade the database" platform="UNIX" executor="sh" -->
-<!--""LDS BeginCodeReference id="changeDirectoryMySite"-->
-<!--""LDS EndCodeReference -->
+<!--""LDS BeginRunOutputScript section="1" filename="UpgradeDatabase.sh" id="Upgrade the database" platform="UNIX" executor="sh" -->
+<!--""LDS BeginReuseFragment id="changeDirectoryMySite"-->
+<!--""LDS EndReuseFragment -->
 python manage.py syncdb
-<!--""LDS EndRootFile--></pre></div>
+<!--""LDS EndRunOutputScript--></pre></div>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
 Creating tables ...
@@ -258,11 +258,11 @@ Installed 0 object(s) from 0 fixture(s)
 <p>Run the following command and enter Python code as shown:</p>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginRootFile section="1" filename="PlaywiththeAPI.sh" id="Play with the API" platform="UNIX" executor="xterm -e sh" -->
-<!--""LDS BeginCodeReference id="changeDirectoryMySite"-->
-<!--""LDS EndCodeReference -->
+<!--""LDS BeginRunOutputScript section="1" filename="PlaywiththeAPI.sh" id="Play with the API" platform="UNIX" executor="xterm -e sh" -->
+<!--""LDS BeginReuseFragment id="changeDirectoryMySite"-->
+<!--""LDS EndReuseFragment -->
 python manage.py shell
-<!--""LDS EndRootFile--> 
+<!--""LDS EndRunOutputScript--> 
 </pre></div>
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
 Python 2.7.5 (default, Aug 25 2013, 00:04:04)
@@ -298,25 +298,25 @@ import models
 
 class Poll(models.Model): 
     ... 
-<!--""LDS BeginInsertIntoFile filename="src/mysite/polls/models.py" line="9" id="Adding unicode function in models.py"--> 
+<!--""LDS BeginAddFileContent filename="src/mysite/polls/models.py" line="9" id="Adding unicode function in models.py"--> 
     def __unicode__(self): # Python 3: def __str__(self): 
         return self.question 
-<!--""LDS EndInsertIntoFile--> 
+<!--""LDS EndAddFileContent--> 
 class Choice(models.Model): 
     # ... 
-<!--""LDS BeginInsertIntoFile filename="src/mysite/polls/models.py" line="16" id="Insertion of unicode function for choice in models.py" --> 
+<!--""LDS BeginAddFileContent filename="src/mysite/polls/models.py" line="16" id="Insertion of unicode function for choice in models.py" --> 
     def __unicode__(self): # Python 3: def __str__(self): 
         return self.choice_text
-<!--""LDS EndInsertIntoFile--> </pre></div>
+<!--""LDS EndAddFileContent--> </pre></div>
 
 <p>Accordingly, the data representation has changed:</p>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginRootFile section="1" filename="Improvedatarepresentation.sh" id="Improve data representation" platform="UNIX" executor="xterm -e sh" -->
-<!--""LDS BeginCodeReference id="changeDirectoryMySite"-->
-<!--""LDS EndCodeReference -->
+<!--""LDS BeginRunOutputScript section="1" filename="Improvedatarepresentation.sh" id="Improve data representation" platform="UNIX" executor="xterm -e sh" -->
+<!--""LDS BeginReuseFragment id="changeDirectoryMySite"-->
+<!--""LDS EndReuseFragment -->
 python manage.py shell
-<!--""LDS EndRootFile--></pre></div>
+<!--""LDS EndRunOutputScript--></pre></div>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
 Python 2.7.5 (default, Aug 25 2013, 00:04:04)
@@ -333,12 +333,12 @@ Type "help", "copyright", "credits" or "license" for more information.
 <p>Put the following content into file polls/admin.py</p>
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
 from django.contrib import admin
-<!--""LDS BeginInsertIntoFile filename="src/mysite/polls/admin.py" line="1" id="Registering model in admin.py" -->
+<!--""LDS BeginAddFileContent filename="src/mysite/polls/admin.py" line="1" id="Registering model in admin.py" -->
 from polls.models import Poll, Choice
 
 admin.site.register(Poll)
 admin.site.register(Choice)
-<!--""LDS EndInsertIntoFile--></pre></div>
+<!--""LDS EndAddFileContent--></pre></div>
 
 Run the admin in the browser again. Polls and choices can be edited now
 
@@ -371,11 +371,11 @@ Add a few attributes to polls/models.py:
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
 class Poll(models.Model):
 # ...
-<!--""LDS BeginInsertIntoFile filename="src/mysite/polls/models.py" line="11" id="Adding a few attributes to models.py"-->
+<!--""LDS BeginAddFileContent filename="src/mysite/polls/models.py" line="11" id="Adding a few attributes to models.py"-->
   was_published_recently.admin_order_feld = 'pub_date'
   was_published_recently.boolean = True
   was_published_recently.short_description = 'Published recently?'	
-<!--""LDS EndInsertIntoFile--></pre></div>
+<!--""LDS EndAddFileContent--></pre></div>
 
 <p>Try out the admin: http://127.0.0.1:8000/admin/ </p>
 
@@ -383,51 +383,51 @@ class Poll(models.Model):
 
 Create a templates directory:
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginRootFile section="1" filename="Customizetemplatesofadmin.sh" id="Customize templates of admin" platform="UNIX" executor="sh" -->
-<!--""LDS BeginCodeReference id="changeDirectoryMySite"-->
-<!--""LDS EndCodeReference -->
+<!--""LDS BeginRunOutputScript section="1" filename="Customizetemplatesofadmin.sh" id="Customize templates of admin" platform="UNIX" executor="sh" -->
+<!--""LDS BeginReuseFragment id="changeDirectoryMySite"-->
+<!--""LDS EndReuseFragment -->
 mkdir templates
-<!--""LDS EndRootFile--></pre></div>
+<!--""LDS EndRunOutputScript--></pre></div>
 
 Create a templates/admin directory
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginContinueFile section="2" id="Customize templates of admin2" filename="Customizetemplatesofadmin.sh" -->
+<!--""LDS BeginExtendScript section="2" id="Customize templates of admin2" filename="Customizetemplatesofadmin.sh" -->
 cd templates
 mkdir admin
-<!--""LDS EndContinueFile--></pre></div>
+<!--""LDS EndExtendScript--></pre></div>
 
 Edit mysite/settings.pyto register the directory:
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginInsertIntoFile filename="src/mysite/settings.py" line="83" id="Edit settings.py to register directory"-->
+<!--""LDS BeginAddFileContent filename="src/mysite/settings.py" line="83" id="Edit settings.py to register directory"-->
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
-<!--""LDS EndInsertIntoFile--></pre></div>
+<!--""LDS EndAddFileContent--></pre></div>
 
 Figure out the location of the Django source files with a script containing the following lines:
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginRootFile section="1" filename="getDjangoLocation1.py" id="getDjangoLocation1" platform="UNIX" executor="python" -->
+<!--""LDS BeginRunOutputScript section="1" filename="getDjangoLocation1.py" id="getDjangoLocation1" platform="UNIX" executor="python" -->
 import sys
 sys.path = sys.path[1:]
 import django
 print(django.__path__)
-<!--""LDS EndRootFile--></pre></div>
+<!--""LDS EndRunOutputScript--></pre></div>
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
 ['/Library/Python/2.7/site-packages/django']
 </pre></div>
 
 <p>Now enter your django's location instead of the correspondent variable. </p>
-<!--""LDS DeclareVariables variables="djangoLocation" -->
+<!--""LDS RequestUserInput variables="djangoLocation" -->
 
 Copy base_site.html to the local templates/admin directory:
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginRootFile section="1" filename="copyBaseSite.sh" id="copyBaseSite" platform="UNIX" executor="sh" -->
-<!--""LDS BeginCodeReference id="changeDirectoryMySite"-->
-<!--""LDS EndCodeReference -->
+<!--""LDS BeginRunOutputScript section="1" filename="copyBaseSite.sh" id="copyBaseSite" platform="UNIX" executor="sh" -->
+<!--""LDS BeginReuseFragment id="changeDirectoryMySite"-->
+<!--""LDS EndReuseFragment -->
 cp $.$-djangoLocation-$.$/contrib/admin/
     templates/admin/base_site.html templates/admin/
 cp $.$-djangoLocation-$.$/contrib/admin/
     templates/admin/index.html templates/admin/
-<!--""LDS EndRootFile--></pre></div>
+<!--""LDS EndRunOutputScript--></pre></div>
 
 Edit file templates/admin/base_site.html:
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
@@ -447,17 +447,17 @@ Edit file templates/admin/base_site.html:
 
 <p>Edit file polls/views.py:</p>
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginInsertIntoFile filename="src/mysite/polls/views.py" line="1" id="Create a trivial view in views.py" -->
+<!--""LDS BeginAddFileContent filename="src/mysite/polls/views.py" line="1" id="Create a trivial view in views.py" -->
 from django.http import HttpResponse 
 
 def index(request): 
     return HttpResponse("Hello, world. You're at the poll index.")
-<!--""LDS EndInsertIntoFile--></pre></div>
+<!--""LDS EndAddFileContent--></pre></div>
 
 <p>Edit file polls/urls.py</p>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginInsertIntoFile filename="src/mysite/polls/urls.py" line="0" id="edit urls.py" -->
+<!--""LDS BeginAddFileContent filename="src/mysite/polls/urls.py" line="0" id="edit urls.py" -->
 from django.conf.urls import patterns, url 
 from polls import views 
 
@@ -465,7 +465,7 @@ urlpatterns = patterns(",
     # ex: /polls/ 
     url(r'^$', views.index, name='index') 
 )
-<!--""LDS EndInsertIntoFile --></pre></div>
+<!--""LDS EndAddFileContent --></pre></div>
 
 <p>Edit file mysite/urls.py:</p>
 
@@ -481,9 +481,9 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')), 
 
     url(r'^admin/', include(admin.site.urls)) 
-<!--""LDS BeginInsertIntoFile filename="src/mysite/mysite/urls.py" line="11" id="Insertion include edit mysite urls.py" --> 
+<!--""LDS BeginAddFileContent filename="src/mysite/mysite/urls.py" line="11" id="Insertion include edit mysite urls.py" --> 
     url(r'^polls/', include('polls.urls')), 
-<!--""LDS EndInsertIntoFile--> )
+<!--""LDS EndAddFileContent--> )
 </pre></div>
 
 <p>Try out the view: http://localhost:8000/polls/</p>
@@ -493,7 +493,7 @@ urlpatterns = patterns('',
 <p>Add this code to polls/views.py</p>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginInsertIntoFile filename="src/mysite/polls/views.py" line="5" id="InsertingViews" -->
+<!--""LDS BeginAddFileContent filename="src/mysite/polls/views.py" line="5" id="InsertingViews" -->
 def detail(request, poll_id): 
     return HttpResponse("You're looking at poll %s." % poll_id) 
 
@@ -502,7 +502,7 @@ def results(request, poll_id):
 
 def vote(request, poll_id): 
     return HttpResponse("You're voting on poll %s." % poll_id)
-<!--""LDS EndInsertIntoFile--></pre></div>
+<!--""LDS EndAddFileContent--></pre></div>
 
 <p>Revise polls/urls.py as follows:</p>
 
@@ -512,14 +512,14 @@ from polls import views
 urlpatterns = patterns('',
 # ex: /polls/
 url(r'^$', views.index, name='index'),
-<!--""LDS BeginInsertIntoFile filename="src/mysite/polls/urls.py" line="6" id="Inserting In Urls.py" -->
+<!--""LDS BeginAddFileContent filename="src/mysite/polls/urls.py" line="6" id="Inserting In Urls.py" -->
 # ex: /polls/5/
 url(r'^(?P<poll_id>\d+)/$', views.detail, name='detail'),
 # ex: /polls/5/results/
 url(r'^(?P<poll_id>\d+)/results/$', views.results, name='results'),
 # ex: /polls/5/vote/
 url(r'^(?P<poll_id>\d+)/vote/$', views.vote, name='vote'),
-<!--""LDS EndInsertIntoFile --></pre></div>
+<!--""LDS EndAddFileContent --></pre></div>
 
 <h3>19. Implement a View</h3>
 
@@ -545,16 +545,16 @@ def index(request):
 <p>We are going to reimplement the index view. Create a directory for the templates of the app. 
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginRootFile section="1" filename="createTemplateDirectory.sh" id="create Template Directory" platform="UNIX" executor="sh" -->
-<!--""LDS BeginCodeReference id="changeDirectoryMySite"-->
-<!--""LDS EndCodeReference -->
+<!--""LDS BeginRunOutputScript section="1" filename="createTemplateDirectory.sh" id="create Template Directory" platform="UNIX" executor="sh" -->
+<!--""LDS BeginReuseFragment id="changeDirectoryMySite"-->
+<!--""LDS EndReuseFragment -->
 mkdir templates/polls
-<!--""LDS EndRootFile --></pre></div>
+<!--""LDS EndRunOutputScript --></pre></div>
 
 <p> Put the following text into file templates/polls/index.html </p>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginInsertIntoFile filename="src/mysite/templates/polls/index.html" line="0" id="recreate Index HTML" -->
+<!--""LDS BeginAddFileContent filename="src/mysite/templates/polls/index.html" line="0" id="recreate Index HTML" -->
 {% if latest_poll_list %}
   <ul>
   {% for poll in latest_poll_list %}
@@ -564,7 +564,7 @@ mkdir templates/polls
 {% else %}
   <p>No polls are available.</p>
 {% endif %}
-<!--""LDS EndInsertIntoFile -->
+<!--""LDS EndAddFileContent -->
 </pre></div>
 
 <p> Edit file polls/views.py to revise the definition of index specifically: </p> 
@@ -588,22 +588,22 @@ def index(request):
 <p>Put the following text into file templates/polls/detail.html: </p>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginInsertIntoFile filename="src/mysite/templates/polls/detail.html" line="0" id="create view with 404 error" platform="UNIX" -->
+<!--""LDS BeginAddFileContent filename="src/mysite/templates/polls/detail.html" line="0" id="create view with 404 error" platform="UNIX" -->
 <h1>{{ poll.question }}</h1>
 <ul>
 	<li>{% for choice in poll.choice_set.all %}</li>
 	<li>{{ choice.choice_text }}</li>
 	<li>{% endfor %}</li>
 </ul>
-<!--""LDS EndInsertIntoFile --> </pre></div>
+<!--""LDS EndAddFileContent --> </pre></div>
 
 <p>Edit file polls/views.py to revise the definition of detail specifically ... </p>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
 ...
-<!--""LDS BeginInsertIntoFile filename="src/mysite/polls/views.py" line="3" id="Insert import for 404 error"-->
+<!--""LDS BeginAddFileContent filename="src/mysite/polls/views.py" line="3" id="Insert import for 404 error"-->
 from django.http import Http404
-<!--""LDS EndInsertIntoFile-->
+<!--""LDS EndAddFileContent-->
 
 def index(request):
 ...
@@ -682,7 +682,7 @@ def vote(request, poll_id):
 <p>Put the following text into file templates/polls/results.html </p>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginInsertIntoFile filename="src/mysite/templates/polls/results.html" line="0" id="Creating Results file" -->
+<!--""LDS BeginAddFileContent filename="src/mysite/templates/polls/results.html" line="0" id="Creating Results file" -->
 <h1>{{ poll.question }}</h1>
 
 <ul>
@@ -693,7 +693,7 @@ pluralize }}</li>
 </ul>
 
 <a href="{% url 'detail' poll.id %}">Vote again?</a>
-<!--""LDS EndInsertIntoFile --></pre></div>
+<!--""LDS EndAddFileContent --></pre></div>
 
 <p>Edit file polls/views.py to revise the definition of results specifically:</p>
 

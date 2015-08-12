@@ -1,34 +1,17 @@
-require 'modelwork/modelworkerdispatcher'
-require 'modelwork/codereferenceresolver'
-require 'modelwork/continuefileresolver'
+#modelworker
+Dir["modelwork/*.rb"].each { |file| 
+  rfile = file.sub!("lib/","")
+  require file }
+  
+#Parser
+Dir["parser/*.rb"].each { |file| 
+  rfile = file.sub!("lib/","")
+  require file }
 
-require 'fileio/fileio'
-require 'fileio/fileiohandler'
-require 'fileio/fileiohandlerregistry'
-require 'fileio/fileiochangefilelineshandler'
-require 'fileio/fileiochangefileregexhandler'
-require 'fileio/fileiocodereferencehandler'
-require 'fileio/fileiocontinuefilehandler'
-require 'fileio/fileiodeclarevariableshandler'
-require 'fileio/fileiodeletefilelineshandler'
-require 'fileio/fileioinsertintofilehandler'
-require 'fileio/fileiorootfilehandler'
-require 'fileio/filefunctions'
-require 'fileio/fileiodatarootfilehandler'
-require 'fileio/fileioinclusionconstraintfilehandler'
-
-require 'parser/parserdispatcher'
-require 'parser/changefilelinesparser'
-require 'parser/changefileregexparser'
-require 'parser/codereferenceparser'
-require 'parser/continuefileparser'
-require 'parser/declarereferenceparser'
-require 'parser/declarevariablesparser'
-require 'parser/deletefilelinesparser'
-require 'parser/insertintofileparser'
-require 'parser/rootfileparser'
-require 'parser/datarootfileparser'
-require 'parser/inclusionconstraintfileparser'
+#FileOutput
+Dir["fileio/*.rb"].each { |file| 
+  rfile = file.sub!("lib/","")
+  require file }
 
 require 'open3'
 
@@ -38,31 +21,31 @@ class TangleStage
     @parserdispatcher = ParserDispatcher.new
     @parserdispatcher.register_parser(ChangeFileLinesParser.new("ChangeFileLines"))
     @parserdispatcher.register_parser(ChangeFileRegexParser.new("ChangeFileRegex"))
-    @parserdispatcher.register_parser(CodeReferenceParser.new("CodeReference"))
-    @parserdispatcher.register_parser(ContinueFileParser.new("ContinueFile"))
-    @parserdispatcher.register_parser(DeclareReferenceParser.new("DeclareReference"))
-    @parserdispatcher.register_parser(DeclareVariablesParser.new("DeclareVariables"))
+    @parserdispatcher.register_parser(ReuseFragmentParser.new("ReuseFragment"))
+    @parserdispatcher.register_parser(ExtendScriptParser.new("ExtendScript"))
+    @parserdispatcher.register_parser(DeclareFragmentParser.new("DeclareFragment"))
+    @parserdispatcher.register_parser(RequestUserInputParser.new("RequestUserInput"))
     @parserdispatcher.register_parser(DeleteFileLinesParser.new("DeleteFileLines"))
-    @parserdispatcher.register_parser(InsertIntoFileParser.new("InsertIntoFile"))
-    @parserdispatcher.register_parser(RootFileParser.new("RootFile"))
-    @parserdispatcher.register_parser(DataRootFileParser.new("DataRootFile"))
-    @parserdispatcher.register_parser(InclusionConstraintFileParser.new("InclusionConstraintFile"))
+    @parserdispatcher.register_parser(AddFileContentParser.new("AddFileContent"))
+    @parserdispatcher.register_parser(RunOutputScriptParser.new("RunOutputScript"))
+    @parserdispatcher.register_parser(RunEffectScriptParser.new("RunEffectScript"))
+    @parserdispatcher.register_parser(RunCheckScriptParser.new("RunCheckScript"))
     
     @modelworkerdispatcher = ModelWorkerDispatcher.new
-    @modelworkerdispatcher.register_modelworker(Codereferenceresolver.new)
-    @modelworkerdispatcher.register_modelworker(Continuefileresolver.new)
+    @modelworkerdispatcher.register_modelworker(ReuseCodeResolver.new)
+    @modelworkerdispatcher.register_modelworker(ExtendScriptResolver.new)
     
-    @fileio = FileIO.new
-    @fileio.add_command_handler(FileIOCodeReferenceHandler.new("CodeReference"))
-    @fileio.add_command_handler(FileIORootFileHandler.new("RootFile"))
-  	@fileio.add_command_handler(FileIOChangeFileLinesHandler.new("ChangeFileLines"))
-  	@fileio.add_command_handler(FileIOChangeFileRegexHandler.new("ChangeFileRegex"))
-   	@fileio.add_command_handler(FileIOContinueFileHandler.new("ContinueFile"))
-  	@fileio.add_command_handler(FileIODeleteFileLinesHandler.new("DeleteFileLines"))
-  	@fileio.add_command_handler(FileIOInsertIntoFileHandler.new("InsertIntoFile"))
-  	@fileio.add_command_handler(FileIODeclareVariablesHandler.new("DeclareVariables"))
-    @fileio.add_command_handler(FileIODataRootFileHandler.new("DataRootFile"))
-    @fileio.add_command_handler(FileIOInclusionConstraintFileHandler.new("InclusionConstraintFile"))
+    @fileoutput = FileOutput.new
+    @fileoutput.add_command_handler(ReuseCodeHandler.new("ReuseCode"))
+    @fileoutput.add_command_handler(RunOutputScriptHandler.new("RunOutputScript"))
+  	@fileoutput.add_command_handler(ChangeFileLinesHandler.new("ChangeFileLines"))
+  	@fileoutput.add_command_handler(ChangeFileRegexHandler.new("ChangeFileRegex"))
+   	@fileoutput.add_command_handler(ExtendScriptHandler.new("ExtendScript"))
+  	@fileoutput.add_command_handler(DeleteFileLinesHandler.new("DeleteFileLines"))
+  	@fileoutput.add_command_handler(AddFileContentHandler.new("AddFileContent"))
+  	@fileoutput.add_command_handler(RequestUserInputHandler.new("RequestUserInput"))
+    @fileoutput.add_command_handler(RunEffectScriptHandler.new("RunEffectScript"))
+    @fileoutput.add_command_handler(RunCheckScriptHandler.new("RunCheckScript"))
     
   end
   
@@ -74,8 +57,8 @@ class TangleStage
     return @modelworkerdispatcher
   end
   
-  def get_fileio
-    return @fileio
+  def get_fileoutput
+    return @fileoutput
   end
   
   def tangle(basepath, htmlpath, platform) 
@@ -83,7 +66,7 @@ class TangleStage
     script = @parserdispatcher.parse(htmlpath)
     script = @modelworkerdispatcher.refine(script)
 
-    @fileio.start_file_output(script, basepath, platform)
+    @fileoutput.start_file_output(script, basepath, platform)
     
     return declare_runelementstrings(script, platform)
   end
@@ -91,7 +74,7 @@ class TangleStage
   def declare_runelementstrings (script, platform)
     runelements = Array.new
     script.get_commands.each { |cmd| 
-      if cmd.is_a?(Block)
+      if cmd.is_a?(BlockCommand)
         if cmd.is_a?(RootFile)
           if cmd.get_platform == platform
             runelements.push(cmd.get_id)
@@ -101,7 +84,7 @@ class TangleStage
         end
       end
       
-      if cmd.is_a?(DeclareVariables)
+      if cmd.is_a?(RequestUserInput)
         variables = cmd.get_variables.to_s
         variables = variables.gsub("[","")
         variables = variables.gsub("]","")

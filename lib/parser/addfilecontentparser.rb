@@ -2,16 +2,16 @@
 # To change this template file, choose Tools | Templates
 # and open the template in the editor.
 
-require 'model/changefileregex'
+require 'model/insertintofile'
 require 'parser/blockcommandparser'
-class ChangeFileRegexParser < BlockCommandParser
-  
+
+class AddFileContentParser < BlockCommandParser
   def parse(lines,nr)
     cmdline = lines[nr]
     id = getattributevalue(cmdline, 'id')
     snippet = parseblock(lines, nr)
     filename = getattributevalue(cmdline, 'filename')
-    regex = getattributevalue(cmdline, 'regex')
-    return ChangeFileRegex.new(id, snippet, filename, regex)
+    line = getattributevalue(cmdline, 'line')
+    return AddFileContent.new(id, snippet,filename, line)
   end
 end

@@ -4,23 +4,19 @@
 
 require "model/blockcommand"
 
-class ChangeFileLines < BlockCommand
-  def initialize(id, snippet, filename, startline, endline)
+
+class AddFileContent < BlockCommand
+  def initialize(id, snippet, name, line)
     super(id, snippet)
-    @fileName = filename
-    @startLine = startline
-    @endLine = endline
+    @fileName = name
+    @line = line
   end
   
   def get_filename
     @fileName
   end
   
-  def get_startline
-    @startLine
-  end
-  
-  def get_endline
-    @endLine
+  def get_line
+    @line
   end
 end

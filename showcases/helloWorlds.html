@@ -10,18 +10,18 @@
 			Windows:
 
 			<div style="width:800px;height:150px;line-height:3em;overflow:scroll;padding:5px;background-color:#FCFADD;color:#714D03;scrollbar-base-color:#DEBB07;"><pre>
-<!--""LDS BeginRootFile section="1" filename="helloworld.bat" id="hello world win" platform="WINDOWS" executor="cmd /c" -->
+<!--""LDS BeginRunOutputScript section="1" filename="helloworld.bat" id="hello world win" platform="WINDOWS" executor="cmd /c" -->
 @echo off
 echo Hello World!
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 			</pre></div>
 			Unix:
 <!-- Codes by HTML.am -->
 			<div style="width:800px;height:150px;line-height:3em;overflow:scroll;padding:5px;background-color:#FCFADD;color:#714D03;scrollbar-base-color:#DEBB07;"><pre>
-<!--""LDS BeginRootFile section="1" filename="helloworld.sh" id="hello world unix" platform="UNIX" executor="sh" -->
+<!--""LDS BeginRunOutputScript section="1" filename="helloworld.sh" id="hello world unix" platform="UNIX" executor="sh" -->
 #!/bin/sh
 echo Hello World!
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 			</pre></div>
 
 
@@ -30,37 +30,37 @@ echo Hello World!
 			<h2>But we cant see anything when launching it!</h2>
 			Oh no! The Window closes to fast! lets fix this. Windows:
 			<div style="width:800px;height:150px;line-height:3em;overflow:scroll;padding:5px;background-color:#FCFADD;color:#714D03;scrollbar-base-color:#DEBB07;"><pre>
-<!--""LDS BeginContinueFile id="hello world win" section="2" filename="helloworld.bat" -->
+<!--""LDS BeginExtendScript id="hello world win" section="2" filename="helloworld.bat" -->
 pause
-<!--""LDS EndContinueFile -->
+<!--""LDS EndExtendScript -->
 			</pre></div>
 
 
 			Unix:
 			<div style="width:800px;height:150px;line-height:3em;overflow:scroll;padding:5px;background-color:#FCFADD;color:#714D03;scrollbar-base-color:#DEBB07;"><pre>
-<!--""LDS BeginContinueFile id="hello world unix" section="2" filename="helloworld.sh" -->
+<!--""LDS BeginExtendScript id="hello world unix" section="2" filename="helloworld.sh" -->
 read -p "Press [Enter] key to exit..."
-<!--""LDS EndContinueFile -->
+<!--""LDS EndExtendScript -->
 			</pre></div>
 
 
 
 			<h2>I want to say my name!</h2>
-<!--""LDS DeclareVariables variables="name" -->
+<!--""LDS RequestUserInput variables="name" -->
 			<div style="width:800px;height:150px;line-height:3em;overflow:scroll;padding:5px;background-color:#FCFADD;color:#714D03;scrollbar-base-color:#DEBB07;"><pre>
-<!--""LDS BeginRootFile section="1" filename="hello.bat" id="saymyname win" platform="WINDOWS" executor="cmd /c" -->
+<!--""LDS BeginRunOutputScript section="1" filename="hello.bat" id="saymyname win" platform="WINDOWS" executor="cmd /c" -->
 @echo off
 echo Hello $.$-name-$.$!
 pause
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 			</pre></div>
 
 			<div style="width:800px;height:150px;line-height:3em;overflow:scroll;padding:5px;background-color:#FCFADD;color:#714D03;scrollbar-base-color:#DEBB07;"><pre>
-<!--""LDS BeginRootFile section="1" filename="hello.sh" id="saymyname unix" platform="UNIX" executor="sh" -->
+<!--""LDS BeginRunOutputScript section="1" filename="hello.sh" id="saymyname unix" platform="UNIX" executor="sh" -->
 #!/bin/sh
 echo Hello $.$-name-$.$!
 read -p "Press [Enter] key to exit..."
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 			</pre></div>
 			<h1>The End</h1>
 		</center>

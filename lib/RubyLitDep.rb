@@ -8,9 +8,9 @@ require 'minigui/qwidget.rb'
 require 'minigui/webview'
 require 'minigui/minigui.rb'
 
-#FileIO
+#FileOutput
 require 'fileutils.rb'
-Dir["fileio/*.rb"].each { |file| 
+Dir["filehandler/*.rb"].each { |file| 
   rfile = file.sub!("lib/","")
   require file }
 

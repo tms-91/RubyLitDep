@@ -10,32 +10,32 @@
 Windows:
 <div style="width:800px;height:150px;line-height:3em;overflow:scroll;padding:5px;background-color:#FCFADD;color:#714D03;scrollbar-base-color:#DEBB07;">
 <pre>
-<!--""LDS DeclareVariables variables="name" -->
-<!--""LDS BeginRootFile section="1" filename="helloworld.bat" id="hello world win" platform="WINDOWS" executor="cmd /c" -->
+<!--""LDS RequestUserInput variables="name" -->
+<!--""LDS BeginRunOutputScript section="1" filename="helloworld.bat" id="hello world win" platform="WINDOWS" executor="cmd /c" -->
 @echo off
 echo Hello $.$-name-$.$!
 <!--""LDS EndRootFile -->
 </pre>
 </div>
 Unix:
-<!--""LDS BeginRootFile section="1" filename="helloworld.sh" id="hello world unix" platform="UNIX" executor="sh" -->
+<!--""LDS BeginRunOutputScript section="1" filename="helloworld.sh" id="hello world unix" platform="UNIX" executor="sh" -->
 #!/bin/sh
 echo Hello $.$-name-$.$!
 <!--""LDS EndRootFile -->
 
-<!--""LDS BeginDeclareReference id="pause" -->
+<!--""LDS BeginDeclareFragment id="pause" -->
 pause
-<!--""LDS EndDeclareReference -->
+<!--""LDS EndDeclareFragment -->
 
-<!--""LDS BeginRootFile section="1" filename="echopause.bat" id="echo plus pause" platform="WINDOWS" executor="cmd /c" -->
-<!--""LDS BeginCodeReference id="hello world win" -->
+<!--""LDS BeginRunOutputScript section="1" filename="echopause.bat" id="echo plus pause" platform="WINDOWS" executor="cmd /c" -->
+<!--""LDS BeginReuseCode id="hello world win" -->
 print hello world
-<!--""LDS EndCodeReference -->
+<!--""LDS EndReuseCode -->
 echo mytest
-<!--""LDS BeginCodeReference id="pause" -->
+<!--""LDS BeginReuseCode id="pause" -->
 hold the console open
-<!--""LDS EndCodeReference -->
-<!--""LDS EndRootFile -->
+<!--""LDS EndReuseCode -->
+<!--""LDS EndRunOutputScript -->
 
 </center>
 </body>

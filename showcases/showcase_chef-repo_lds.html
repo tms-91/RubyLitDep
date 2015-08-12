@@ -70,38 +70,38 @@ The following paragraphs will guide you to set up your own server to host Ruby o
 Clone the repository onto your own workstation. For example in your `~/Code` directory:
 
 
-<!--""LDS BeginRootFile section="1" filename="cloneRepo.sh" id="clone repository" platform="UNIX" executor="sh" --><code><pre>
+<!--""LDS BeginRunOutputScript section="1" filename="cloneRepo.sh" id="clone repository" platform="UNIX" executor="sh" --><code><pre>
 git clone git://github.com/intercity/chef-repo.git ~/Code 
-</code></pre><!--""LDS EndRootFile -->
+</code></pre><!--""LDS EndRunOutputScript -->
 
 Run bundle:
-<!--""LDS BeginDeclareReference id="change to working folder" --><pre><code>
+<!--""LDS BeginDeclareFragment id="change to working folder" --><pre><code>
 cd ~/Code
-</code></pre><!--""LDS EndDeclareReference -->
-<!--""LDS BeginRootFile section="1" filename="runBundle.sh" id="run bundle" platform="UNIX" executor="sh" -->
-<!--""LDS BeginCodeReference id="change to working folder"-->
-<!--""LDS EndCodeReference --><pre><code>
+</code></pre><!--""LDS EndDeclareFragment -->
+<!--""LDS BeginRunOutputScript section="1" filename="runBundle.sh" id="run bundle" platform="UNIX" executor="sh" -->
+<!--""LDS BeginReuseFragment id="change to working folder"-->
+<!--""LDS EndReuseFragment --><pre><code>
 bundle install
-</code></pre><!--""LDS EndRootFile -->
+</code></pre><!--""LDS EndRunOutputScript -->
 
 Run Librarian install:
 
-<!--""LDS BeginRootFile section="1" filename="runLibrarian.sh" id="run librarian chef" platform="UNIX" executor="sh" -->
-<!--""LDS BeginCodeReference id="change to working folder"-->
-<!--""LDS EndCodeReference --><pre><code>
+<!--""LDS BeginRunOutputScript section="1" filename="runLibrarian.sh" id="run librarian chef" platform="UNIX" executor="sh" -->
+<!--""LDS BeginReuseFragment id="change to working folder"-->
+<!--""LDS EndReuseFragment --><pre><code>
 librarian-chef install
-</code></pre><!--""LDS EndRootFile -->
+</code></pre><!--""LDS EndRunOutputScript -->
 
 <h3>2. Install your server</h3>
 
 Use the following command to install Chef on your server and prepare it to be installed by these cookbooks:
 
-<!--""LDS DeclareVariables variables="username,host" -->
-<!--""LDS BeginRootFile section="1" filename="installServer.sh" id="install server" platform="UNIX" executor="sh" -->
-<!--""LDS BeginCodeReference id="change to working folder"-->
-<!--""LDS EndCodeReference --><pre><code>
+<!--""LDS RequestUserInput variables="username,host" -->
+<!--""LDS BeginRunOutputScript section="1" filename="installServer.sh" id="install server" platform="UNIX" executor="sh" -->
+<!--""LDS BeginReuseFragment id="change to working folder"-->
+<!--""LDS EndReuseFragment --><pre><code>
 bundle exec knife solo prepare $.$-username-$.$@$.$-host-$.$
-</code></pre><!--""LDS EndRootFile -->
+</code></pre><!--""LDS EndRunOutputScript -->
 
 This will create a file
 
@@ -111,18 +111,18 @@ nodes/<your host/ip>.json
 
 Now copy the the contents from the `nodes/sample_host.json` from this repository into this new file. Replace the sample values between `< >` with the values for your server and applications.
 
-<!--""LDS BeginRootFile section="1" filename="editconfiguration.sh" id="edit server configuration" platform="UNIX" executor="sh" 
+<!--""LDS BeginRunOutputScript section="1" filename="editconfiguration.sh" id="edit server configuration" platform="UNIX" executor="sh" 
 cp ~/Code/nodes/sample_host.json ~/Code/nodes/$.$-host-$.$.json
 xdg-open ~/Code/nodes/$.$-host-$.$.json
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 
 When this is done. Run the following command to start the full installation of your server:
 
-<!--""LDS BeginRootFile section="1" filename="installServerFull.sh" id="install server Step2" platform="UNIX" executor="sh" -->
-<!--""LDS BeginCodeReference id="change to working folder"-->
-<!--""LDS EndCodeReference --><pre><code>
+<!--""LDS BeginRunOutputScript section="1" filename="installServerFull.sh" id="install server Step2" platform="UNIX" executor="sh" -->
+<!--""LDS BeginReuseFragment id="change to working folder"-->
+<!--""LDS EndReuseFragment --><pre><code>
 bundle exec knife solo cook $.$-username-$.$@$.$-host-$.$
-</code></pre><!--""LDS EndRootFile -->
+</code></pre><!--""LDS EndRunOutputScript -->
 
 <h3>3. Deploy your application</h3>
 
@@ -130,29 +130,29 @@ You can deploy your applications with Capistrano.
 
 Add the Capistrano gem to your Gemfile:
 
-<!--""LDS BeginInsertIntoFile filename="~/Code/Gemfile" line="13" id="Add capistrano to the Gemfile"--><pre><code>
+<!--""LDS BeginAddFileContent filename="~/Code/Gemfile" line="13" id="Add capistrano to the Gemfile"--><pre><code>
 # your other gems..
 
 gem 'capistrano', '~> 3.2.1'
 gem 'capistrano-rails', '~> 1.1'
-</code></pre><!--""LDS EndInsertIntoFile-->
+</code></pre><!--""LDS EndAddFileContent-->
 
 
 And run bundle to install it:
 
-<!--""LDS BeginRootFile section="1" filename="bundleCapistrano.sh" id="Bundle Capistrano" platform="UNIX" executor="sh" -->
-<!--""LDS BeginCodeReference id="change to working folder"-->
-<!--""LDS EndCodeReference --><pre><code>
+<!--""LDS BeginRunOutputScript section="1" filename="bundleCapistrano.sh" id="Bundle Capistrano" platform="UNIX" executor="sh" -->
+<!--""LDS BeginReuseFragment id="change to working folder"-->
+<!--""LDS EndReuseFragment --><pre><code>
 bundle
-</code></pre><!--""LDS EndRootFile -->
+</code></pre><!--""LDS EndRunOutputScript -->
 
 Now generate configuration files for Capistrano:
 
-<!--""LDS BeginRootFile section="1" filename="configureCapistrano.sh" id="Configure Capistrano" platform="UNIX" executor="sh" -->
-<!--""LDS BeginCodeReference id="change to working folder"-->
-<!--""LDS EndCodeReference --><pre><code>
+<!--""LDS BeginRunOutputScript section="1" filename="configureCapistrano.sh" id="Configure Capistrano" platform="UNIX" executor="sh" -->
+<!--""LDS BeginReuseFragment id="change to working folder"-->
+<!--""LDS EndReuseFragment --><pre><code>
 bundle exec cap install
-</code></pre><!--""LDS EndRootFile -->
+</code></pre><!--""LDS EndRunOutputScript -->
 
 This command will generate the following files in your application:
 
@@ -181,7 +181,7 @@ Dir.glob('lib/capistrano/tasks/*.cap').each { |r| import r }
 Then edit `config/deploy.rb` and change it to the sample below.
 Replace `$.$-git_repo_url-$.$` with the SSH clone URL of your repository:
 
-<!--""LDS DeclareVariables variables="git_repo_url,application_name" -->
+<!--""LDS RequestUserInput variables="git_repo_url,application_name" -->
 <!--""LDS BeginChangeFileLines filename="~/Code/config/deploy.rb" id="Edit Capistrano deployment configuration" startline="0" endline="59" --><pre><code>ruby
 # config valid only for Capistrano 3.2.1
 lock '3.2.1'
@@ -227,7 +227,7 @@ end
 
 Replace the contents of `config/deploy/production.rb` with
 
-<!--""LDS DeclareVariables variables="server_address" -->
+<!--""LDS RequestUserInput variables="server_address" -->
 <!--""LDS BeginChangeFileLines filename="~/Code/config/deploy/production.rb" id="Edit Capistrano server configuration" startline="0" endline="46" --><pre><code>ruby
 server '$.$-server_address-$.$', user: 'deploy', roles: %w{web app db}
 </code></pre><!--""LDS EndChangeFileLines -->
@@ -236,19 +236,19 @@ Replace `$.$-server_address-$.$` with the domain name or ip address of your serv
 
 To verify that everything is set up correctly run:
 
-<!--""LDS BeginRootFile section="1" filename="checkCapistranoConfiguration.sh" id="Check Capistrano Configuration" platform="UNIX" executor="sh" -->
-<!--""LDS BeginCodeReference id="change to working folder"-->
-<!--""LDS EndCodeReference --><pre><code>sh
+<!--""LDS BeginRunOutputScript section="1" filename="checkCapistranoConfiguration.sh" id="Check Capistrano Configuration" platform="UNIX" executor="sh" -->
+<!--""LDS BeginReuseFragment id="change to working folder"-->
+<!--""LDS EndReuseFragment --><pre><code>sh
 bundle exec cap production deploy:check
-</code></pre><!--""LDS EndRootFile -->
+</code></pre><!--""LDS EndRunOutputScript -->
 
 Finally to deploy, run:
 
-<!--""LDS BeginRootFile section="1" filename="deployCapistrano.sh" id="Deploy Capistrano" platform="UNIX" executor="sh" -->
-<!--""LDS BeginCodeReference id="change to working folder"-->
-<!--""LDS EndCodeReference --><pre><code>sh
+<!--""LDS BeginRunOutputScript section="1" filename="deployCapistrano.sh" id="Deploy Capistrano" platform="UNIX" executor="sh" -->
+<!--""LDS BeginReuseFragment id="change to working folder"-->
+<!--""LDS EndReuseFragment --><pre><code>sh
 bundle exec cap production deploy
-</code></pre><!--""LDS EndRootFile -->
+</code></pre><!--""LDS EndRunOutputScript -->
 
 
 This will deploy your app and run your database migrations.
@@ -264,16 +264,16 @@ First, install Vagrant from <a href="http://vagrantup.com">http://vagrantup.com<
 
 Make sure you have Vagrant version 1.6.5 or higher installed.
 
-<!--""LDS BeginRootFile section="1" filename="installVagrantPlugins.sh" id="Install Vagrant plugins" platform="UNIX" executor="sh" --><pre><code>
+<!--""LDS BeginRunOutputScript section="1" filename="installVagrantPlugins.sh" id="Install Vagrant plugins" platform="UNIX" executor="sh" --><pre><code>
 vagrant plugin install vagrant-librarian-chef
 vagrant plugin install vagrant-omnibus
-</code></pre><!--""LDS EndRootFile -->
+</code></pre><!--""LDS EndRunOutputScript -->
 
 Finally, start a Vagrant machine with a sample server configuration:
 
-<!--""LDS BeginRootFile section="1" filename="startVagrant.sh" id="Start Vagrant" platform="UNIX" executor="xterm -e sh $.$-f-$.$ &" --><pre><code>
+<!--""LDS BeginRunOutputScript section="1" filename="startVagrant.sh" id="Start Vagrant" platform="UNIX" executor="xterm -e sh $.$-f-$.$ &" --><pre><code>
 vagrant up mysql
-</code></pre><!--""LDS EndRootFile -->
+</code></pre><!--""LDS EndRunOutputScript -->
 
 This will boot a local Ubuntu virtual machine and install it so you can deploy Ruby on Rails applications that use MySQL as the database.
 
@@ -296,23 +296,23 @@ Test-kitchen is a tool where you can automatically provision a server with these
 
 First you need to obtain a DigitalOcean access token here: <a href="https://cloud.digitalocean.com/settings/applications">https://cloud.digitalocean.com/settings/applications</a>. Then you need to find IDs of the SSH keys you added to your account: <a href="https://cloud.digitalocean.com/ssh_keys">https://cloud.digitalocean.com/ssh_keys</a>. You can obtain these IDs with the following command:
 
-<!--""LDS DeclareVariables variables="Your_Digital_Ocean_Access_Token" -->
-<!--""LDS BeginRootFile section="1" filename="getDigitalOceanIDs.sh" id="Get DigitalOcean IDs" platform="UNIX" executor="sh" -->
-<!--""LDS BeginCodeReference id="change to working folder"-->
-<!--""LDS EndCodeReference --><pre><code>
+<!--""LDS RequestUserInput variables="Your_Digital_Ocean_Access_Token" -->
+<!--""LDS BeginRunOutputScript section="1" filename="getDigitalOceanIDs.sh" id="Get DigitalOcean IDs" platform="UNIX" executor="sh" -->
+<!--""LDS BeginReuseFragment id="change to working folder"-->
+<!--""LDS EndReuseFragment --><pre><code>
 curl -X GET https://api.digitalocean.com/v2/account/keys -H "Authorization: Bearer $.$-Your_Digital_Ocean_Access_Token-$.$"
-</code></pre><!--""LDS EndRootFile -->
+</code></pre><!--""LDS EndRunOutputScript -->
 
 When you've obtained both your access token and your key IDs you can run the tests like this:
 
-<!--""LDS DeclareVariables variables="Your_Digital_Ocean_SSH_Key_ID" -->
-<!--""LDS BeginRootFile section="1" filename="runDigitalOceanTest.sh" id="Run Digital Ocean Tests" platform="UNIX" executor="sh" -->
-<!--""LDS BeginCodeReference id="change to working folder"-->
-<!--""LDS EndCodeReference --><pre><code>
+<!--""LDS RequestUserInput variables="Your_Digital_Ocean_SSH_Key_ID" -->
+<!--""LDS BeginRunOutputScript section="1" filename="runDigitalOceanTest.sh" id="Run Digital Ocean Tests" platform="UNIX" executor="sh" -->
+<!--""LDS BeginReuseFragment id="change to working folder"-->
+<!--""LDS EndReuseFragment --><pre><code>
 export DIGITALOCEAN_ACCESS_TOKEN=$.$-Your_Digital_Ocean_Access_Token-$.$
 export DIGITALOCEAN_SSH_KEY_IDS=$.$-Your_Digital_Ocean_SSH_Key_ID-$.$
 bin/kitchen test
-</code></pre><!--""LDS EndRootFile -->
+</code></pre><!--""LDS EndRunOutputScript -->
 
 This command boots up a Droplet in your DigitalOcean account, provisions it with Chef, runs the tests and destroys the Droplet.
 
@@ -320,11 +320,11 @@ This command boots up a Droplet in your DigitalOcean account, provisions it with
 
 If you want to keep the Droplet running and do testing while making changes you can use the `kitchen verify` command instead of the `kitchen test` command to verify your changes:
 
-<!--""LDS BeginRootFile section="1" filename="runDigitalOceanVerify.sh" id="Run Digital Ocean Verify" platform="UNIX" executor="sh" -->
-<!--""LDS BeginCodeReference id="change to working folder"-->
-<!--""LDS EndCodeReference --><pre><code>
+<!--""LDS BeginRunOutputScript section="1" filename="runDigitalOceanVerify.sh" id="Run Digital Ocean Verify" platform="UNIX" executor="sh" -->
+<!--""LDS BeginReuseFragment id="change to working folder"-->
+<!--""LDS EndReuseFragment --><pre><code>
 $ bin/kitchen verify
-</code></pre><!--""LDS EndRootFile -->
+</code></pre><!--""LDS EndRunOutputScript -->
 
 <h2>Resources and original authors</h2>
 <hr>

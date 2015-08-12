@@ -3,11 +3,8 @@
 # and open the template in the editor.
 
 require 'io/console'
-require 'model/script'
+require 'model/manual'
 require 'parser/parserregistry'
-#require 'parser/blockparser'
-#require 'parser/changefilelinesparser'
-#require 'parser/changefileregexparser'
 
 Dir["lib/parser/*.rb"].each { |file| 
   parserfile = file.sub!("lib/","")
@@ -25,7 +22,7 @@ class ParserDispatcher
   
   def parse(filepath)
     lines = File.readlines(filepath)
-    script = Script.new
+    script = Manual.new
     
     number = 0
     while number < lines.size do
@@ -56,7 +53,7 @@ class ParserDispatcher
         
         cmdobject = cmdparser.parse(lines, number)
         script.add_command(cmdobject)
-        if cmdparser.is_a?(BlockParser)
+        if cmdparser.is_a?(BlockCommandParser)
           number = cmdparser.getlinenr
         else
           number+=1

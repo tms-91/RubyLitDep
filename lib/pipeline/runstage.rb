@@ -2,7 +2,7 @@
 # To change this template file, choose Tools | Templates
 # and open the template in the editor.
 
-require 'fileio/filefunctions'
+require 'filehandler/filefunctions'
 require 'open3'
 
 class RunStage
@@ -37,7 +37,7 @@ class RunStage
     lines.each { |line|  
       match = line.match(regex)
       unless match==nil
-        if(match.to_s.include?('Variable'))
+        if(match.to_s.include?('#Variable'))
           variables = match.to_s.split(':')[1].strip
           variables = variables.gsub('"',"")
           variables.split(',').each { |var| 

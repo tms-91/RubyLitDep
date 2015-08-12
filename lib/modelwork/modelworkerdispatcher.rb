@@ -9,11 +9,11 @@ class ModelWorkerDispatcher
     @registry.add_entry(modelworker)
   end
   
-  def refine(script)
+  def refine(manual)
     @registry.get_entries.each { |modelworker|  
-      script = modelworker.refine(script)
+      manual = modelworker.refine(manual)
     }
     
-    return script
+    return manual
   end
 end

@@ -2,16 +2,16 @@
 # To change this template file, choose Tools | Templates
 # and open the template in the editor.
 
-require 'model/changefileregex'
 require 'parser/blockcommandparser'
-class ChangeFileRegexParser < BlockCommandParser
-  
+require 'model/extendscript'
+
+class ExtendScriptParser < BlockCommandParser
   def parse(lines,nr)
     cmdline = lines[nr]
     id = getattributevalue(cmdline, 'id')
     snippet = parseblock(lines, nr)
+    section = getattributevalue(cmdline, 'section')
     filename = getattributevalue(cmdline, 'filename')
-    regex = getattributevalue(cmdline, 'regex')
-    return ChangeFileRegex.new(id, snippet, filename, regex)
+    return ExtendScript.new(id, snippet, section, filename)
   end
 end

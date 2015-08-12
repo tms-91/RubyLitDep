@@ -23,50 +23,50 @@
   <li>You can log in for the first time with username "pi" and password "raspbian"</li>
 </ul>
 <li>First change your password:</li>
-<!--""LDS DeclareVariables variables="password" -->
-<!--""LDS BeginRootFile section="1" filename="passwd.sh" id="change password" platform="UNIX" executor="sh" -->
+<!--""LDS RequestUserInput variables="password" -->
+<!--""LDS BeginRunOutputScript section="1" filename="passwd.sh" id="change password" platform="UNIX" executor="sh" -->
 passwd pi
 $.$-password-$.$
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 </ul>
 
 <h2>Chapter 2: Keep your System up to date</h2>
 
 <ul>
 <li>Update the packages and the clock time:</li>
-<!--""LDS BeginRootFile section="1" filename="updateclock.sh" id="update clock" platform="UNIX" executor="sh" -->
+<!--""LDS BeginRunOutputScript section="1" filename="updateclock.sh" id="update clock" platform="UNIX" executor="sh" -->
 sudo dpkg-reconfigure tzdata
 sudo apt-get update
 sudo apt-get upgrade
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 <li>Set the new timestamp</li>
-<!--""LDS BeginRootFile section="1" filename="setdate.sh" id="set date" platform="UNIX" executor="sh" -->
+<!--""LDS BeginRunOutputScript section="1" filename="setdate.sh" id="set date" platform="UNIX" executor="sh" -->
 sudo date --set="30 December 2013 10:00:00"
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 <li>Keep the firmware up to date</li>
-<!--""LDS BeginRootFile section="1" filename="firmwareupdate.sh" id="update firmware" platform="UNIX" executor="sh" -->
+<!--""LDS BeginRunOutputScript section="1" filename="firmwareupdate.sh" id="update firmware" platform="UNIX" executor="sh" -->
 sudo apt-get install ca-certificates
 sudo apt-get install git-core
 sudo wget https://raw.github.com/Hexxeh/rpi-update/master/rpi-update  -O /usr/bin/rpi-update && sudo chmod +x /usr/bin/rpi-update
 sudo rpi-update
 sudo shutdown -r now
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 </ul>
 
 <h2>Chapter 3: Configure SSH</h2>
 
 <ul>
 <li>Get the Raspberrys ip address</li>
-<!--""LDS BeginRootFile section="1" filename="shownetwork.sh" id="shownetwork" platform="UNIX" executor="sh" -->
+<!--""LDS BeginRunOutputScript section="1" filename="shownetwork.sh" id="shownetwork" platform="UNIX" executor="sh" -->
 ifconfig
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 <li>Note the ip address of eth0 standing behind "inet addr:".</li>
 <li>Configure SSH</li>
-<!--""LDS BeginRootFile section="1" filename="installssh.sh" id="install ssh" platform="UNIX" executor="sh" -->
+<!--""LDS BeginRunOutputScript section="1" filename="installssh.sh" id="install ssh" platform="UNIX" executor="sh" -->
 sudo apt-get install ssh
 sudo /etc/init.d/ssh start
 sudo shutdown -r now
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 <li>The Raspberry is rebooting now. Shut it down after it has reloaded.</li>
 <li>You can unplug your Raspberry now from keyboard and monitor.</li>
 <li>Log in from any other PC</li>
@@ -79,11 +79,11 @@ sudo shutdown -r now
 
 <ul>
 <li>Install Apache</li>
-<!--""LDS BeginRootFile section="1" filename="installapache.sh" id="install apache" platform="UNIX" executor="sh" -->
+<!--""LDS BeginRunOutputScript section="1" filename="installapache.sh" id="install apache" platform="UNIX" executor="sh" -->
 sudo apt-get update
 sudo apt-get install apache2
 sudo service apache2 restart
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 <li>Test your Server by tiping the IP adress in the command line of your browser.</li>
 </ul>
 
@@ -91,17 +91,17 @@ sudo service apache2 restart
 
 <ul>
 <li>Install PHP</li>
-<!--""LDS BeginRootFile section="1" filename="installphp.sh" id="install php" platform="UNIX" executor="sh" -->
+<!--""LDS BeginRunOutputScript section="1" filename="installphp.sh" id="install php" platform="UNIX" executor="sh" -->
 sudo apt-get install php5
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 <li>Watch the php Info</li>
-<!--""LDS BeginRootFile section="1" filename="generatephpinfo.sh" id="generate php info file" platform="UNIX" executor="sh" -->
+<!--""LDS BeginRunOutputScript section="1" filename="generatephpinfo.sh" id="generate php info file" platform="UNIX" executor="sh" -->
 cd /var/www
 sudo touch phpinfo.php
-<!--""LDS EndRootFile -->
-<!--""LDS BeginInsertIntoFile id="insert phpinfo" filename="phpinfo.php" line="0" -->
+<!--""LDS EndRunOutputScript -->
+<!--""LDS BeginAddFileContent id="insert phpinfo" filename="phpinfo.php" line="0" -->
 < ?php phpinfo(); ? >
-<!--""LDS EndInsertIntoFile -->
+<!--""LDS EndAddFileContent -->
 <li>Save this by Strg+O and Strg+X</li>
 <li>Test your Server by tiping the IP adress in the command line of your browser followed by /phpinfo.php.</li>
 </ul>
@@ -110,17 +110,17 @@ sudo touch phpinfo.php
 
 <ul>
 <li>Install MySQL</li>
-<!--""LDS DeclareVariables variables="usernamemysql,passwordmysql" -->
-<!--""LDS BeginRootFile section="1" filename="installmysql.sh" id="install mysql" platform="UNIX" executor="sh" -->
+<!--""LDS RequestUserInput variables="usernamemysql,passwordmysql" -->
+<!--""LDS BeginRunOutputScript section="1" filename="installmysql.sh" id="install mysql" platform="UNIX" executor="sh" -->
 sudo apt-get install mysql-server mysql-client php5-mysql
 $.$-usernamemysql-$.$
 $.$-passwordmysql-$.$
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 <li>When the command pops up type a password of your choice.</li>
 <li>When the installation is finished restart the raspberry.</li>
-<!--""LDS BeginRootFile section="1" filename="restartpi.sh" id="restart pi" platform="UNIX" executor="sh" -->
+<!--""LDS BeginRunOutputScript section="1" filename="restartpi.sh" id="restart pi" platform="UNIX" executor="sh" -->
 sudo restart
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 <li>If the installation was successful the phpinfo file is extended by a mysql part.</li>
 </ul>
 
@@ -128,9 +128,9 @@ sudo restart
 
 <ul>
 <li>Install phpMyAdmin</li>
-<!--""LDS BeginRootFile section="1" filename="installphpmyadmin.sh" id="install phpMyAdmin" platform="UNIX" executor="sh" -->
+<!--""LDS BeginRunOutputScript section="1" filename="installphpmyadmin.sh" id="install phpMyAdmin" platform="UNIX" executor="sh" -->
 sudo apt-get install libapache2-mod-auth-mysql php5-mysql phpmyadmin
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 <li>Select apache2 when you are asked to.</li>
 <li>Select yes to create databases automatically.</li>
 <li>When asked to tipe in your sql user password you created in chapter 6.</li>
@@ -140,9 +140,9 @@ Add "extension=mysql.so" at the end of the file and safe it by Strg+O and Strg+X
 <!--""LDS BeginChangeFileLines id="add extension mysql.so" filename="/etc/php5/apache2/php.ini" startline="0" endline="1" -->
 extension=mysql.so
 <!--""LDS EndChangeFileLines-->
-<!--""LDS BeginRootFile section="1" filename="addextension.sh" id="addextension" platform="UNIX" executor="sh" -->
+<!--""LDS BeginRunOutputScript section="1" filename="addextension.sh" id="addextension" platform="UNIX" executor="sh" -->
 ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf.d/phpmyadmin.conf
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 <li>Test your Server by tiping the IP adress in the command line of your browser followed by /phpmyadmin</li>
 </ul>
 
@@ -150,13 +150,13 @@ ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf.d/phpmyadmin.conf
 
 <ul>
 <li>Install FTP</li>
-<!--""LDS BeginRootFile section="1" filename="installftp.sh" id="install ftp" platform="UNIX" executor="sh" -->
+<!--""LDS BeginRunOutputScript section="1" filename="installftp.sh" id="install ftp" platform="UNIX" executor="sh" -->
 sudo apt-get install proftpd
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 <li>Configurate FTP</li>
-<!--""LDS BeginRootFile section="1" filename="openproftpfile.sh" id="open ftp file" platform="UNIX" executor="sh" -->
+<!--""LDS BeginRunOutputScript section="1" filename="openproftpfile.sh" id="open ftp file" platform="UNIX" executor="sh" -->
 sudo nano /etc/proftpd/proftpd.conf
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 <li>Type in the following code:
 <p>DefaultRoot ~</p>
 <p>AuthOrder              mod_auth_file.c  mod_auth_unix.c</p>
@@ -167,21 +167,21 @@ sudo nano /etc/proftpd/proftpd.conf
 <li>Safe the file with Strg+O and Strg+X</li>
 </ul>
 <li>Generate a virtual user</li>
-<!--""LDS DeclareVariables variables="usernameftp,passwordftp" -->
-<!--""LDS BeginRootFile section="1" filename="virtualuser.sh" id="virtual user" platform="UNIX" executor="sh" -->
+<!--""LDS RequestUserInput variables="usernameftp,passwordftp" -->
+<!--""LDS BeginRunOutputScript section="1" filename="virtualuser.sh" id="virtual user" platform="UNIX" executor="sh" -->
 cd /etc/proftpd/
 sudo ftpasswd --passwd --name $.$-usernameftp-$.$ --uid 33 --gid 33 --home /var/www/ --shell /bin/false
 $.$-passwordftp-$.$
-<!--""LDS EndRootFile -->
+<!--""LDS EndRunOutputScript -->
 
 Type the fptuser password of your choice.
 
-<!--""LDS BeginContinueFile id="virtualuser part2" section="2" filename="virtualuser.sh" -->
+<!--""LDS BeginExtendScript id="virtualuser part2" section="2" filename="virtualuser.sh" -->
 sudo /etc/init.d/proftpd restart
 chmod g+s /var/www
 chmod 775 /var/www
 chown -R www-data:www-data /var/www
-<!--""LDS EndContinueFile -->
+<!--""LDS EndExtendScript -->
 <li>Note: If you dont want your user to be ftpuser you can change its name and home directory in the second command.</li>
 </ul>
 

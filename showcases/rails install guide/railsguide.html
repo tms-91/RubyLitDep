@@ -119,9 +119,9 @@ A number of tools exist to help you quickly install Ruby and Ruby on Rails on yo
 </div>
 <div class="code_container"><pre>
 <!-- What about rootfiles for multiple platforms?-->
-<!--""LDS BeginRootFile section="1" filename="checkrubyversion.bat" id="Check Ruby Version" platform="WINDOWS" executor="cmd /c"-->
+<!--""LDS BeginRunOutputScript section="1" filename="checkrubyversion.bat" id="Check Ruby Version" platform="WINDOWS" executor="cmd /c"-->
 ruby -v
-<!--""LDS EndRootFile-->
+<!--""LDS EndRunOutputScript-->
 ruby 2.0.0p353
 
 
@@ -138,9 +138,9 @@ Many popular UNIX-like OSes ship with an acceptable version of SQLite3. Windows 
 . Verify that it is correctly installed and in your PATH:
 </p>
 <div class="code_container"><pre>
-<!--""LDS BeginRootFile section="1" filename="checksqliteversion.bat" id="Check SQLite Version" platform="WINDOWS" executor="cmd /c"-->
+<!--""LDS BeginRunOutputScript section="1" filename="checksqliteversion.bat" id="Check SQLite Version" platform="WINDOWS" executor="cmd /c"-->
 sqlite3 --version
-<!--""LDS EndRootFile-->
+<!--""LDS EndRunOutputScript-->
 
 
 </pre></div>
@@ -151,17 +151,17 @@ To install Rails, use the
 command provided by RubyGems:
 </p>
 <div class="code_container"><pre>
-<!--""LDS BeginRootFile section="1" filename="installrails.bat" id="Install Rails" platform="WINDOWS" executor="cmd /c"-->
+<!--""LDS BeginRunOutputScript section="1" filename="installrails.bat" id="Install Rails" platform="WINDOWS" executor="cmd /c"-->
 gem install rails
-<!--""LDS EndRootFile-->
+<!--""LDS EndRunOutputScript-->
 
 
 </pre></div>
 <p>To verify that you have everything installed correctly, you should be able to run the following:</p>
 <div class="code_container"><pre>
-<!--""LDS BeginRootFile section="1" filename="checkrailsversion.bat" id="Check Rails Version" platform="WINDOWS" executor="cmd /c"-->
+<!--""LDS BeginRunOutputScript section="1" filename="checkrailsversion.bat" id="Check Rails Version" platform="WINDOWS" executor="cmd /c"-->
 bin/rails --version
-<!--""LDS EndRootFile-->
+<!--""LDS EndRunOutputScript-->
 
 
 </pre></div>
@@ -170,9 +170,9 @@ bin/rails --version
 <p>Rails comes with a number of scripts called generators that are designed to make your development life easier by creating everything that's necessary to start working on a particular task. One of these is the new application generator, which will provide you with the foundation of a fresh Rails application so that you don't have to write it yourself.</p>
 <p>To use this generator, open a terminal, navigate to a directory where you have rights to create files, and type:</p>
 <div class="code_container"><pre>
-<!--""LDS BeginRootFile section="1" filename="createproject.bat" id="Create Project" platform="WINDOWS" executor="cmd /c"-->
+<!--""LDS BeginRunOutputScript section="1" filename="createproject.bat" id="Create Project" platform="WINDOWS" executor="cmd /c"-->
 rails new blog
-<!--""LDS EndRootFile-->
+<!--""LDS EndRunOutputScript-->
 
 
 </pre></div>
@@ -194,9 +194,9 @@ You can see all of the command line options that the Rails application builder a
 </div>
 <p>After you create the blog application, switch to its folder:</p>
 <div class="code_container"><pre>
-<!--""LDS BeginDeclareReference id="changeDirectoryToNewBase"-->
+<!--""LDS BeginDeclareFragment id="changeDirectoryToNewBase"-->
 cd blog
-<!--""LDS EndDeclareReference-->
+<!--""LDS EndDeclareFragment-->
 
 
 </pre></div>
@@ -298,11 +298,11 @@ You actually have a functional Rails application already. To see it, you need to
 directory:
 </p>
 <div class="code_container"><pre>
-<!--""LDS BeginRootFile section="1" filename="startServer.bat" id="Start Server1" platform="WINDOWS" executor="cmd /c"-->
-<!--""LDS BeginCodeReference id="changeDirectoryToNewBase"-->
-<!--""LDS EndCodeReference-->
+<!--""LDS BeginRunOutputScript section="1" filename="startServer.bat" id="Start Server1" platform="WINDOWS" executor="cmd /c"-->
+<!--""LDS BeginReuseFragment id="changeDirectoryToNewBase"-->
+<!--""LDS EndReuseFragment-->
 bin/rails server
-<!--""LDS EndRootFile-->
+<!--""LDS EndRunOutputScript-->
 
 
 </pre></div>
@@ -367,11 +367,11 @@ A view's purpose is to display this information in a human readable format. An i
 </p>
 <p>To create a new controller, you will need to run the "controller" generator and tell it you want a controller called "welcome" with an action called "index", just like this:</p>
 <div class="code_container"><pre>
-<!--""LDS BeginRootFile section="1" filename="generateControllers.bat" id="Generate Controller" platform="WINDOWS" executor="cmd /c"-->
-<!--""LDS BeginCodeReference id="changeDirectoryToNewBase"-->
-<!--""LDS EndCodeReference-->
+<!--""LDS BeginRunOutputScript section="1" filename="generateControllers.bat" id="Generate Controller" platform="WINDOWS" executor="cmd /c"-->
+<!--""LDS BeginReuseFragment id="changeDirectoryToNewBase"-->
+<!--""LDS EndReuseFragment-->
 bin/rails generate controller welcome index
-<!--""LDS EndRootFile-->
+<!--""LDS EndRunOutputScript-->
 
 
 </pre></div>
@@ -410,20 +410,20 @@ Open the
 file in your text editor. Delete all of the existing code in the file, and replace it with the following single line of code:
 </p>
 <div class="code_container"><pre>
-<!--""LDS BeginDeclareReference id="eraseFileAndInsertHelloWorld"-->
-<!--""LDS BeginCodeReference id="changeDirectoryToNewBase"-->
-<!--""LDS EndCodeReference
+<!--""LDS BeginDeclareFragment id="eraseFileAndInsertHelloWorld"-->
+<!--""LDS BeginReuseFragment id="changeDirectoryToNewBase"-->
+<!--""LDS EndReuseFragment 
 
 rm app/views/welcome/index.html.erb
 echo ^<h1^>Hello, Rails!^</h1^> > rm app/views/welcome/index.html.erb
 
-<!--""LDS EndDeclareReference-->
+<!--""LDS EndDeclareFragment-->
 
-<!--""LDS BeginRootFile section="1" filename="changeDisplayedPage.bat" id="Change Displayed Page" platform="WINDOWS" executor="cmd /c"-->
-<!--""LDS BeginCodeReference id="eraseFileAndInsertHelloWorld"-->
+<!--""LDS BeginRunOutputScript section="1" filename="changeDisplayedPage.bat" id="Change Displayed Page" platform="WINDOWS" executor="cmd /c"-->
+<!--""LDS BeginReuseFragment id="eraseFileAndInsertHelloWorld"-->
 <h1>Hello, Rails!</h1>
-<!--""LDS EndCodeReference-->
-<!--""LDS EndRootFile-->
+<!--""LDS EndReuseFragment-->
+<!--""LDS EndRunOutputScript-->
 
 
 

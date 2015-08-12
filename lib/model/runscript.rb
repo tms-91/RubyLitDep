@@ -4,23 +4,28 @@
 
 require "model/blockcommand"
 
-class ChangeFileLines < BlockCommand
-  def initialize(id, snippet, filename, startline, endline)
+class RunScript < BlockCommand
+  def initialize(id,snippet, section, filename, platform, executor)
     super(id, snippet)
+    @section = section
     @fileName = filename
-    @startLine = startline
-    @endLine = endline
+    @platform = platform
+    @executor = executor
+  end
+  
+  def get_section
+    @section
   end
   
   def get_filename
     @fileName
   end
   
-  def get_startline
-    @startLine
+  def get_platform
+    @platform
   end
   
-  def get_endline
-    @endLine
+  def get_executor
+    @executor
   end
 end

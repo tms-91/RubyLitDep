@@ -5,7 +5,7 @@ require 'pipeline/htmltransformer'
 class Minigui < Qt::Widget
 	slots 'comboitem(int)', 'basepathclicked()', 'tanglepathclicked()', 'starttangleclicked()', 'runbuttonclicked()', 'startsingleclicked()'
 
-	def initialize()
+	def initialize
 		super()
 
 		# prepare strings
@@ -19,7 +19,7 @@ class Minigui < Qt::Widget
 
 		# Global attributes to ride sided elements
 		@listview = Qt::ListView.new
-		@runbutton = Qt::PushButton.new ("Run files")
+		@runbutton = Qt::PushButton.new("Run files")
 		@startsingle = Qt::PushButton.new("Start selected")
 
 		# line three
@@ -28,23 +28,23 @@ class Minigui < Qt::Widget
 		# line one
 		@combo = Qt::ComboBox.new
 		@basepath = Qt:: PushButton.new('Select HTML file')
-		@basepathlabel = Qt::LineEdit.new "Path selected", self
+		@basepathlabel = Qt::LineEdit.new("Path selected", self)
 
 		# line two
 		@tanglepath = Qt::PushButton.new("Select Path")
-		@tanglepathlabel = Qt::LineEdit.new "No Path selected", self
+		@tanglepathlabel = Qt::LineEdit.new("No Path selected", self)
 		@starttangle = Qt::PushButton.new("Start Tangle")
 
 		# define layout handling
 		vbox = Qt::VBoxLayout.new
-		vbox.addWidget generateLineOne()
-		vbox.addWidget generateLineTwo()
+		vbox.addWidget(generatelineone())
+		vbox.addWidget(generatelinetwo())
 		vbox.addWidget @webkit
 
 		# general layout
 		basebox = Qt::HBoxLayout.new self
 		basebox.addLayout(vbox, 1)
-		basebox.addLayout(generateListView)
+		basebox.addLayout(generatelistview())
 
 		# set layout
 		self.layout = basebox
@@ -55,7 +55,7 @@ class Minigui < Qt::Widget
 		puts @combo.currentText
 	end
 
-	def basepathclicked()
+	def basepathclicked
 		widget = QWidget.new
 
 		text = widget.get_file(self, "Select Path to HTML file")
@@ -71,11 +71,11 @@ class Minigui < Qt::Widget
 		end
 	end
 
-	def generateLineOne()
+	def generatelineone
 		vbox = Qt::VBoxLayout.new
 
 		hbox = Qt::HBoxLayout.new
-		@combo.addItem "WINDOWS"
+		@combo.addItem("WINDOWS")
 		@combo.addItem "UNIX"
 		connect(@combo, SIGNAL('activated(int)'), self, SLOT('comboitem(int)'))
 		hbox.addWidget @combo
@@ -94,7 +94,7 @@ class Minigui < Qt::Widget
 		return groupbox
 	end
 
-	def tanglepathclicked()
+	def tanglepathclicked
 		widget = QWidget.new
 		text = widget.get_path(self, "Select Path to write tangled files to")
 		if(text != nil)
@@ -109,7 +109,7 @@ class Minigui < Qt::Widget
 	end
 
 	#tangle html file// load elements for listview// load new url (loadWebPage(urlstring))
-	def starttangleclicked()
+	def starttangleclicked
 		@runbutton.setEnabled true
 		@startsingle.setEnabled true
     tanglestage = TangleStage.new
@@ -122,7 +122,7 @@ class Minigui < Qt::Widget
     loadWebPage(newhtmlpath)
 	end
 
-	def generateLineTwo()
+	def generatelinetwo
 		vbox = Qt::VBoxLayout.new
 		#label = Qt::Label.new('<big>Select the path to tangle your file to</big>')
 		#vbox.addWidget label
@@ -150,7 +150,7 @@ class Minigui < Qt::Widget
 	end
 
 	# execute all files
-	def runbuttonclicked()
+	def runbuttonclicked
 		FileUtils.cd(@basepathstring) do  # chdir
       begin
         RunStage.new.run_file(@runpathstring, self)
@@ -163,7 +163,7 @@ class Minigui < Qt::Widget
 	end
 
 	# execute selected
-	def startsingleclicked()
+	def startsingleclicked
     #build array and fill row index
     linenumbers = Array.new
     @listview.selectionModel.selectedIndexes.each { |index|
@@ -188,7 +188,7 @@ class Minigui < Qt::Widget
     end
 	end
 
-	def generateListView()
+	def generatelistview
     puts "Generating listview"
 		#ListView
 	    @listview.dragEnabled = false

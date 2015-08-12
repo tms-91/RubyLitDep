@@ -2,10 +2,10 @@
 # To change this template file, choose Tools | Templates
 # and open the template in the editor.
 
-require "model/block"
+require "model/blockcommand"
 
 
-class ChangeFileRegex < Block
+class ChangeFileRegex < BlockCommand
   def initialize(id, snippet, filename, regex)
     super(id, snippet)
     @fileName = filename
