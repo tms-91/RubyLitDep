@@ -23,7 +23,7 @@
 #~ require "./model/declarereference"
 #~ require "./model/declarevariables"
 #~ require "./model/deletefilelines"
-#~ require "./model/insertintofile"
+#~ require "./model/addfilecontent"
 #~ require "./model/rootfile"
 
 #~ require "./parser/parserdispatcher"

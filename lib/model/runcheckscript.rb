@@ -2,6 +2,8 @@
 # To change this template file, choose Tools | Templates
 # and open the template in the editor.
 
+require 'model/runscript'
+
 class RunCheckScript < RunScript
   def initialize(id,snippet, section, filename, platform, executor,varname)
     super(id,snippet, section, filename, platform, executor)

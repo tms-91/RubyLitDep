@@ -5,8 +5,8 @@
 require "model/blockcommand"
 
 class RunScript < BlockCommand
-  def initialize(id,snippet, section, filename, platform, executor)
-    super(id, snippet)
+  def initialize(id,fragment, section, filename, platform, executor)
+    super(id, fragment)
     @section = section
     @fileName = filename
     @platform = platform

@@ -2,7 +2,7 @@
 # To change this template file, choose Tools | Templates
 # and open the template in the editor.
 
-require 'model/insertintofile'
+require 'model/addfilecontent'
 require 'parser/blockcommandparser'
 
 class AddFileContentParser < BlockCommandParser

@@ -16,8 +16,8 @@ class CommandParser
     begin
       match = line.match(attributename+'=\"([^\"])+\"').to_s
       value = match.split('=')[1].delete('\"')
-    rescue
-      puts 'Error at getattributevalue with line="'+line+'" and attribute= ' +attributename
+    rescue Exception=>e
+      raise 'Parser Exception:'+attributename+'\n'+line
     end
     
     return value

@@ -1,3 +1,5 @@
+require 'filehandler/filehandler'
+
 class AddFileContentHandler < FileHandler
 
 	def initialize(handler_for)
@@ -17,7 +19,7 @@ class AddFileContentHandler < FileHandler
 
     id=command.get_id
     
-    mainline = "insertintofile(#{filename},#{line},#{substitute})"
+    mainline = "addfilecontent(#{filename},#{line},#{substitute})"
     if(id!=nil)
       mainline += "\t#"+id
     end

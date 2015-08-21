@@ -9,8 +9,8 @@ class DeleteFileLinesParser < CommandParser
   def parse(lines,nr)
     cmdline = lines[nr]
     filename = getattributevalue(cmdline, 'filename')
-    startline = getattributevalue(cmdline, 'startline')
-    endline = getattributevalue(cmdline, 'endline')
+    startline = getattributevalue(cmdline, 'startLine')
+    endline = getattributevalue(cmdline, 'endLine')
     return DeleteFileLines.new(filename, startline, endline)
   end
 end

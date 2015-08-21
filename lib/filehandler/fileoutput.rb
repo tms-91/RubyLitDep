@@ -1,4 +1,4 @@
-require "model/script"
+require "model/manual"
 require "model/command"
 
 

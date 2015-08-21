@@ -10,7 +10,7 @@ echo 'Hello World2'
 @echo off
 <!--""LDS EndExtendScript -->
 
-<!--""LDS BeginRunEffectScript section="2" filename="echoe.bat" id="echoe1" platform="WINDOWS" executor="cmd /c" -->
+<!--""LDS BeginRunEffectScript section="2" filename="echoe.bat" id="echoe1" platform="WINDOWS" executor="cmd /c" varname="hello" -->
 echo 'Hello World'
 <!--""LDS EndRunEffectScript -->
 
@@ -22,14 +22,14 @@ echo 'Hello World2'
 @echo off
 <!--""LDS EndExtendScript -->
 
-<!--""LDS BeginRunCheckScript section="2" filename="echoc.bat" id="echo" platform="WINDOWS" executor="cmd /c" -->
+<!--""LDS BeginRunCheckScript section="2" filename="echoc.bat" id="echoc1" platform="WINDOWS" executor="cmd /c" value="Hello World\nHelloWorld2" -->
 echo 'Hello World'
 <!--""LDS EndRunCheckScript -->
 
-<!--""LDS BeginExtendScript section="3" filename="echoc.bat" id="echo2" -->
+<!--""LDS BeginExtendScript section="3" filename="echoc.bat" id="echoc2" -->
 echo 'Hello World2'
 <!--""LDS EndExtendScript -->
 
-<!--""LDS BeginExtendScript section="1" filename="echoc.bat" id="echo3" -->
+<!--""LDS BeginExtendScript section="1" filename="echoc.bat" id="echoc3" -->
 @echo off
 <!--""LDS EndExtendScript -->

@@ -10,7 +10,7 @@ require 'model/extendscript'
 require 'model/declarefragment'
 require 'model/requestuserinput'
 require 'model/deletefilelines'
-require 'model/insertintofile'
+require 'model/addfilecontent'
 require 'model/runscript'
 class ExtendScriptResolver < ModelWorker
   
@@ -41,6 +41,8 @@ class ExtendScriptResolver < ModelWorker
         if cmd.is_a?(RunScript)
           root = cmd
           fragment+= cmd.get_fragment
+        elsif cmd.nil?
+          manual.delete_command(cmd)
         else
           fragment+=cmd.get_fragment
           #remove continuefiles from script

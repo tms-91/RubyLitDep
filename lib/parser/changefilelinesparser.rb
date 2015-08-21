@@ -11,8 +11,8 @@ class ChangeFileLinesParser < BlockCommandParser
     id = getattributevalue(cmdline, 'id')
     snippet = parseblock(lines, nr)
     filename = getattributevalue(cmdline, 'filename')
-    startline = getattributevalue(cmdline, 'startline')
-    endline = getattributevalue(cmdline, 'endline')
+    startline = getattributevalue(cmdline, 'startLine')
+    endline = getattributevalue(cmdline, 'endLine')
     return ChangeFileLines.new(id, snippet, filename, startline, endline)
   end
 end

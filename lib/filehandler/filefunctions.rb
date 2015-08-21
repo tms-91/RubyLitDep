@@ -86,7 +86,7 @@ def deletefilelines(filename,from,to)
 	changefilelines(filename,from,to,"")
 end
 
-def insertintofile(filename,at_line,substitute)
+def addfilecontent(filename,at_line,substitute)
 	if(substitute.nil?)
 		return
 	end
