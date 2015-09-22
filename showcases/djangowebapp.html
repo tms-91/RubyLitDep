@@ -42,7 +42,7 @@ mkdir src
 <h3>2. Test Django installation At the command line, you run these commands:</h3>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;">
-<!--""LDS EndRunCheckScript section="1" filename="testPythonInstallation.sh" id="Test Python Installation" platform="UNIX" executor="sh" value="2.7.5" -->
+<!--""LDS BeginRunCheckScript section="1" filename="testPythonInstallation.sh" id="Test Python Installation" platform="UNIX" executor="sh" value="2.7.5" -->
 python --version 
 <!--""LDS EndRunCheckScript --> 
 </div>
@@ -54,7 +54,7 @@ Python 2.7.5
 </div>
 <br/>
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;">
-<!--""LDS EndRunCheckScript section="1" filename="testDjangoInstallation.sh" id="Test Django Installation" platform="UNIX" executor="sh" value="1.6.2" -->
+<!--""LDS BeginRunCheckScript section="1" filename="testDjangoInstallation.sh" id="Test Django Installation" platform="UNIX" executor="sh" value="1.6.2" -->
 python -c "import django; print(django.get_version())" 
 <!--""LDS EndRunCheckScript--> 
 </div>
@@ -347,7 +347,7 @@ Put the following content into file polls/admin.py:
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
 from django.contrib import admin
 from polls.models import Poll, Choice
-<!--""LDS BeginChangeFileLines filename="src/mysite/polls/admin.py" startline="2" endline="4" id="Customizing admin.py" -->
+<!--""LDS BeginChangeFileLines filename="src/mysite/polls/admin.py" startLine="2" endLine="4" id="Customizing admin.py" -->
 
 class ChoiceInline(admin.TabularInline):
   model = Choice
@@ -435,7 +435,7 @@ Edit file templates/admin/base_site.html:
 {% load i18n %}
 {% block title %}{{ title }} | {% trans 'Django site admin' %}{% endblock %}
 {% block branding %}
-<!--""LDS BeginChangeFileLines filename="src/mysite/templates/admin/base_site.html" startline="6" endline="6" id="edit base_site.html" -->
+<!--""LDS BeginChangeFileLines filename="src/mysite/templates/admin/base_site.html" startLine="6" endLine="6" id="edit base_site.html" -->
 &lt;h1 id="site-name"&gt;{% trans 'The Polls admin' %}&lt;/h1&gt;
 <!--""LDS EndChangeFileLines -->
 {% endblock %}
@@ -526,7 +526,7 @@ url(r'^(?P<poll_id>\d+)/vote/$', views.vote, name='vote'),
 <p>Replace the content of polls/views.py with the following content:</p>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginChangeFileLines filename="src/mysite/polls/views.py" startline="0" endline="4" id="Implement a view" -->
+<!--""LDS BeginChangeFileLines filename="src/mysite/polls/views.py" startLine="0" endLine="4" id="Implement a view" -->
 from django.http import HttpResponse
 from polls.models import Poll
 
@@ -570,7 +570,7 @@ mkdir templates/polls
 <p> Edit file polls/views.py to revise the definition of index specifically: </p> 
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginChangeFileLines filename="src/mysite/polls/views.py" startline="5" endline="7" id="Edit views.py to revise index definition" -->
+<!--""LDS BeginChangeFileLines filename="src/mysite/polls/views.py" startLine="5" endLine="7" id="Edit views.py to revise index definition" -->
 from django.http import HttpResponse
 from polls.models import Poll
 from django.shortcuts import render
@@ -608,7 +608,7 @@ from django.http import Http404
 def index(request):
 ...
 
-<!--""LDS BeginChangeFileLines filename="src/mysite/polls/views.py" startline="10" endline="11" id="Insert 404 error raise" -->
+<!--""LDS BeginChangeFileLines filename="src/mysite/polls/views.py" startLine="10" endLine="11" id="Insert 404 error raise" -->
 def detail(request, poll_id):
   try:
     poll = Poll.objects.get(pk=poll_id)
@@ -627,7 +627,7 @@ Here is how a missing poll is rendered:</p>
 <p>Put the following text into file templates/polls/detail.html: </p>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginChangeFileLines filename="src/mysite/templates/polls/detail.html" startline="0" endline="5" id="Implement view with form in detail.html" -->
+<!--""LDS BeginChangeFileLines filename="src/mysite/templates/polls/detail.html" startLine="0" endLine="5" id="Implement view with form in detail.html" -->
 <h1>{{ poll.question }}</h1>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
@@ -652,14 +652,14 @@ value="{{ choice.id }}" />
 <p>Edit file polls/views.py to revise the definition of vote specifically:</p>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginChangeFileLines filename="src/mysite/polls/views.py" startline="0" endline="3" id="Refine imports in polls views.py"-->
+<!--""LDS BeginChangeFileLines filename="src/mysite/polls/views.py" startLine="0" endLine="3" id="Refine imports in polls views.py"-->
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from polls.models import Choice, Poll
 <!--""LDS EndChangeFileLines -->
 ...
-<!--""LDS BeginChangeFileLines filename="src/mysite/polls/views.py" startline="20" endline="21" id="Refine vote in polls views.py"-->
+<!--""LDS BeginChangeFileLines filename="src/mysite/polls/views.py" startLine="20" endLine="21" id="Refine vote in polls views.py"-->
 def vote(request, poll_id):
   p = get_object_or_404(Poll, pk=poll_id)
   try:
@@ -698,7 +698,7 @@ pluralize }}</li>
 <p>Edit file polls/views.py to revise the definition of results specifically:</p>
 
 <div style="line-height:1em;background-color:#FCFADD;color:#714D03;"><pre>
-<!--""LDS BeginChangeFileLines filename="src/mysite/polls/views.py" startline="17" endline="18" id="edit polls views.py to revise definition of results"-->
+<!--""LDS BeginChangeFileLines filename="src/mysite/polls/views.py" startLine="17" endLine="18" id="edit polls views.py to revise definition of results"-->
 def results(request, poll_id):
   poll = get_object_or_404(Poll, pk=poll_id)
   return render(request, 'polls/results.html', {'poll': poll})

@@ -24,6 +24,8 @@ class ParserDispatcher
     lines = File.readlines(filepath)
     script = Manual.new
     
+    puts 'Starting to parse'
+    
     number = 0
     while number < lines.size do
       line = lines[number]
@@ -32,6 +34,7 @@ class ParserDispatcher
         
         if cmd.include?('Begin')
           cmd.sub!('Begin', '')
+	  puts 'Parsing a '+cmd
         end
         
         if cmd.include?('End')
@@ -62,6 +65,7 @@ class ParserDispatcher
         number+=1
       end
     end
+    puts 'Parsing finished'
     return script
   end
   

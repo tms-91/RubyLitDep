@@ -16,6 +16,7 @@ require 'model/runscript'
 class ReuseFragmentResolver < ModelWorker
   
   def refine(manual)
+    puts 'running ReuseFragmentResolver'
     #puts "resolving references in script"
     #alle BlockCommand ids speichern
     #in allen Blocks ReuseFragment ersetzen durch Blöcke mit entsprechender Id
@@ -37,14 +38,21 @@ class ReuseFragmentResolver < ModelWorker
         while(snippet.include?("<!--\"\"LDS BeginReuseFragment"))
           #puts "trying to resolve reference"
           cmdline = snippet.match('<!--\"\"LDS BeginReuseFragment id=\"([^\"])+\"').to_s
+	  if cmdline==nil
+		  raise 'ReuseFragment Error. Fragment: '+snippet
+	  end
           match = cmdline.match('id=\"([^\"])+\"').to_s
+	  if match==nil
+		  raise 'ReuseFragment id Error. line: '+cmdline
+	  end
           refid = match.split('=')[1].delete('\"').to_s
+	  
           
-          #puts "trying to resolve reference "+refid
+          puts "trying to resolve reference "+refid+'\nFragment:\n'+snippet+'\n\n'
           referenced = map[refid]
           replacingtext = referenced.get_fragment
    
-          regexstring = '<!--\"\"LDS BeginReuseFragment id=\"'+refid+'\".*?<!--\"\"LDS EndReuseFragment( )?(-->)?(<pre>)?( )*<code>'
+          regexstring = '<!--\"\"LDS BeginReuseFragment id=\"'+refid+'\".*?<!--\"\"LDS EndReuseFragment( )?(-->)?(<pre>)?( )*(<code>)?'
           regex = Regexp.new(regexstring, Regexp::MULTILINE)
           snippet.sub!(regex, replacingtext)
           snippet.strip!

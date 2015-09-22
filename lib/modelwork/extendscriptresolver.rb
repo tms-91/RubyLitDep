@@ -15,6 +15,8 @@ require 'model/runscript'
 class ExtendScriptResolver < ModelWorker
   
   def refine(manual)
+	  
+    puts 'running ExtendScriptResolver'
     #search for all root- and continuefile-cmds
     #save them mapped to their filename
     map = {}

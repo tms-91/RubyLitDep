@@ -10,10 +10,13 @@ class ModelWorkerDispatcher
   end
   
   def refine(manual)
+    puts 'starting modelwork' 
+	  
     @registry.get_entries.each { |modelworker|  
       manual = modelworker.refine(manual)
     }
     
+    puts 'modelwork finished'
     return manual
   end
 end
