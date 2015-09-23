@@ -28,12 +28,12 @@ class Minigui < Qt::Widget
 		# line one
 		@combo = Qt::ComboBox.new
 		@basepath = Qt:: PushButton.new('Select HTML file')
-		@basepathlabel = Qt::LineEdit.new("Path selected", self)
+		@basepathlabel = Qt::LineEdit.new("No Path selected", self)
 
 		# line two
 		@tanglepath = Qt::PushButton.new("Select Path")
 		@tanglepathlabel = Qt::LineEdit.new("No Path selected", self)
-		@starttangle = Qt::PushButton.new("Start Tangle")
+		@starttangle = Qt::PushButton.new("Preprocess")
 
 		# define layout handling
 		vbox = Qt::VBoxLayout.new
@@ -96,7 +96,7 @@ class Minigui < Qt::Widget
 
 	def tanglepathclicked
 		widget = QWidget.new
-		text = widget.get_path(self, "Select Path to write tangled files to")
+		text = widget.get_path(self, "Select base path")
 		if(text != nil)
 			path = text.strip
 			if not path.empty?
@@ -142,7 +142,7 @@ class Minigui < Qt::Widget
 
 		vbox.addLayout hbox
 
-		groupbox = Qt::GroupBox.new(tr("Select the path to tangle your file to"))
+		groupbox = Qt::GroupBox.new(tr("Select the base path where the script files will be created"))
 		groupbox.setSizePolicy(Qt::SizePolicy::Preferred, Qt::SizePolicy::Fixed)
 		groupbox.setLayout vbox
 
