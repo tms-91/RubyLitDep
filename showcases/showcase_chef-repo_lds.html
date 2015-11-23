@@ -70,7 +70,7 @@ The following paragraphs will guide you to set up your own server to host Ruby o
 Clone the repository onto your own workstation. For example in your `~/Code` directory:
 
 
-<!--""LDS BeginRunOutputScript section="1" filename="cloneRepo.sh" id="clone repository" platform="UNIX" executor="sh" --><code><pre>
+<!--""LDS BeginRunOutputScript section="1" filename="cloneRepo.sh" id="clone repository" platform="UNIX" executor="sh" --><pre><code>
 git clone git://github.com/intercity/chef-repo.git ~/Code 
 </code></pre><!--""LDS EndRunOutputScript -->
 
@@ -165,7 +165,7 @@ config/deploy/staging.rb
 
 Edit the file `Capfile` and change it's contents to:
 
-<!--""LDS BeginChangeFileLines filename="~/Code/Capfile" id="Edit Capistrano configuration" startline="0" endline="25" --><pre><code>
+<!--""LDS BeginChangeFileLines filename="~/Code/Capfile" id="Edit Capistrano configuration" startLine="0" endLine="25" --><pre><code>
 # Load DSL and Setup Up Stages
 require 'capistrano/setup'
 
@@ -182,7 +182,7 @@ Then edit `config/deploy.rb` and change it to the sample below.
 Replace `$.$-git_repo_url-$.$` with the SSH clone URL of your repository:
 
 <!--""LDS RequestUserInput variables="git_repo_url,application_name" -->
-<!--""LDS BeginChangeFileLines filename="~/Code/config/deploy.rb" id="Edit Capistrano deployment configuration" startline="0" endline="59" --><pre><code>ruby
+<!--""LDS BeginChangeFileLines filename="~/Code/config/deploy.rb" id="Edit Capistrano deployment configuration" startLine="0" endLine="59" --><pre><code>ruby
 # config valid only for Capistrano 3.2.1
 lock '3.2.1'
 
@@ -228,7 +228,7 @@ end
 Replace the contents of `config/deploy/production.rb` with
 
 <!--""LDS RequestUserInput variables="server_address" -->
-<!--""LDS BeginChangeFileLines filename="~/Code/config/deploy/production.rb" id="Edit Capistrano server configuration" startline="0" endline="46" --><pre><code>ruby
+<!--""LDS BeginChangeFileLines filename="~/Code/config/deploy/production.rb" id="Edit Capistrano server configuration" startLine="0" endLine="46" --><pre><code>ruby
 server '$.$-server_address-$.$', user: 'deploy', roles: %w{web app db}
 </code></pre><!--""LDS EndChangeFileLines -->
 
